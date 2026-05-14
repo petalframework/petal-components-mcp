@@ -11,7 +11,7 @@
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
-    "extract": "cd ../petal_components && mix run ../petal-components-mcp/scripts/extract_schemas.exs"
+    "extract": "cd scripts/extract && mix deps.get && mix run extract_schemas.exs"
   },
   "files": [
     "dist",

@@ -4,3 +4,7 @@ dist
 .DS_Store
 .env
 .env.local
+
+# Elixir build artifacts from scripts/extract
+scripts/extract/_build
+scripts/extract/deps

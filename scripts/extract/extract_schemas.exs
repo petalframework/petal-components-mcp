@@ -1,14 +1,15 @@
 # Extracts component schemas from petal_components and emits JSON.
 #
-# Run from the petal_components repo root:
-#   mix run ../petal-components-mcp/scripts/extract_schemas.exs
+# Run from scripts/extract/:
+#   mix deps.get
+#   mix run extract_schemas.exs
 #
 # Phoenix.Component generates __components__/0 on any module with attr/slot
 # declarations, returning a map keyed by function name. We walk every loaded
-# PetalComponents.* module, pull that metadata, and write it to src/schemas.json.
+# PetalComponents.* module, pull that metadata, and write it to ../../src/schemas.json.
 
 defmodule SchemaExtractor do
-  @output_path Path.join([__DIR__, "..", "src", "schemas.json"])
+  @output_path Path.join([__DIR__, "..", "..", "src", "schemas.json"])
 
   # Modules to skip — icon packs are huge and not useful for AI suggestion.
   @skip_modules [

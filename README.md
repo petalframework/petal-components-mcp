@@ -37,11 +37,10 @@ petal_components (Hex)              petal-components-mcp (this repo)
 ## Running locally
 
 ```sh
-# Regenerate schemas from petal_components (requires a checkout next door)
-cd ../petal_components && mix run ../petal-components-mcp/scripts/extract_schemas.exs
+# Regenerate schemas from the latest petal_components on Hex
+npm run extract     # cd scripts/extract && mix deps.get && mix run extract_schemas.exs
 
 # Build and serve
-cd ../petal-components-mcp
 npm install
 npm run build
 PORT=8765 npm start
@@ -49,6 +48,8 @@ PORT=8765 npm start
 # Health check
 curl http://localhost:8765/healthz
 ```
+
+The extraction is self-contained — `scripts/extract/` is a tiny Mix project that pulls `petal_components` from Hex, introspects every `Phoenix.Component.__components__/0`, and writes `src/schemas.json`. No need for a local `petal_components` clone.
 
 To use a local server with Claude Code:
 
@@ -87,28 +88,27 @@ Then `fly certs check mcp.petal.build` will go green once propagation hits.
 fly deploy --remote-only
 ```
 
-### Releasing a new petal_components version
+### Syncing after a new petal_components release on Hex
 
 ```sh
-# 1. Regenerate schemas from the local petal_components checkout
-cd ../petal_components
-git pull            # ensure you have the latest tag
-mix run ../petal-components-mcp/scripts/extract_schemas.exs
+# 1. Regenerate schemas from the latest petal_components on Hex
+npm run extract
 
-# 2. Commit the new schemas.json
-cd ../petal-components-mcp
+# 2. Eyeball the diff (catches surprises before they ship to AI agents worldwide)
+git diff src/schemas.json | head -50
+
+# 3. Commit and deploy
 git add src/schemas.json
 git commit -m "chore: sync schemas with petal_components vX.Y.Z"
-
-# 3. Deploy
+git push
 fly deploy --remote-only
 ```
 
-The `/healthz` endpoint reports the bundled petal_components version, so you can confirm a release went out:
+The `/healthz` endpoint reports the bundled version, so you can confirm a deploy went out:
 
 ```sh
 curl https://mcp.petal.build/healthz
-# {"ok":true,"petal_components_version":"3.1.0","components":79,...}
+# {"ok":true,"petal_components_version":"3.2.0","components":79,...}
 ```
 
 ## Background
