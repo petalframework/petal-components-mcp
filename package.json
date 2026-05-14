@@ -1,0 +1,40 @@
+{
+  "name": "petal-components-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for petal_components — Phoenix LiveView component schemas exposed to AI coding assistants.",
+  "type": "module",
+  "main": "dist/server.js",
+  "bin": {
+    "petal-components-mcp": "dist/stdio.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "extract": "cd ../petal_components && mix run ../petal-components-mcp/scripts/extract_schemas.exs"
+  },
+  "files": [
+    "dist",
+    "src/schemas.json",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "express": "^4.21.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/petalframework/petal-components-mcp"
+  }
+}
