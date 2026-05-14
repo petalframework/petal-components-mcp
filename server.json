@@ -1,0 +1,27 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.petalframework/petal-components-mcp",
+  "description": "MCP server exposing petal_components schemas (Phoenix LiveView component library) to AI coding assistants. AI agents can query attrs, slots, defaults, and allowed values for 79 components on demand, so they write idiomatic HEEx with <.button>, <.modal>, <.field> instead of inventing raw Tailwind soup.",
+  "repository": {
+    "url": "https://github.com/petalframework/petal-components-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "websiteUrl": "https://petal.build/components/mcp",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "petal-components-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.petal.build/mcp"
+    }
+  ]
+}

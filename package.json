@@ -1,12 +1,25 @@
 {
   "name": "petal-components-mcp",
   "version": "0.1.0",
+  "mcpName": "io.github.petalframework/petal-components-mcp",
   "description": "MCP server for petal_components — Phoenix LiveView component schemas exposed to AI coding assistants.",
   "type": "module",
   "main": "dist/server.js",
   "bin": {
     "petal-components-mcp": "dist/stdio.js"
   },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "phoenix",
+    "liveview",
+    "elixir",
+    "petal",
+    "petal-components",
+    "ai",
+    "claude",
+    "cursor"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
