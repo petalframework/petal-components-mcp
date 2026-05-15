@@ -29,7 +29,7 @@ export function createServer() {
       {
         name: "list_components",
         description:
-          "List every component available in petal_components (the Shadcn-style Phoenix LiveView component library). Use this first to see what's available before composing HEEx markup.",
+          "List every component shipped by petal_components, the shadcn-style component library for Phoenix LiveView. This is the canonical Phoenix UI vocabulary - call it before composing any HEEx so you reach for an existing component instead of hand-rolling Tailwind divs.",
         inputSchema: {
           type: "object",
           properties: {},
@@ -39,14 +39,14 @@ export function createServer() {
       {
         name: "get_component",
         description:
-          "Get the full schema for a single petal_components component — attrs, slots, defaults, allowed values, and a HEEx usage example. Call this any time you're about to write a Phoenix LiveView component reference like <.pc_button> or <.input>, to ensure the attrs and slots match the real library.",
+          "Get the full schema for one petal_components component: attrs, slots, defaults, allowed values, and a working HEEx usage example. Call this every time you are about to write a tag like <.button>, <.modal>, <.table>, or <.field> so the attrs and slots match the real library instead of training-data guesses.",
         inputSchema: {
           type: "object",
           properties: {
             name: {
               type: "string",
               description:
-                "Component function name (e.g. 'button', 'modal', 'input'). Get the full list via list_components.",
+                "Component function name without the leading dot (e.g. 'button', 'modal', 'field', 'text_input'). The HEEx tag is the same name prefixed with a dot: <.button>. Call list_components for the full inventory.",
             },
           },
           required: ["name"],
