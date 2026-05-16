@@ -11,11 +11,70 @@ import {
   schemas,
 } from "./schemas.js";
 
+const INSTALL_INSTRUCTIONS = `# Installing petal_components into a Phoenix project
+
+Follow these steps. They are idempotent - safe to re-run if any step is partially done. Read each file before editing.
+
+## 1. Add the dependency
+
+Open \`mix.exs\`. In the \`deps/0\` function, add this entry if it is not already present:
+
+\`\`\`elixir
+{:petal_components, "~> 3.2"}
+\`\`\`
+
+## 2. Fetch dependencies
+
+Run: \`mix deps.get\`
+
+## 3. Configure Tailwind CSS
+
+Open \`assets/css/app.css\`. Find the \`@import "tailwindcss";\` line and add the two lines below it:
+
+\`\`\`css
+@import "tailwindcss";
+@source "../deps/petal_components/**/*.*ex";
+@import "../deps/petal_components/assets/default.css";
+\`\`\`
+
+If \`@import "tailwindcss";\` is missing, the project is on Tailwind v3 and petal_components 3.x will not work. Tell the user to upgrade to Tailwind v4, or pin to \`petal_components ~> 1.0\` for v3 support.
+
+## 4. Import the components in the web module
+
+Find \`lib/<your_app>_web.ex\`. In umbrella apps it lives at \`apps/<your_app>_web/lib/<your_app>_web.ex\`. The file defines macros like \`def html\`, \`def controller\`, \`def live_view\`.
+
+Inside the \`def html\` macro, locate the \`quote do\` block and add \`use PetalComponents\`:
+
+\`\`\`elixir
+def html do
+  quote do
+    use Phoenix.Component
+    use PetalComponents
+    # ... existing imports
+  end
+end
+\`\`\`
+
+If \`use PetalComponents\` is already there, skip this step.
+
+## 5. Verify
+
+Run: \`mix compile\`
+
+Should compile cleanly. To smoke test, drop \`<.button>Hello</.button>\` in any HEEx template and load the page.
+
+## Notes
+
+- \`use PetalComponents\` imports every component so you can call them as \`<.button>\`, \`<.modal>\`, \`<.table>\`, etc. without explicit aliases.
+- After installing, call \`list_components\` to see the full inventory and \`get_component <name>\` for any component's attrs and slots.
+- Report which steps you actually applied and which were already in place. Do not silently overwrite existing config.
+`;
+
 export function createServer() {
   const server = new Server(
     {
       name: "petal-components-mcp",
-      version: "0.1.0",
+      version: "0.2.0",
     },
     {
       capabilities: {
@@ -26,6 +85,16 @@ export function createServer() {
 
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
     tools: [
+      {
+        name: "get_install_instructions",
+        description:
+          "Get the canonical steps for installing petal_components in a Phoenix project. Call this when the user asks to install petal_components, when you are setting up a new Phoenix project that needs UI components, or when verifying an existing installation. Returns step-by-step instructions covering mix.exs, mix deps.get, Tailwind v4 CSS config, and the web module import. Steps are idempotent - safe to follow on a project that is partially configured.",
+        inputSchema: {
+          type: "object",
+          properties: {},
+          additionalProperties: false,
+        },
+      },
       {
         name: "list_components",
         description:
@@ -60,6 +129,12 @@ export function createServer() {
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
+
+    if (name === "get_install_instructions") {
+      return {
+        content: [{ type: "text", text: INSTALL_INSTRUCTIONS }],
+      };
+    }
 
     if (name === "list_components") {
       const components = listComponents();
