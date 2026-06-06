@@ -20,8 +20,10 @@ Follow these steps. They are idempotent - safe to re-run if any step is partiall
 Open \`mix.exs\`. In the \`deps/0\` function, add this entry if it is not already present:
 
 \`\`\`elixir
-{:petal_components, "~> 3.2"}
+{:petal_components, "~> 4.0"}
 \`\`\`
+
+If the user wants the chat markdown components (\`<.markdown>\`, \`<.rich_text>\`), also add \`{:mdex, "~> 0.12"}\`. The rest of the library needs no extra deps.
 
 ## 2. Fetch dependencies
 
@@ -37,7 +39,7 @@ Open \`assets/css/app.css\`. Find the \`@import "tailwindcss";\` line and add th
 @import "../deps/petal_components/assets/default.css";
 \`\`\`
 
-If \`@import "tailwindcss";\` is missing, the project is on Tailwind v3 and petal_components 3.x will not work. Tell the user to upgrade to Tailwind v4, or pin to \`petal_components ~> 1.0\` for v3 support.
+If \`@import "tailwindcss";\` is missing, the project is on Tailwind v3 and petal_components 4.x will not work. Tell the user to upgrade to Tailwind v4, or pin to \`petal_components ~> 1.0\` for Tailwind v3 support.
 
 ## 4. Import the components in the web module
 
@@ -57,7 +59,22 @@ end
 
 If \`use PetalComponents\` is already there, skip this step.
 
-## 5. Verify
+## 5. Register the JS hooks
+
+petal_components v4 ships JS hooks for the password/copyable/clearable inputs and the chat components (everything else is CSS + LiveView.JS only). Open \`assets/js/app.js\`, import the hooks, and merge them into the \`LiveSocket\`:
+
+\`\`\`js
+import PetalComponents from "../../deps/petal_components/assets/js/petal_components"
+
+const liveSocket = new LiveSocket("/live", Socket, {
+  params: { _csrf_token: csrfToken },
+  hooks: { ...PetalComponents }, // merge with existing hooks if present
+})
+\`\`\`
+
+Skip this only if the project has no \`assets/js/app.js\` (API-only or minimal app).
+
+## 6. Verify
 
 Run: \`mix compile\`
 

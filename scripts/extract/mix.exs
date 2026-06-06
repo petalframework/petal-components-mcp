@@ -20,7 +20,7 @@ defmodule PetalComponentsMcp.Extract.MixProject do
 
   defp deps do
     [
-      {:petal_components, "~> 3.0"},
+      {:petal_components, "~> 4.0"},
       {:jason, "~> 1.4"}
     ]
   end
