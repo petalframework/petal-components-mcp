@@ -95,17 +95,6 @@
           "values": null
         },
         {
-          "default": "\"alpine_js\"",
-          "doc": "JavaScript library used for toggling",
-          "name": "js_lib",
-          "required": false,
-          "type": ":string",
-          "values": [
-            "alpine_js",
-            "live_view_js"
-          ]
-        },
-        {
           "default": "false",
           "doc": "When true, multiple sections can be expanded simultaneously",
           "name": "multiple",
@@ -963,6 +952,94 @@
       "attrs": [
         {
           "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "on_retry",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": "\"Retry\"",
+          "doc": null,
+          "name": "retry_label",
+          "required": false,
+          "type": ":string",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "chat_error",
+      "slots": [
+        {
+          "attrs": [],
+          "doc": null,
+          "name": "inner_block",
+          "required": true
+        }
+      ]
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "rest",
+          "required": false,
+          "type": ":global",
+          "values": null
+        },
+        {
+          "default": "\"assistant\"",
+          "doc": null,
+          "name": "role",
+          "required": false,
+          "type": ":string",
+          "values": [
+            "user",
+            "assistant",
+            "system"
+          ]
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "chat_message",
+      "slots": [
+        {
+          "attrs": [],
+          "doc": "optional leading avatar/icon",
+          "name": "avatar",
+          "required": false
+        },
+        {
+          "attrs": [],
+          "doc": null,
+          "name": "inner_block",
+          "required": true
+        }
+      ]
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
           "doc": "extra classes for the text input",
           "name": "class",
           "required": false,
@@ -1187,6 +1264,91 @@
       "attrs": [
         {
           "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": "defaults to a generated id so multiple threads can coexist",
+          "name": "id",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "rest",
+          "required": false,
+          "type": ":global",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "conversation",
+      "slots": [
+        {
+          "attrs": [],
+          "doc": "pinned below the scroll area, e.g. a prompt_input",
+          "name": "footer",
+          "required": false
+        },
+        {
+          "attrs": [],
+          "doc": null,
+          "name": "inner_block",
+          "required": true
+        }
+      ]
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "id",
+          "required": true,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": "\"Copy\"",
+          "doc": null,
+          "name": "label",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": "the text to copy",
+          "name": "text",
+          "required": true,
+          "type": ":string",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "copy_button",
+      "slots": []
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
           "doc": "extra classes for the text input",
           "name": "class",
           "required": false,
@@ -1384,17 +1546,6 @@
           "required": false,
           "type": ":any",
           "values": null
-        },
-        {
-          "default": "\"alpine_js\"",
-          "doc": "javascript library used for toggling",
-          "name": "js_lib",
-          "required": false,
-          "type": ":string",
-          "values": [
-            "alpine_js",
-            "live_view_js"
-          ]
         },
         {
           "default": null,
@@ -3051,6 +3202,38 @@
     {
       "attrs": [
         {
+          "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "content",
+          "required": true,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": "pass a unique id to enable per-code-block copy buttons",
+          "name": "id",
+          "required": false,
+          "type": ":string",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "markdown",
+      "slots": []
+    },
+    {
+      "attrs": [
+        {
           "default": "\"\"",
           "doc": "CSS class for parent div",
           "name": "class",
@@ -3176,17 +3359,6 @@
           "values": null
         },
         {
-          "default": "\"alpine_js\"",
-          "doc": "javascript library used for toggling",
-          "name": "js_lib",
-          "required": false,
-          "type": ":string",
-          "values": [
-            "alpine_js",
-            "live_view_js"
-          ]
-        },
-        {
           "default": null,
           "doc": null,
           "name": "menu_items",
@@ -3239,6 +3411,29 @@
       "module": "PetalComponents.Menu",
       "name": "menu_icon",
       "slots": []
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "message_actions",
+      "slots": [
+        {
+          "attrs": [],
+          "doc": null,
+          "name": "inner_block",
+          "required": true
+        }
+      ]
     },
     {
       "attrs": [
@@ -3610,6 +3805,101 @@
     {
       "attrs": [
         {
+          "default": "\"Message\"",
+          "doc": "accessible label for the textarea",
+          "name": "aria_label",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": "defaults to a generated id so multiple composers can coexist",
+          "name": "id",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": "false",
+          "doc": null,
+          "name": "loading",
+          "required": false,
+          "type": ":boolean",
+          "values": null
+        },
+        {
+          "default": "\"prompt\"",
+          "doc": null,
+          "name": "name",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": "event pushed when the stop button is clicked while loading",
+          "name": "on_stop",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": "\"Send a message...\"",
+          "doc": null,
+          "name": "placeholder",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "rest",
+          "required": false,
+          "type": ":global",
+          "values": null
+        },
+        {
+          "default": "\"Send\"",
+          "doc": null,
+          "name": "submit_label",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": "\"\"",
+          "doc": null,
+          "name": "value",
+          "required": false,
+          "type": ":string",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "prompt_input",
+      "slots": [
+        {
+          "attrs": [],
+          "doc": "extra controls left of the send button",
+          "name": "actions",
+          "required": false
+        }
+      ]
+    },
+    {
+      "attrs": [
+        {
           "default": null,
           "doc": "CSS class",
           "name": "class",
@@ -3901,6 +4191,45 @@
       "attrs": [
         {
           "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": "\"Reasoning\"",
+          "doc": null,
+          "name": "label",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": "false",
+          "doc": null,
+          "name": "open",
+          "required": false,
+          "type": ":boolean",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "reasoning",
+      "slots": [
+        {
+          "attrs": [],
+          "doc": null,
+          "name": "inner_block",
+          "required": true
+        }
+      ]
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
           "doc": "The review text content",
           "name": "body",
           "required": true,
@@ -3951,6 +4280,38 @@
       "kind": "def",
       "module": "PetalComponents.Card",
       "name": "review_card",
+      "slots": []
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "content",
+          "required": true,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": "fn(name :: String.t(), args :: map) -> rendered | nil",
+          "name": "render_widget",
+          "required": false,
+          "type": ":any",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "rich_text",
       "slots": []
     },
     {
@@ -4254,6 +4615,81 @@
       "kind": "def",
       "module": "PetalComponents.Stepper",
       "name": "stepper",
+      "slots": []
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": "\"pc-chat-token\"",
+          "doc": "push_event name the hook listens for",
+          "name": "event",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": "\"text\"",
+          "doc": "\"text\" appends raw token deltas; \"markdown\" replaces innerHTML with rendered HTML you push (see `to_html/1`)",
+          "name": "format",
+          "required": false,
+          "type": ":string",
+          "values": [
+            "text",
+            "markdown"
+          ]
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "id",
+          "required": true,
+          "type": ":string",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "streaming_text",
+      "slots": []
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "items",
+          "required": true,
+          "type": ":list",
+          "values": null
+        },
+        {
+          "default": "\"suggestion\"",
+          "doc": "event pushed with phx-value-prompt",
+          "name": "on_select",
+          "required": false,
+          "type": ":string",
+          "values": null
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "suggestions",
       "slots": []
     },
     {
@@ -4836,6 +5272,73 @@
       "attrs": [
         {
           "default": null,
+          "doc": null,
+          "name": "class",
+          "required": false,
+          "type": ":any",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": "human label; defaults to the tool name",
+          "name": "label",
+          "required": false,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": null,
+          "doc": null,
+          "name": "name",
+          "required": true,
+          "type": ":string",
+          "values": null
+        },
+        {
+          "default": ":complete",
+          "doc": null,
+          "name": "status",
+          "required": false,
+          "type": ":atom",
+          "values": [
+            "running",
+            "complete",
+            "error"
+          ]
+        }
+      ],
+      "kind": "def",
+      "module": "PetalComponents.Chat",
+      "name": "tool_call",
+      "slots": [
+        {
+          "attrs": [],
+          "doc": "the rendered widget / tool result",
+          "name": "inner_block",
+          "required": false
+        }
+      ]
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
+          "doc": null,
+          "name": "status",
+          "required": true,
+          "type": ":atom",
+          "values": null
+        }
+      ],
+      "kind": "defp",
+      "module": "PetalComponents.Chat",
+      "name": "tool_status_icon",
+      "slots": []
+    },
+    {
+      "attrs": [
+        {
+          "default": null,
           "doc": "CSS class",
           "name": "class",
           "required": false,
@@ -4985,17 +5488,6 @@
           "values": null
         },
         {
-          "default": "\"alpine_js\"",
-          "doc": "javascript library used for toggling",
-          "name": "js_lib",
-          "required": false,
-          "type": ":string",
-          "values": [
-            "alpine_js",
-            "live_view_js"
-          ]
-        },
-        {
           "default": null,
           "doc": null,
           "name": "menu_items",
@@ -5050,17 +5542,6 @@
           "required": false,
           "type": ":any",
           "values": null
-        },
-        {
-          "default": "\"alpine_js\"",
-          "doc": "javascript library used for toggling",
-          "name": "js_lib",
-          "required": false,
-          "type": ":string",
-          "values": [
-            "alpine_js",
-            "live_view_js"
-          ]
         },
         {
           "default": null,
@@ -5125,6 +5606,6 @@
       "slots": []
     }
   ],
-  "generated_at": "2026-05-15T23:17:06.338890Z",
-  "version": "3.2.2"
+  "generated_at": "2026-06-08T02:14:21.526319Z",
+  "version": "4.0.1"
 }
