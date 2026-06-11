@@ -1,5 +1,5 @@
 {
-  "version": "4.0.11",
+  "version": "4.0.12",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -1824,6 +1824,22 @@
           "required": false
         },
         {
+          "default": null,
+          "name": "max_field",
+          "type": "{:struct, Phoenix.HTML.FormField}",
+          "values": null,
+          "doc": "form field for the maximum value; required for type=\"range-dual\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "min_field",
+          "type": "{:struct, Phoenix.HTML.FormField}",
+          "values": null,
+          "doc": "form field for the minimum value; required for type=\"range-dual\"",
+          "required": false
+        },
+        {
           "default": "false",
           "name": "multiple",
           "type": ":boolean",
@@ -1861,6 +1877,38 @@
           "type": ":string",
           "values": null,
           "doc": "the prompt for select inputs",
+          "required": false
+        },
+        {
+          "default": "100",
+          "name": "range_max",
+          "type": ":any",
+          "values": null,
+          "doc": "absolute upper bound of the range; used with type=\"range-dual\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "range_max_label",
+          "type": ":string",
+          "values": null,
+          "doc": "override label for the upper bound; defaults to the formatted range_max value",
+          "required": false
+        },
+        {
+          "default": "0",
+          "name": "range_min",
+          "type": ":any",
+          "values": null,
+          "doc": "absolute lower bound of the range; used with type=\"range-dual\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "range_min_label",
+          "type": ":string",
+          "values": null,
+          "doc": "override label for the lower bound; defaults to the formatted range_min value",
           "required": false
         },
         {
@@ -1926,6 +1974,7 @@
             "number",
             "password",
             "range",
+            "range-dual",
             "radio-group",
             "radio-card",
             "search",
@@ -1947,6 +1996,22 @@
           "type": ":any",
           "values": null,
           "doc": "the value of the input. If not passed, it will be generated automatically from the field",
+          "required": false
+        },
+        {
+          "default": "\"\"",
+          "name": "value_prefix",
+          "type": ":string",
+          "values": null,
+          "doc": "string prepended to displayed values, e.g. \"$\"; used with type=\"range-dual\"",
+          "required": false
+        },
+        {
+          "default": "\"\"",
+          "name": "value_suffix",
+          "type": ":string",
+          "values": null,
+          "doc": "string appended to displayed values, e.g. \"%\"; used with type=\"range-dual\"",
           "required": false
         },
         {
@@ -3099,6 +3164,22 @@
           "required": false
         },
         {
+          "default": null,
+          "name": "max_field",
+          "type": "{:struct, Phoenix.HTML.FormField}",
+          "values": null,
+          "doc": "form field for the maximum value; required for type=\"range-dual\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "min_field",
+          "type": "{:struct, Phoenix.HTML.FormField}",
+          "values": null,
+          "doc": "form field for the minimum value; required for type=\"range-dual\"",
+          "required": false
+        },
+        {
           "default": "false",
           "name": "multiple",
           "type": ":boolean",
@@ -3128,6 +3209,38 @@
           "type": ":string",
           "values": null,
           "doc": "the prompt for select inputs",
+          "required": false
+        },
+        {
+          "default": "100",
+          "name": "range_max",
+          "type": ":any",
+          "values": null,
+          "doc": "absolute upper bound of the range; used with type=\"range-dual\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "range_max_label",
+          "type": ":string",
+          "values": null,
+          "doc": "override label for the upper bound; defaults to the formatted range_max value",
+          "required": false
+        },
+        {
+          "default": "0",
+          "name": "range_min",
+          "type": ":any",
+          "values": null,
+          "doc": "absolute lower bound of the range; used with type=\"range-dual\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "range_min_label",
+          "type": ":string",
+          "values": null,
+          "doc": "override label for the lower bound; defaults to the formatted range_min value",
           "required": false
         },
         {
@@ -3168,6 +3281,7 @@
             "number",
             "password",
             "range",
+            "range-dual",
             "radio",
             "search",
             "select",
@@ -3188,6 +3302,22 @@
           "type": ":any",
           "values": null,
           "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"\"",
+          "name": "value_prefix",
+          "type": ":string",
+          "values": null,
+          "doc": "string prepended to displayed values, e.g. \"$\"; used with type=\"range-dual\"",
+          "required": false
+        },
+        {
+          "default": "\"\"",
+          "name": "value_suffix",
+          "type": ":string",
+          "values": null,
+          "doc": "string appended to displayed values, e.g. \"%\"; used with type=\"range-dual\"",
           "required": false
         },
         {
@@ -5607,5 +5737,5 @@
       ]
     }
   ],
-  "generated_at": "2026-06-10T00:52:09.067837Z"
+  "generated_at": "2026-06-11T06:15:57.386135Z"
 }
