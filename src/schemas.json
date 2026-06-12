@@ -1,5 +1,5 @@
 {
-  "version": "4.0.12",
+  "version": "4.1.0",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -470,6 +470,77 @@
           "type": ":boolean",
           "values": null,
           "doc": "adds some icon base classes",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.BorderBeam",
+      "name": "border_beam",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": "\"0.75rem\"",
+          "name": "border_radius",
+          "type": ":string",
+          "values": null,
+          "doc": "border radius of the container (the beam follows it)",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the container",
+          "required": false
+        },
+        {
+          "default": "\"#ffaa40\"",
+          "name": "color_from",
+          "type": ":string",
+          "values": null,
+          "doc": "start color of the beam gradient",
+          "required": false
+        },
+        {
+          "default": "\"#9c40ff\"",
+          "name": "color_to",
+          "type": ":string",
+          "values": null,
+          "doc": "end color of the beam gradient",
+          "required": false
+        },
+        {
+          "default": "\"8s\"",
+          "name": "duration",
+          "type": ":string",
+          "values": null,
+          "doc": "time the beam takes to travel the full border once",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"150px\"",
+          "name": "size",
+          "type": ":string",
+          "values": null,
+          "doc": "length of the beam",
           "required": false
         }
       ]
@@ -1204,6 +1275,54 @@
           "type": ":global",
           "values": null,
           "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Confetti",
+      "name": "confetti",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": "[]",
+          "name": "colors",
+          "type": ":list",
+          "values": null,
+          "doc": "default particle colors as hex strings, e.g. [\"#26ccff\", \"#a25afd\"]",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": "100",
+          "name": "particle_count",
+          "type": ":integer",
+          "values": null,
+          "doc": "default number of particles per burst",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "70",
+          "name": "spread",
+          "type": ":integer",
+          "values": null,
+          "doc": "default spread of a burst, in degrees",
           "required": false
         }
       ]
@@ -2482,6 +2601,61 @@
       ]
     },
     {
+      "module": "PetalComponents.TextAnimation",
+      "name": "gradient_text",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes (set font size/weight here)",
+          "required": false
+        },
+        {
+          "default": "\"#ffaa40\"",
+          "name": "color_from",
+          "type": ":string",
+          "values": null,
+          "doc": "start color of the gradient",
+          "required": false
+        },
+        {
+          "default": "\"#9c40ff\"",
+          "name": "color_to",
+          "type": ":string",
+          "values": null,
+          "doc": "end color of the gradient",
+          "required": false
+        },
+        {
+          "default": "\"8s\"",
+          "name": "duration",
+          "type": ":string",
+          "values": null,
+          "doc": "time for one full gradient sweep",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.ButtonGroup",
       "name": "group_button",
       "slots": [
@@ -3567,6 +3741,46 @@
       ]
     },
     {
+      "module": "PetalComponents.Meteors",
+      "name": "meteors",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the container",
+          "required": false
+        },
+        {
+          "default": "20",
+          "name": "count",
+          "type": ":integer",
+          "values": null,
+          "doc": "number of meteors",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "0",
+          "name": "seed",
+          "type": ":integer",
+          "values": null,
+          "doc": "vary this when rendering several meteor fields on one page so each gets a different scatter pattern",
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Modal",
       "name": "modal",
       "slots": [
@@ -3681,6 +3895,333 @@
           "values": null,
           "doc": "modal title",
           "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.NavigationMenu",
+      "name": "navigation_menu",
+      "slots": [
+        {
+          "name": "item",
+          "doc": null,
+          "required": true,
+          "attrs": [
+            {
+              "default": null,
+              "name": "label",
+              "type": ":string",
+              "values": null,
+              "doc": null,
+              "required": true
+            },
+            {
+              "default": null,
+              "name": "to",
+              "type": ":string",
+              "values": null,
+              "doc": "render a plain link instead of a flyout trigger",
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "link_type",
+              "type": ":string",
+              "values": null,
+              "doc": "for plain links: \"a\" (default), \"live_patch\" or \"live_redirect\"",
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "width",
+              "type": ":string",
+              "values": null,
+              "doc": "flyout panel width: \"sm\", \"md\" (default), \"lg\" or \"xl\"",
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "full_width",
+              "type": ":boolean",
+              "values": null,
+              "doc": "span the panel across the nearest positioned ancestor (mega menu)",
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "current",
+              "type": ":boolean",
+              "values": null,
+              "doc": "marks the active item with aria-current",
+              "required": false
+            }
+          ]
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the nav element",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.NavigationMenu",
+      "name": "navigation_menu_footer",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.NavigationMenu",
+      "name": "navigation_menu_footer_link",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "icon",
+          "type": ":string",
+          "values": null,
+          "doc": "heroicon name, e.g. hero-play-circle",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": "\"a\"",
+          "name": "link_type",
+          "type": ":string",
+          "values": [
+            "a",
+            "live_patch",
+            "live_redirect"
+          ],
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "to",
+          "type": ":string",
+          "values": null,
+          "doc": "link destination",
+          "required": true
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.NavigationMenu",
+      "name": "navigation_menu_link",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "description",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "icon",
+          "type": ":string",
+          "values": null,
+          "doc": "heroicon name, e.g. hero-chart-bar",
+          "required": false
+        },
+        {
+          "default": "\"a\"",
+          "name": "link_type",
+          "type": ":string",
+          "values": [
+            "a",
+            "live_patch",
+            "live_redirect"
+          ],
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "title",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "to",
+          "type": ":string",
+          "values": null,
+          "doc": "link destination",
+          "required": true
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.NumberTicker",
+      "name": "number_ticker",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes (set font size/weight here)",
+          "required": false
+        },
+        {
+          "default": "0",
+          "name": "decimal_places",
+          "type": ":integer",
+          "values": null,
+          "doc": "decimal places to show while counting",
+          "required": false
+        },
+        {
+          "default": "1500",
+          "name": "duration",
+          "type": ":integer",
+          "values": null,
+          "doc": "animation length in milliseconds",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "locale",
+          "type": ":string",
+          "values": null,
+          "doc": "BCP 47 locale for number formatting (e.g. \"de-DE\"); defaults to the browser locale",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "prefix",
+          "type": ":string",
+          "values": null,
+          "doc": "e.g. \"$\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "0",
+          "name": "start_value",
+          "type": ":any",
+          "values": null,
+          "doc": "where the first animation counts from",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "suffix",
+          "type": ":string",
+          "values": null,
+          "doc": "e.g. \"+\" or \"%\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "value",
+          "type": ":any",
+          "values": null,
+          "doc": "the target number (integer or float)",
+          "required": true
         }
       ]
     },
@@ -4502,6 +5043,45 @@
       ]
     },
     {
+      "module": "PetalComponents.TextAnimation",
+      "name": "shimmer_text",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes (set font size/weight here)",
+          "required": false
+        },
+        {
+          "default": "\"2.5s\"",
+          "name": "duration",
+          "type": ":string",
+          "values": null,
+          "doc": "time for one full shimmer pass",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Skeleton",
       "name": "skeleton",
       "slots": [],
@@ -4697,6 +5277,61 @@
           "type": ":any",
           "values": null,
           "doc": "custom CSS classes for size. eg: h-4 w-4",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.SpotlightCard",
+      "name": "spotlight_card",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the card",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"rgb(120 119 198 / 0.18)\"",
+          "name": "spotlight_color",
+          "type": ":string",
+          "values": null,
+          "doc": "color of the glow (any CSS color, ideally with alpha)",
+          "required": false
+        },
+        {
+          "default": "\"350px\"",
+          "name": "spotlight_size",
+          "type": ":string",
+          "values": null,
+          "doc": "radius of the glow",
           "required": false
         }
       ]
@@ -5498,6 +6133,78 @@
       ]
     },
     {
+      "module": "PetalComponents.TextAnimation",
+      "name": "typing_effect",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes (set font size/weight here)",
+          "required": false
+        },
+        {
+          "default": "true",
+          "name": "cursor",
+          "type": ":boolean",
+          "values": null,
+          "doc": "show a blinking caret",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": "false",
+          "name": "loop",
+          "type": ":boolean",
+          "values": null,
+          "doc": "delete the text and type it again, forever",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "60",
+          "name": "speed",
+          "type": ":integer",
+          "values": null,
+          "doc": "milliseconds per character",
+          "required": false
+        },
+        {
+          "default": "0",
+          "name": "start_delay",
+          "type": ":integer",
+          "values": null,
+          "doc": "milliseconds to wait before typing starts",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "text",
+          "type": ":string",
+          "values": null,
+          "doc": "the text to type out",
+          "required": true
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Typography",
       "name": "ul",
       "slots": [
@@ -5735,7 +6442,55 @@
           "required": false
         }
       ]
+    },
+    {
+      "module": "PetalComponents.TextAnimation",
+      "name": "word_rotate",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes (set font size/weight here)",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": "2500",
+          "name": "interval",
+          "type": ":integer",
+          "values": null,
+          "doc": "milliseconds each word stays on screen",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "words",
+          "type": ":list",
+          "values": null,
+          "doc": "the words to cycle through",
+          "required": true
+        }
+      ]
     }
   ],
-  "generated_at": "2026-06-11T06:15:57.386135Z"
+  "generated_at": "2026-06-12T06:50:18.440596Z"
 }
