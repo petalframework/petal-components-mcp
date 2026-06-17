@@ -1,5 +1,5 @@
 {
-  "version": "4.1.0",
+  "version": "4.1.1",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -3941,6 +3941,14 @@
             },
             {
               "default": null,
+              "name": "align",
+              "type": ":string",
+              "values": null,
+              "doc": "which edge of the trigger the flyout panel anchors to: \"start\" (default, opens rightward) or \"end\" (opens leftward). Use \"end\" for triggers near the right edge so the panel stays on screen.",
+              "required": false
+            },
+            {
+              "default": null,
               "name": "full_width",
               "type": ":boolean",
               "values": null,
@@ -6492,5 +6500,5 @@
       ]
     }
   ],
-  "generated_at": "2026-06-12T06:50:18.440596Z"
+  "generated_at": "2026-06-17T02:13:46.601048Z"
 }
