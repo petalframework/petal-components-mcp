@@ -1,5 +1,5 @@
 {
-  "version": "4.1.2",
+  "version": "4.2.0",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -470,6 +470,37 @@
           "type": ":boolean",
           "values": null,
           "doc": "adds some icon base classes",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Typography",
+      "name": "blockquote",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         }
       ]
@@ -3115,6 +3146,30 @@
       ]
     },
     {
+      "module": "PetalComponents.Typography",
+      "name": "hr",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Icon",
       "name": "icon",
       "slots": [],
@@ -3271,6 +3326,37 @@
           "type": ":boolean",
           "values": null,
           "doc": "adds some icon base classes",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Typography",
+      "name": "inline_code",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         }
       ]
@@ -3500,6 +3586,37 @@
           "type": ":boolean",
           "values": null,
           "doc": "If true, adds a toggle to show/hide the password text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Typography",
+      "name": "lead",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         }
       ]
@@ -5868,6 +5985,99 @@
       ]
     },
     {
+      "module": "PetalComponents.Typography",
+      "name": "text_large",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Typography",
+      "name": "text_muted",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Typography",
+      "name": "text_small",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Form",
       "name": "textarea",
       "slots": [],
@@ -6500,5 +6710,5 @@
       ]
     }
   ],
-  "generated_at": "2026-06-17T03:55:55.349770Z"
+  "generated_at": "2026-06-29T03:33:41.984297Z"
 }
