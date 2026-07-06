@@ -1,5 +1,5 @@
 {
-  "version": "4.2.0",
+  "version": "4.2.1",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -1840,6 +1840,54 @@
           "type": ":string",
           "values": null,
           "doc": "link path",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Form",
+      "name": "email_input",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the text input",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "field",
+          "type": ":atom",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "form",
+          "type": ":any",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "labels your field",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         }
       ]
@@ -4263,6 +4311,54 @@
       ]
     },
     {
+      "module": "PetalComponents.Form",
+      "name": "number_input",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the text input",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "field",
+          "type": ":atom",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "form",
+          "type": ":any",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "labels your field",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.NumberTicker",
       "name": "number_ticker",
       "slots": [],
@@ -4517,6 +4613,54 @@
           "type": ":integer",
           "values": null,
           "doc": "sets a total page count",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Form",
+      "name": "password_input",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the text input",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "field",
+          "type": ":atom",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "form",
+          "type": ":any",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "labels your field",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         }
       ]
@@ -5107,6 +5251,54 @@
           "type": ":any",
           "values": null,
           "doc": "fn(name :: String.t(), args :: map) -> rendered | nil",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Form",
+      "name": "search_input",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the text input",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "field",
+          "type": ":atom",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "form",
+          "type": ":any",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "labels your field",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         }
       ]
@@ -5938,6 +6130,54 @@
     },
     {
       "module": "PetalComponents.Form",
+      "name": "telephone_input",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the text input",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "field",
+          "type": ":atom",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "form",
+          "type": ":any",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "labels your field",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Form",
       "name": "text_input",
       "slots": [],
       "kind": "def",
@@ -6454,6 +6694,54 @@
       ]
     },
     {
+      "module": "PetalComponents.Form",
+      "name": "url_input",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the text input",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "field",
+          "type": ":atom",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "form",
+          "type": ":any",
+          "values": null,
+          "doc": "",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "labels your field",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.UserDropdownMenu",
       "name": "user_dropdown_menu",
       "slots": [],
@@ -6710,5 +6998,5 @@
       ]
     }
   ],
-  "generated_at": "2026-06-29T03:33:41.984297Z"
+  "generated_at": "2026-07-06T00:02:25.985334Z"
 }
