@@ -1,5 +1,5 @@
 {
-  "version": "4.3.0",
+  "version": "4.4.0",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -197,7 +197,8 @@
             "info",
             "success",
             "warning",
-            "danger"
+            "danger",
+            "gray"
           ],
           "doc": null,
           "required": false
@@ -519,11 +520,27 @@
       "kind": "def",
       "attrs": [
         {
-          "default": "\"0.75rem\"",
+          "default": "1",
+          "name": "beams",
+          "type": ":integer",
+          "values": null,
+          "doc": "number of beams, evenly phased around the border",
+          "required": false
+        },
+        {
+          "default": null,
           "name": "border_radius",
           "type": ":string",
           "values": null,
-          "doc": "border radius of the container (the beam follows it)",
+          "doc": "border radius of the container. When unset, follows the theme radius (--pc-radius, scaled for panels)",
+          "required": false
+        },
+        {
+          "default": "\"1px\"",
+          "name": "border_width",
+          "type": ":string",
+          "values": null,
+          "doc": "width of the border the beam runs along",
           "required": false
         },
         {
@@ -551,11 +568,47 @@
           "required": false
         },
         {
+          "default": "\"0s\"",
+          "name": "delay",
+          "type": ":string",
+          "values": null,
+          "doc": "phase offset for the beam (applied as a head start)",
+          "required": false
+        },
+        {
           "default": "\"8s\"",
           "name": "duration",
           "type": ":string",
           "values": null,
           "doc": "time the beam takes to travel the full border once",
+          "required": false
+        },
+        {
+          "default": "\"linear\"",
+          "name": "easing",
+          "type": ":string",
+          "values": [
+            "linear",
+            "ease-in-out",
+            "spring"
+          ],
+          "doc": "beam motion: linear for constant speed, ease-in-out for a glide, spring for a springy lap with a settle at the seam. Spring applies to a single beam; with beams > 1 motion stays linear so the chase remains even",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "glow",
+          "type": ":boolean",
+          "values": null,
+          "doc": "symmetric comet (transparent -> colours -> transparent) instead of the sharp-headed beam. Glows tolerate very long sizes, so the size clamp is lifted - great for long dramatic beams",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "initial_offset",
+          "type": ":integer",
+          "values": null,
+          "doc": "shifts the lap seam (0-100, % of the path from the top-left corner). The spring's pause-release happens at the seam, so this sets WHERE it springs from. Defaults to 0; spring easing defaults to 25, which parks the release near the top centre on typical shapes",
           "required": false
         },
         {
@@ -567,11 +620,19 @@
           "required": false
         },
         {
+          "default": "false",
+          "name": "reverse",
+          "type": ":boolean",
+          "values": null,
+          "doc": "run the beam anticlockwise",
+          "required": false
+        },
+        {
           "default": "\"150px\"",
           "name": "size",
           "type": ":string",
           "values": null,
-          "doc": "length of the beam",
+          "doc": "length of the beam. Also sets how widely the beam swings through corners",
           "required": false
         }
       ]
@@ -730,10 +791,11 @@
           "required": false
         },
         {
-          "default": "\"md\"",
+          "default": null,
           "name": "radius",
           "type": ":string",
           "values": [
+            null,
             "none",
             "sm",
             "md",
@@ -741,7 +803,7 @@
             "xl",
             "full"
           ],
-          "doc": "button border radius",
+          "doc": "button border radius; when unset the --pc-radius theme token applies",
           "required": false
         },
         {
@@ -761,9 +823,10 @@
             "sm",
             "md",
             "lg",
-            "xl"
+            "xl",
+            "icon"
           ],
-          "doc": "button sizes",
+          "doc": "button sizes; icon renders a square, md-height icon button (pair with an aria-label)",
           "required": false
         },
         {
@@ -780,13 +843,14 @@
           "type": ":string",
           "values": [
             "solid",
+            "soft",
             "light",
             "outline",
             "inverted",
             "shadow",
             "ghost"
           ],
-          "doc": "button variant",
+          "doc": "button variant. solid/soft/light/outline/ghost are the supported fill styles (soft adapts its tint to dark mode; light stays light in both modes). inverted and shadow are legacy, slated for removal in a future major - prefer outline, and compose effects (border_beam / shine_border) for flourish",
           "required": false
         },
         {
@@ -1700,7 +1764,7 @@
         },
         {
           "name": "trigger_element",
-          "doc": null,
+          "doc": "custom trigger content. Rendered INSIDE the dropdown's own <button>, so never nest interactive elements (<.button>, links) here - browsers split nested buttons and the toggle binding breaks. Style the built-in trigger via trigger_class instead, e.g. trigger_class=\"pc-button pc-button--primary pc-button--md\"",
           "required": false,
           "attrs": []
         }
@@ -1840,6 +1904,61 @@
           "type": ":string",
           "values": null,
           "doc": "link path",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Dropdown",
+      "name": "dropdown_menu_label",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "any additional CSS classes",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Dropdown",
+      "name": "dropdown_menu_separator",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "any additional CSS classes",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         }
       ]
@@ -2003,6 +2122,14 @@
           "type": ":any",
           "values": null,
           "doc": "the id of the input. If not passed, it will be generated automatically from the field",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "indicator",
+          "type": ":boolean",
+          "values": null,
+          "doc": "radio-card only: shows a radio dot inside each card",
           "required": false
         },
         {
@@ -3639,6 +3766,162 @@
       ]
     },
     {
+      "module": "PetalComponents.InputGroup",
+      "name": "input_group",
+      "slots": [
+        {
+          "name": "block_end",
+          "doc": "full-width row below the input (e.g. a character counter)",
+          "required": false,
+          "attrs": [
+            {
+              "default": null,
+              "name": "class",
+              "type": ":any",
+              "values": null,
+              "doc": null,
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "block_start",
+          "doc": "full-width row above the input",
+          "required": false,
+          "attrs": [
+            {
+              "default": null,
+              "name": "class",
+              "type": ":any",
+              "values": null,
+              "doc": null,
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "inner_block",
+          "doc": "the input itself",
+          "required": true,
+          "attrs": []
+        },
+        {
+          "name": "leading",
+          "doc": "content rendered before the input (text, icon, button, kbd)",
+          "required": false,
+          "attrs": []
+        },
+        {
+          "name": "trailing",
+          "doc": "content rendered after the input (text, icon, button, kbd)",
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS classes for the group container",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.InputOtp",
+      "name": "input_otp",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "disabled",
+          "type": ":boolean",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "group_size",
+          "type": ":integer",
+          "values": null,
+          "doc": "splits segments into groups with a separator",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "6",
+          "name": "length",
+          "type": ":integer",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": "\"numeric\"",
+          "name": "pattern",
+          "type": ":string",
+          "values": [
+            "numeric",
+            "alphanumeric"
+          ],
+          "doc": "which characters are accepted",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"\"",
+          "name": "value",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Typography",
       "name": "lead",
       "slots": [
@@ -3912,11 +4195,27 @@
       "kind": "def",
       "attrs": [
         {
+          "default": "\"215deg\"",
+          "name": "angle",
+          "type": ":string",
+          "values": null,
+          "doc": "direction the meteors travel, as a CSS angle (default streaks down and to the left)",
+          "required": false
+        },
+        {
           "default": null,
           "name": "class",
           "type": ":any",
           "values": null,
           "doc": "extra classes for the container",
+          "required": false
+        },
+        {
+          "default": "\"#64748b\"",
+          "name": "color",
+          "type": ":string",
+          "values": null,
+          "doc": "meteor and trail colour. Any CSS colour; the default slate suits dark panels",
           "required": false
         },
         {
@@ -3933,6 +4232,14 @@
           "type": ":global",
           "values": null,
           "doc": null,
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "reverse",
+          "type": ":boolean",
+          "values": null,
+          "doc": "mirror the shower horizontally, so meteors stream the opposite way",
           "required": false
         },
         {
@@ -4798,7 +5105,18 @@
           "name": "label",
           "type": ":string",
           "values": null,
-          "doc": "labels your progress bar [xl only]",
+          "doc": "labels your progress bar",
+          "required": false
+        },
+        {
+          "default": "\"inside\"",
+          "name": "label_position",
+          "type": ":string",
+          "values": [
+            "inside",
+            "top"
+          ],
+          "doc": "inside renders the label in the bar itself (xl only); top renders a label row with the percentage above the bar, at any size",
           "required": false
         },
         {
@@ -5492,6 +5810,69 @@
           "type": ":global",
           "values": null,
           "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.ShineBorder",
+      "name": "shine_border",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "border_radius",
+          "type": ":string",
+          "values": null,
+          "doc": "border radius of the container. When unset, follows the theme radius (--pc-radius, scaled for panels)",
+          "required": false
+        },
+        {
+          "default": "\"1px\"",
+          "name": "border_width",
+          "type": ":string",
+          "values": null,
+          "doc": "width of the shimmering border",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the container",
+          "required": false
+        },
+        {
+          "default": "\"14s\"",
+          "name": "duration",
+          "type": ":string",
+          "values": null,
+          "doc": "time for one full shimmer sweep",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"#a1a1aa\"",
+          "name": "shine_color",
+          "type": ":any",
+          "values": null,
+          "doc": "the shimmer colour. A single CSS colour, or a list of colours to blend across the sweep",
           "required": false
         }
       ]
@@ -7186,5 +7567,5 @@
       ]
     }
   ],
-  "generated_at": "2026-07-06T22:52:06.224621Z"
+  "generated_at": "2026-07-10T11:11:37.406733Z"
 }
