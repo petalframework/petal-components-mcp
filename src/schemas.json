@@ -1,5 +1,5 @@
 {
-  "version": "4.4.0",
+  "version": "4.5.0",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -148,13 +148,65 @@
           "required": false
         },
         {
+          "default": "\"md\"",
+          "name": "size",
+          "type": ":string",
+          "values": [
+            "sm",
+            "md"
+          ],
+          "doc": "sm tightens paddings and type for dense UIs (settings panels, sidebars)",
+          "required": false
+        },
+        {
           "default": "\"default\"",
           "name": "variant",
           "type": ":string",
           "values": [
             "default",
+            "bordered",
             "ghost"
           ],
+          "doc": "default is the shadcn row style (hairline dividers, no boxes); bordered is the boxed card-accordion. ghost is a legacy alias of default (identical look) slated for removal in a future major",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Chat",
+      "name": "action_button",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "icon",
+          "type": ":string",
+          "values": null,
+          "doc": "heroicon name",
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "accessible name, also shown as the tooltip",
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
           "doc": null,
           "required": false
         }
@@ -259,6 +311,105 @@
       ]
     },
     {
+      "module": "PetalComponents.Aurora",
+      "name": "aurora",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": "\"10px\"",
+          "name": "blur",
+          "type": ":string",
+          "values": null,
+          "doc": "softness of the glow",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": "[\"#3b82f6\", \"#a5b4fc\", \"#93c5fd\", \"#ddd6fe\", \"#60a5fa\"]",
+          "name": "colors",
+          "type": ":list",
+          "values": null,
+          "doc": "3-6 CSS colors; the aurora gradient is built from them in order",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": "defaults to a generated id (needed by the pause-offscreen hook)",
+          "required": false
+        },
+        {
+          "default": "\"auto\"",
+          "name": "invert",
+          "type": ":string",
+          "values": [
+            "auto",
+            "none",
+            "always"
+          ],
+          "doc": "auto inverts on light and not in dark; none/always force one look",
+          "required": false
+        },
+        {
+          "default": "\"10%, 70%\"",
+          "name": "mask_coverage",
+          "type": ":string",
+          "values": null,
+          "doc": "inner/outer stops of the radial mask - widen to flood more of the container",
+          "required": false
+        },
+        {
+          "default": "\"100% 0\"",
+          "name": "mask_position",
+          "type": ":string",
+          "values": null,
+          "doc": "where the glow concentrates (radial mask origin), e.g. \"50% 0\" for top-centre",
+          "required": false
+        },
+        {
+          "default": "\"0.5\"",
+          "name": "opacity",
+          "type": ":string",
+          "values": null,
+          "doc": "strength of the glow",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"60s\"",
+          "name": "speed",
+          "type": ":string",
+          "values": null,
+          "doc": "duration of one drift cycle",
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Avatar",
       "name": "avatar",
       "slots": [],
@@ -325,6 +476,20 @@
           "values": null,
           "doc": "hosted avatar URL",
           "required": false
+        },
+        {
+          "default": null,
+          "name": "status",
+          "type": ":string",
+          "values": [
+            null,
+            "online",
+            "offline",
+            "busy",
+            "away"
+          ],
+          "doc": "presence dot on the bottom-right corner, ringed to separate from the image",
+          "required": false
         }
       ]
     },
@@ -348,6 +513,14 @@
           "type": ":any",
           "values": null,
           "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "max",
+          "type": ":integer",
+          "values": null,
+          "doc": "show at most this many avatars, then a +N overflow bubble for the rest",
           "required": false
         },
         {
@@ -869,8 +1042,14 @@
       "slots": [
         {
           "name": "button",
-          "doc": null,
-          "required": true,
+          "doc": "legacy API - self-styled buttons or links",
+          "required": false,
+          "attrs": []
+        },
+        {
+          "name": "inner_block",
+          "doc": "petal components to fuse - buttons, inputs, separators, text segments",
+          "required": false,
           "attrs": []
         }
       ],
@@ -889,7 +1068,7 @@
           "name": "button_bg_class",
           "type": ":string",
           "values": null,
-          "doc": "class to customize the button background colors",
+          "doc": "legacy slot API only - class to customize the button background colors",
           "required": false
         },
         {
@@ -897,7 +1076,15 @@
           "name": "button_border_class",
           "type": ":string",
           "values": null,
-          "doc": "class to customize the button border styles",
+          "doc": "legacy slot API only - class to customize the button border styles",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS classes for the group container",
           "required": false
         },
         {
@@ -905,7 +1092,7 @@
           "name": "container_class",
           "type": ":string",
           "values": null,
-          "doc": "class to apply to the group container",
+          "doc": "legacy slot API only - class to apply to the group container",
           "required": false
         },
         {
@@ -913,7 +1100,7 @@
           "name": "font_weight_class",
           "type": ":string",
           "values": null,
-          "doc": "the font weight class to apply to all buttons - defaults to font-medium",
+          "doc": "legacy slot API only - the font weight class to apply to all buttons",
           "required": false
         },
         {
@@ -922,6 +1109,17 @@
           "type": ":string",
           "values": null,
           "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"horizontal\"",
+          "name": "orientation",
+          "type": ":string",
+          "values": [
+            "horizontal",
+            "vertical"
+          ],
+          "doc": "stack direction - vertical fuses top-to-bottom",
           "required": false
         },
         {
@@ -935,6 +1133,53 @@
             "lg",
             "xl"
           ],
+          "doc": "legacy slot API only - composed children carry their own size",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.ButtonGroup",
+      "name": "button_group_separator",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.ButtonGroup",
+      "name": "button_group_text",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
           "doc": null,
           "required": false
         }
@@ -975,9 +1220,10 @@
           "type": ":string",
           "values": [
             "basic",
-            "outline"
+            "outline",
+            "muted"
           ],
-          "doc": null,
+          "doc": "basic is THE card (bordered panel); muted is the tinted well for de-emphasised content. outline is a legacy alias of basic (identical look) slated for removal in a future major",
           "required": false
         }
       ]
@@ -1070,6 +1316,59 @@
     },
     {
       "module": "PetalComponents.Card",
+      "name": "card_header",
+      "slots": [
+        {
+          "name": "action",
+          "doc": "top-right header content - a button, link or menu",
+          "required": false,
+          "attrs": []
+        },
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "CSS class",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "description",
+          "type": ":string",
+          "values": null,
+          "doc": "a muted line under the title",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "title",
+          "type": ":string",
+          "values": null,
+          "doc": "the card title",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Card",
       "name": "card_media",
       "slots": [
         {
@@ -1081,6 +1380,14 @@
       ],
       "kind": "def",
       "attrs": [
+        {
+          "default": null,
+          "name": "alt",
+          "type": ":string",
+          "values": null,
+          "doc": "alt text for the image",
+          "required": false
+        },
         {
           "default": "\"aspect-video\"",
           "name": "aspect_ratio_class",
@@ -1158,6 +1465,12 @@
       "module": "PetalComponents.Chat",
       "name": "chat_message",
       "slots": [
+        {
+          "name": "actions",
+          "doc": "an action bar rendered below the message, outside the bubble - message_actions/1. Works on any role: copy/edit under a user message, copy/feedback/regenerate under an assistant one",
+          "required": false,
+          "attrs": []
+        },
         {
           "name": "avatar",
           "doc": "optional leading avatar/icon",
@@ -1375,6 +1688,399 @@
       ]
     },
     {
+      "module": "PetalComponents.Command",
+      "name": "command",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the palette panel",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": "unique id; the PetalCommand hook mounts here",
+          "required": true
+        },
+        {
+          "default": "false",
+          "name": "loop",
+          "type": ":boolean",
+          "values": null,
+          "doc": "arrow keys wrap from the last item to the first and back",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Command",
+      "name": "command_dialog",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the palette panel inside the dialog",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": "unique id for the dialog; open it with ⌘K or open_command/1",
+          "required": true
+        },
+        {
+          "default": "false",
+          "name": "loop",
+          "type": ":boolean",
+          "values": null,
+          "doc": "arrow keys wrap around the list",
+          "required": false
+        },
+        {
+          "default": "true",
+          "name": "reset_on_close",
+          "type": ":boolean",
+          "values": null,
+          "doc": "clear the query (and restore all items) when the dialog closes",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"k\"",
+          "name": "shortcut",
+          "type": ":string",
+          "values": null,
+          "doc": "the key bound with Cmd (mac) / Ctrl to toggle the dialog. Set to nil to disable the global binding",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Command",
+      "name": "command_empty",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Command",
+      "name": "command_group",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "heading",
+          "type": ":string",
+          "values": null,
+          "doc": "group heading, rendered above the items",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Command",
+      "name": "command_input",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": "false",
+          "name": "autofocus",
+          "type": ":boolean",
+          "values": null,
+          "doc": "focus the input on mount (dialogs focus it on open regardless)",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"Type a command or search...\"",
+          "name": "placeholder",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Command",
+      "name": "command_item",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "disabled",
+          "type": ":boolean",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "href",
+          "type": ":string",
+          "values": null,
+          "doc": "plain link target - renders the item as a link",
+          "required": false
+        },
+        {
+          "default": "[]",
+          "name": "keywords",
+          "type": ":list",
+          "values": null,
+          "doc": "extra search aliases for this item",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "navigate",
+          "type": ":string",
+          "values": null,
+          "doc": "live_redirect target - renders the item as a link",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "patch",
+          "type": ":string",
+          "values": null,
+          "doc": "live_patch target - renders the item as a link",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": "phx-click and friends work here - Enter clicks the highlighted item",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "value",
+          "type": ":string",
+          "values": null,
+          "doc": "the text the filter matches against. Defaults to the item's visible text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Command",
+      "name": "command_list",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"Commands\"",
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "accessible name for the listbox",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Command",
+      "name": "command_separator",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Command",
+      "name": "command_shortcut",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Confetti",
       "name": "confetti",
       "slots": [],
@@ -1517,6 +2223,17 @@
           "values": null,
           "doc": null,
           "required": false
+        },
+        {
+          "default": "\"plain\"",
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            "plain",
+            "bubbles"
+          ],
+          "doc": "plain is the AI convention (ChatGPT/Claude): assistant text sits on the surface, only the user gets a bubble. bubbles puts both sides in bubbles (messenger style)",
+          "required": false
         }
       ]
     },
@@ -1532,6 +2249,14 @@
           "type": ":any",
           "values": null,
           "doc": null,
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "icon",
+          "type": ":boolean",
+          "values": null,
+          "doc": "icon-only (clipboard -> check feedback)",
           "required": false
         },
         {
@@ -3985,6 +4710,65 @@
       ]
     },
     {
+      "module": "PetalComponents.Chat",
+      "name": "marker",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "icon",
+          "type": ":string",
+          "values": null,
+          "doc": "heroicon name rendered before the text",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "loading",
+          "type": ":boolean",
+          "values": null,
+          "doc": "spinner + role=status for in-progress work",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"inline\"",
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            "inline",
+            "separator",
+            "border"
+          ],
+          "doc": "inline note, centred labelled separator, or a full-width bordered row",
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Marquee",
       "name": "marquee",
       "slots": [
@@ -4184,6 +4968,17 @@
           "type": ":any",
           "values": null,
           "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"always\"",
+          "name": "visible",
+          "type": ":string",
+          "values": [
+            "always",
+            "hover"
+          ],
+          "doc": "hover reveals the bar on message-row hover/focus; always shows on touch",
           "required": false
         }
       ]
@@ -4462,6 +5257,17 @@
           "type": ":global",
           "values": null,
           "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"hover\"",
+          "name": "trigger",
+          "type": ":string",
+          "values": [
+            "hover",
+            "click"
+          ],
+          "doc": "how flyout panels open. hover (default): the PetalNavMenu hook opens on pointer hover or keyboard focus, holds open across the trigger-to-panel gap with a close grace period, and nudges the panel to stay inside the viewport - the convention for a top nav. click: explicit toggle via JS (opens on click, closes on click-away/Escape) - use for touch-first apps that want a deliberate tap",
           "required": false
         }
       ]
@@ -5189,6 +5995,22 @@
           "required": false
         },
         {
+          "default": "\"Editing message\"",
+          "name": "edit_label",
+          "type": ":string",
+          "values": null,
+          "doc": "label shown in the edit banner",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "editing",
+          "type": ":boolean",
+          "values": null,
+          "doc": "show the edit-mode banner above the field (set while editing a past message)",
+          "required": false
+        },
+        {
           "default": null,
           "name": "id",
           "type": ":string",
@@ -5210,6 +6032,14 @@
           "type": ":string",
           "values": null,
           "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "on_cancel_edit",
+          "type": ":string",
+          "values": null,
+          "doc": "event pushed when the edit banner's cancel (X) is clicked",
           "required": false
         },
         {
@@ -5237,11 +6067,11 @@
           "required": false
         },
         {
-          "default": "\"Send\"",
+          "default": null,
           "name": "submit_label",
           "type": ":string",
           "values": null,
-          "doc": null,
+          "doc": "text for the send button; the default is the arrow-up icon convention",
           "required": false
         },
         {
@@ -5249,7 +6079,7 @@
           "name": "value",
           "type": ":string",
           "values": null,
-          "doc": null,
+          "doc": "initial textarea value. The field is uncontrolled after mount (phx-update=ignore, so keystrokes never re-render and lose focus); set it later - edit, quote, clear - by pushing a `pc-chat-set-input` event (`%{value: text}`, optional `%{id: composer_id}`) to the PetalChatComposer hook",
           "required": false
         }
       ]
@@ -5459,7 +6289,14 @@
     {
       "module": "PetalComponents.Rating",
       "name": "rating",
-      "slots": [],
+      "slots": [
+        {
+          "name": "glyph",
+          "doc": "a custom glyph (an svg or icon component) used for every position instead of the built-in sets. Design it to inherit currentColor/fill; recolour the active state with the --pc-rating-active-color CSS variable",
+          "required": false,
+          "attrs": []
+        }
+      ],
       "kind": "def",
       "attrs": [
         {
@@ -5472,10 +6309,46 @@
         },
         {
           "default": "false",
+          "name": "disabled",
+          "type": ":boolean",
+          "values": null,
+          "doc": "disable the interactive radios",
+          "required": false
+        },
+        {
+          "default": "\"star\"",
+          "name": "icon",
+          "type": ":string",
+          "values": [
+            "star",
+            "heart",
+            "face"
+          ],
+          "doc": "the icon set. Faces are a five-point sentiment scale (total is ignored)",
+          "required": false
+        },
+        {
+          "default": "false",
           "name": "include_label",
           "type": ":boolean",
           "values": null,
           "doc": "Whether to include an automatically generated rating label",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "interactive",
+          "type": ":boolean",
+          "values": null,
+          "doc": "render as a radio group: clickable, keyboard-accessible, posts in forms. Requires name",
+          "required": false
+        },
+        {
+          "default": "\"Rating\"",
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "accessible name for the interactive radio group",
           "required": false
         },
         {
@@ -5487,11 +6360,49 @@
           "required": false
         },
         {
+          "default": "\"right\"",
+          "name": "label_position",
+          "type": ":string",
+          "values": [
+            "right",
+            "bottom"
+          ],
+          "doc": "where the generated label sits relative to the icons",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": ":string",
+          "values": null,
+          "doc": "the input name (required when interactive)",
+          "required": false
+        },
+        {
+          "default": "\"whole\"",
+          "name": "precision",
+          "type": ":string",
+          "values": [
+            "whole",
+            "half"
+          ],
+          "doc": "interactive step size. half renders two hit areas per icon so 3.5 is clickable and posts as 3.5 - pure CSS. Faces are an ordinal scale and always use whole",
+          "required": false
+        },
+        {
           "default": "0",
           "name": "rating",
           "type": ":any",
           "values": null,
           "doc": "The rating to display (integer or float)",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         },
         {
@@ -5503,11 +6414,23 @@
           "required": false
         },
         {
+          "default": "\"md\"",
+          "name": "size",
+          "type": ":string",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "doc": "icon size",
+          "required": false
+        },
+        {
           "default": null,
           "name": "star_class",
           "type": ":any",
           "values": null,
-          "doc": "Any additional CSS classes for the individual stars. Eg. you could change the size of the stars with 'h-10 w-10'",
+          "doc": "Any additional CSS classes for the individual icons. Eg. you could change the size of the stars with 'h-10 w-10'",
           "required": false
         },
         {
@@ -5515,8 +6438,40 @@
           "name": "total",
           "type": ":integer",
           "values": null,
-          "doc": "The total number of stars to display",
+          "doc": "The total number of icons to display",
           "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Rating",
+      "name": "rating_icon",
+      "slots": [],
+      "kind": "defp",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "icon",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "index",
+          "type": ":integer",
+          "values": null,
+          "doc": null,
+          "required": true
         }
       ]
     },
@@ -5884,10 +6839,32 @@
       "kind": "def",
       "attrs": [
         {
-          "default": ":default",
+          "default": null,
+          "name": "animation",
+          "type": ":string",
+          "values": [
+            null,
+            "pulse",
+            "shimmer",
+            "none"
+          ],
+          "doc": "pulse (default), shimmer (a moving highlight sweep), or none. When unset, inherits from an enclosing skeleton_group",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "size it here, e.g. class=\"h-4 w-48\"",
+          "required": false
+        },
+        {
+          "default": null,
           "name": "kind",
           "type": ":atom",
           "values": [
+            null,
             "default",
             "image",
             "video",
@@ -5897,7 +6874,124 @@
             "list",
             "testimonial"
           ],
-          "doc": "skeleton",
+          "doc": "LEGACY prebuilt layouts - prefer composing skeleton/skeleton_text/skeleton_group",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"block\"",
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            "block",
+            "text",
+            "circle"
+          ],
+          "doc": "the brick shape: block (theme-radius rectangle), text (a rounded line with a sensible default height), circle (avatar)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Skeleton",
+      "name": "skeleton_group",
+      "slots": [
+        {
+          "name": "inner_block",
+          "doc": null,
+          "required": true,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "animation",
+          "type": ":string",
+          "values": [
+            null,
+            "pulse",
+            "shimmer",
+            "none"
+          ],
+          "doc": "cascades to every skeleton inside; a brick's own animation attr wins",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"Loading...\"",
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "what screen readers announce while the skeleton shows",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Skeleton",
+      "name": "skeleton_text",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "animation",
+          "type": ":string",
+          "values": [
+            null,
+            "pulse",
+            "shimmer",
+            "none"
+          ],
+          "doc": "see skeleton/1",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "3",
+          "name": "lines",
+          "type": ":integer",
+          "values": null,
+          "doc": "number of text lines",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         }
       ]
@@ -5906,6 +7000,12 @@
       "module": "PetalComponents.SlideOver",
       "name": "slide_over",
       "slots": [
+        {
+          "name": "footer",
+          "doc": "a pinned action row at the bottom of the panel (save/cancel buttons)",
+          "required": false,
+          "attrs": []
+        },
         {
           "name": "inner_block",
           "doc": null,
@@ -5945,6 +7045,14 @@
           "type": ":string",
           "values": null,
           "doc": "close_slide_over_target allows you to target a specific live component for the close event to go to. eg: close_slide_over_target={@myself}",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "description",
+          "type": ":string",
+          "values": null,
+          "doc": "a muted line under the title, for context the panel needs",
           "required": false
         },
         {
@@ -6022,6 +7130,22 @@
           "values": null,
           "doc": "slideover title",
           "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Table",
+      "name": "sort_icon",
+      "slots": [],
+      "kind": "defp",
+      "attrs": [
+        {
+          "default": null,
+          "name": "state",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
         }
       ]
     },
@@ -6410,7 +7534,20 @@
           "name": "underline",
           "type": ":boolean",
           "values": null,
-          "doc": "underlines your tab",
+          "doc": "underlines your tab (legacy for variant=\"underline\")",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            null,
+            "pill",
+            "underline",
+            "segmented"
+          ],
+          "doc": "match the parent tabs variant. Overrides the legacy underline flag",
           "required": false
         }
       ]
@@ -6447,6 +7584,22 @@
               "values": null,
               "doc": null,
               "required": false
+            },
+            {
+              "default": null,
+              "name": "sortable",
+              "type": ":boolean",
+              "values": null,
+              "doc": "render the header as a sort button",
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "sort_key",
+              "type": ":string",
+              "values": null,
+              "doc": "the key sent with on_sort (defaults to the downcased label)",
+              "required": false
             }
           ]
         },
@@ -6464,6 +7617,12 @@
               "required": false
             }
           ]
+        },
+        {
+          "name": "footer",
+          "doc": "a totals/summary row pinned under the body - supply <.td> cells (colspan works), e.g. <.td colspan={3}>Total</.td><.td>$2,500</.td>",
+          "required": false,
+          "attrs": []
         }
       ],
       "kind": "def",
@@ -6477,11 +7636,30 @@
           "required": false
         },
         {
+          "default": "\"comfortable\"",
+          "name": "density",
+          "type": ":string",
+          "values": [
+            "comfortable",
+            "compact"
+          ],
+          "doc": "row height. compact halves the vertical padding for data-heavy screens",
+          "required": false
+        },
+        {
           "default": null,
           "name": "id",
           "type": ":string",
           "values": null,
           "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"sort\"",
+          "name": "on_sort",
+          "type": ":any",
+          "values": null,
+          "doc": "event name (or JS command) fired when a sortable header is clicked; receives phx-value-sort of the column's sort_key",
           "required": false
         },
         {
@@ -6522,6 +7700,41 @@
           "type": ":list",
           "values": null,
           "doc": "the list of rows to render",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "sort_by",
+          "type": ":any",
+          "values": null,
+          "doc": "the currently sorted column's sort_key",
+          "required": false
+        },
+        {
+          "default": "\"asc\"",
+          "name": "sort_dir",
+          "type": ":string",
+          "values": [
+            "asc",
+            "desc"
+          ],
+          "doc": "the current sort direction",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "sticky_header",
+          "type": ":boolean",
+          "values": null,
+          "doc": "keep the header row pinned while the table scrolls (the table needs a scrollable ancestor)",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "striped",
+          "type": ":boolean",
+          "values": null,
+          "doc": "wash alternate rows for easier scanning",
           "required": false
         },
         {
@@ -6571,7 +7784,20 @@
           "name": "underline",
           "type": ":boolean",
           "values": null,
-          "doc": "underlines your tabs",
+          "doc": "underlines your tabs (legacy for variant=\"underline\")",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            null,
+            "pill",
+            "underline",
+            "segmented"
+          ],
+          "doc": "tab style: pill (default), underline, or segmented - active tab is a raised white pill on a muted track. Overrides the legacy underline flag",
           "required": false
         }
       ]
@@ -7567,5 +8793,5 @@
       ]
     }
   ],
-  "generated_at": "2026-07-10T11:11:37.406733Z"
+  "generated_at": "2026-07-14T00:46:08.863843Z"
 }

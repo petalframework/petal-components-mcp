@@ -61,7 +61,7 @@ If \`use PetalComponents\` is already there, skip this step.
 
 ## 5. Register the JS hooks
 
-petal_components v4 ships JS hooks for the password/copyable/clearable inputs and the chat components (everything else is CSS + LiveView.JS only). Open \`assets/js/app.js\`, import the hooks, and merge them into the \`LiveSocket\`:
+petal_components v4 ships JS hooks for the password/copyable/clearable inputs, the chat components, the navigation menu (hover mode), the command palette and the aurora backdrop (everything else is CSS + LiveView.JS only). Open \`assets/js/app.js\`, import the hooks, and merge them into the \`LiveSocket\`:
 
 \`\`\`js
 import PetalComponents from "../../deps/petal_components/assets/js/petal_components"
