@@ -48,9 +48,14 @@ defmodule SchemaExtractor do
   end
 
   defp petal_module?(module) do
-    module
-    |> Module.split()
-    |> List.starts_with?(["PetalComponents"])
+    case Module.split(module) do
+      # The Showcase namespace is docs tooling (the example gallery + its frame),
+      # not app vocabulary - keep it out of the schema AI assistants browse so
+      # they never suggest <.showcase_example> inside a user's app.
+      ["PetalComponents", "Showcase" | _] -> false
+      ["PetalComponents" | _] -> true
+      _ -> false
+    end
   end
 
   defp extract_components(module) do
