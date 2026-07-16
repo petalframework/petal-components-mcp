@@ -36,6 +36,7 @@ Open \`assets/css/app.css\`. Find the \`@import "tailwindcss";\` line and add th
 \`\`\`css
 @import "tailwindcss";
 @source "../deps/petal_components/**/*.*ex";
+@source not "../deps/petal_components/lib/petal_components/showcase";
 @import "../deps/petal_components/assets/default.css";
 \`\`\`
 
