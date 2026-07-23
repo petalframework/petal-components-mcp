@@ -1,5 +1,5 @@
 {
-  "version": "4.6.2",
+  "version": "4.7.0",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -1418,6 +1418,81 @@
           "type": ":string",
           "values": null,
           "doc": "hosted image URL",
+          "required": false
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Chart",
+      "name": "chart",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "group",
+          "type": ":string",
+          "values": null,
+          "doc": "charts sharing a group name get connected tooltips/zoom (echarts.connect)",
+          "required": false
+        },
+        {
+          "default": "\"20rem\"",
+          "name": "height",
+          "type": ":string",
+          "values": null,
+          "doc": "any CSS height; the chart fills its container's width",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": "false",
+          "name": "loading",
+          "type": ":boolean",
+          "values": null,
+          "doc": "shows a theme-colored loading spinner over the chart while your data is on its way",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "option",
+          "type": ":map",
+          "values": null,
+          "doc": "the ECharts option object as an Elixir map (atom or string keys)",
+          "required": true
+        },
+        {
+          "default": "\"canvas\"",
+          "name": "renderer",
+          "type": ":string",
+          "values": [
+            "canvas",
+            "svg"
+          ],
+          "doc": "svg renders crisp at any zoom and is print-friendly; canvas suits large data",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
           "required": false
         }
       ]
@@ -7150,6 +7225,62 @@
       ]
     },
     {
+      "module": "PetalComponents.Sparkline",
+      "name": "sparkline",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "size + color, e.g. \"w-24 h-8 text-success-500\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "data",
+          "type": ":list",
+          "values": null,
+          "doc": "a list of numbers (2 or more points)",
+          "required": true
+        },
+        {
+          "default": "true",
+          "name": "fill",
+          "type": ":boolean",
+          "values": null,
+          "doc": "shade the area under the line at low opacity",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "true",
+          "name": "smooth",
+          "type": ":boolean",
+          "values": null,
+          "doc": "curve through the points instead of straight segments",
+          "required": false
+        },
+        {
+          "default": "2",
+          "name": "stroke_width",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Loading",
       "name": "spinner",
       "slots": [],
@@ -8793,5 +8924,5 @@
       ]
     }
   ],
-  "generated_at": "2026-07-18T06:38:25.259682Z"
+  "generated_at": "2026-07-23T04:58:34.374046Z"
 }
