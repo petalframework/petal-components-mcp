@@ -10,6 +10,7 @@ import {
   renderComponent,
   schemas,
 } from "./schemas.js";
+import { recordToolCall } from "./telemetry.js";
 
 const INSTALL_INSTRUCTIONS = `# Installing petal_components into a Phoenix project
 
@@ -147,6 +148,7 @@ export function createServer() {
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
+    recordToolCall(name, (args as { name?: unknown } | undefined)?.name);
 
     if (name === "get_install_instructions") {
       return {

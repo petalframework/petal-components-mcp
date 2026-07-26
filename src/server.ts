@@ -6,6 +6,7 @@ import express from "express";
 
 import { createServer } from "./mcp.js";
 import { schemas } from "./schemas.js";
+import { metrics, recordInitialize } from "./telemetry.js";
 
 const app = express();
 app.use(express.json());
@@ -31,6 +32,7 @@ app.post("/mcp", async (req, res) => {
 
     const server = createServer();
     await server.connect(transport);
+    recordInitialize(req.body);
   }
 
   if (!transport) {
@@ -65,6 +67,10 @@ app.get("/healthz", (_req, res) => {
     components: schemas.components.length,
     schemas_generated_at: schemas.generated_at,
   });
+});
+
+app.get("/metrics", (_req, res) => {
+  res.json(metrics);
 });
 
 const port = Number(process.env.PORT ?? 8080);
