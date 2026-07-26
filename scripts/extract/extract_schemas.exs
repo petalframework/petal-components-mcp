@@ -62,21 +62,25 @@ defmodule SchemaExtractor do
 
   defp extract_components(module, examples) do
     if function_exported?(module, :__components__, 0) do
-      module.__components__()
-      |> Enum.map(fn {name, meta} -> build_component(module, name, meta, examples) end)
+      components = module.__components__()
+      siblings = Map.keys(components)
+
+      Enum.map(components, fn {name, meta} ->
+        build_component(module, name, meta, examples, siblings)
+      end)
     else
       []
     end
   end
 
-  defp build_component(module, name, meta, examples) do
+  defp build_component(module, name, meta, examples, siblings) do
     %{
       name: to_string(name),
       module: inspect(module),
       kind: meta[:kind] || :def,
       attrs: Enum.map(meta[:attrs] || [], &build_attr/1),
       slots: Enum.map(meta[:slots] || [], &build_slot/1),
-      examples: component_examples(examples, module, name)
+      examples: component_examples(examples, module, name, siblings)
     }
   end
 
@@ -84,10 +88,21 @@ defmodule SchemaExtractor do
   # component's tag (`<.name` or `<Alias.name`). Matching on the showcase
   # module alone would copy the full example set onto every sibling function
   # of multi-component modules like chat and command.
-  defp component_examples(examples, module, name) do
+  #
+  # Compositions that use a component in passing are kept - seeing a part in a
+  # realistic whole is how these components are meant to be learned - but
+  # ordered last: the fewer sibling components an example touches, the more
+  # focused it is on the one being asked about, so it sorts first (stable, so
+  # author order breaks ties).
+  defp component_examples(examples, module, name, siblings) do
     examples
     |> Map.get(inspect(module), [])
     |> Enum.filter(&example_uses?(&1, name))
+    |> Enum.sort_by(&focus_score(&1, siblings))
+  end
+
+  defp focus_score(example, siblings) do
+    Enum.count(siblings, &example_uses?(example, &1))
   end
 
   defp example_uses?(%{code: code}, name) do
