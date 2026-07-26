@@ -16,12 +16,21 @@ export type ComponentSlot = {
   attrs: ComponentAttr[];
 };
 
+// A curated example from the library's Showcase registry - the same block the
+// playground and petal.build render, captured from source at compile time.
+export type ShowcaseExample = {
+  title: string;
+  description: string | null;
+  code: string;
+};
+
 export type Component = {
   name: string;
   module: string;
   kind: string;
   attrs: ComponentAttr[];
   slots: ComponentSlot[];
+  examples?: ShowcaseExample[];
 };
 
 export type SchemaFile = {
@@ -63,13 +72,21 @@ export function renderComponent(c: Component): string {
     "",
     `Phoenix.Component from \`petal_components\` v${schemas.version}.`,
     "",
-    "## Usage",
-    "",
-    "```heex",
-    exampleUsage(c),
-    "```",
-    "",
   ];
+
+  // Prefer the library's own curated examples - real, idiomatic usage lifted
+  // from the showcase. The generated skeleton below is only a fallback for
+  // components the showcase does not cover yet.
+  if (c.examples?.length) {
+    lines.push("## Examples", "");
+    for (const ex of c.examples) {
+      lines.push(`### ${ex.title}`);
+      if (ex.description) lines.push("", ex.description);
+      lines.push("", "```heex", ex.code.trim(), "```", "");
+    }
+  } else {
+    lines.push("## Usage", "", "```heex", exampleUsage(c), "```", "");
+  }
 
   if (c.attrs.length) {
     lines.push("## Attributes", "");

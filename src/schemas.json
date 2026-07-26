@@ -67,7 +67,8 @@
           "doc": "link path",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Accordion",
@@ -170,6 +171,28 @@
           "doc": "default is the shadcn row style (hairline dividers, no boxes); bordered is the boxed card-accordion. ghost is a legacy alias of default (identical look) slated for removal in a future major",
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<.accordion class=\"w-full max-w-xl mx-auto\">\n  <:item heading=\"Is it accessible?\">\n    Yes - proper button semantics, aria-expanded, and keyboard toggling out of the box.\n  </:item>\n  <:item heading=\"Can several be open at once?\">\n    Not by default. Pass the multiple attr to allow more than one open section.\n  </:item>\n  <:item heading=\"Does it follow the theme?\">\n    Borders, radius and text tiers all come from the design tokens.\n  </:item>\n</.accordion>",
+          "description": "Collapsible sections with proper button semantics and keyboard toggling.",
+          "title": "Basic"
+        },
+        {
+          "code": "<.accordion variant=\"bordered\" class=\"w-full max-w-xl mx-auto\">\n  <:item heading=\"What's included?\">\n    Auth, billing, orgs, admin and an AI-ready component library.\n  </:item>\n  <:item heading=\"Is it a subscription?\">\n    One purchase, unlimited projects. No recurring fee.\n  </:item>\n</.accordion>",
+          "description": "The bordered variant wraps each row in the panel surface.",
+          "title": "Bordered"
+        },
+        {
+          "code": "<.accordion variant=\"ghost\" class=\"w-full max-w-xl mx-auto\">\n  <:item heading=\"How do I install it?\">\n    Add the Hex dep, run mix deps.get, and point Tailwind at the source.\n  </:item>\n  <:item heading=\"Does it need JavaScript?\">\n    Interactivity is LiveView.JS only - no Alpine as of v4.\n  </:item>\n</.accordion>",
+          "description": "The minimal variant - hairline dividers, no surrounding box.",
+          "title": "Ghost"
+        },
+        {
+          "code": "<.accordion\n  class=\"w-full max-w-xl mx-auto\"\n  entries={[\n    %{heading: \"Where do the entries come from?\", content: \"A plain list of maps you pass in.\"},\n    %{\n      heading: \"How is each row rendered?\",\n      content: \"The item slot receives the entry via :let.\"\n    },\n    %{heading: \"Can the content be anything?\", content: \"Yes - it's a slot, so any markup works.\"}\n  ]}\n>\n  <:item :let={entry}>{entry.content}</:item>\n</.accordion>",
+          "description": "Data-driven - pass a list of entries and render each with the item slot. Handy for FAQ or CMS content.",
+          "title": "Dynamic"
+        }
       ]
     },
     {
@@ -209,6 +232,63 @@
           "values": null,
           "doc": null,
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -308,7 +388,8 @@
           "doc": "adds some icon base classes",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Aurora",
@@ -407,6 +488,33 @@
           "doc": "duration of one drift cycle",
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<.aurora id=\"showcase-aurora-basic\" class=\"w-full max-w-xl mx-auto rounded-2xl\">\n  <div class=\"flex flex-col items-center px-8 py-20 text-center\">\n    <h2 class=\"text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100\">\n      Ship your Phoenix app this weekend\n    </h2>\n    <p class=\"max-w-md mt-3 text-gray-600 dark:text-gray-300\">\n      Auth, billing, orgs and a component library that looks like you hired a designer.\n    </p>\n    <.button label=\"Get started\" class=\"mt-6\" />\n  </div>\n</.aurora>",
+          "description": "A soft, drifting glow behind your content. The wrapper sizes to fit - no colors means the default palette.",
+          "title": "Basic Aurora"
+        },
+        {
+          "code": "<div class=\"grid w-full max-w-2xl gap-4 mx-auto sm:grid-cols-3\">\n  <.aurora\n    id=\"showcase-aurora-sunset\"\n    colors={[\"#f97316\", \"#f43f5e\", \"#fbbf24\", \"#fb7185\"]}\n    class=\"border border-gray-200 rounded-xl dark:border-gray-800\"\n  >\n    <div class=\"flex items-end px-4 h-32\">\n      <span class=\"pb-3 font-mono text-xs text-gray-500 dark:text-gray-400\">sunset</span>\n    </div>\n  </.aurora>\n  <.aurora\n    id=\"showcase-aurora-emerald\"\n    colors={[\"#10b981\", \"#5eead4\", \"#a7f3d0\", \"#34d399\"]}\n    class=\"border border-gray-200 rounded-xl dark:border-gray-800\"\n  >\n    <div class=\"flex items-end px-4 h-32\">\n      <span class=\"pb-3 font-mono text-xs text-gray-500 dark:text-gray-400\">emerald</span>\n    </div>\n  </.aurora>\n  <.aurora\n    id=\"showcase-aurora-violet\"\n    colors={[\"#8b5cf6\", \"#f0abfc\", \"#c4b5fd\", \"#a78bfa\"]}\n    class=\"border border-gray-200 rounded-xl dark:border-gray-800\"\n  >\n    <div class=\"flex items-end px-4 h-32\">\n      <span class=\"pb-3 font-mono text-xs text-gray-500 dark:text-gray-400\">violet</span>\n    </div>\n  </.aurora>\n</div>",
+          "description": "Pass any palette as colors (three to six CSS colors) and the gradient is built for you.",
+          "title": "Custom Colors"
+        },
+        {
+          "code": "<.aurora\n  id=\"showcase-aurora-content\"\n  colors={[\"#22d3ee\", \"#06b6d4\", \"#0891b2\", \"#0e7490\"]}\n  speed=\"80s\"\n  class=\"w-full max-w-xl mx-auto rounded-2xl\"\n>\n  <div class=\"flex flex-col items-center px-8 py-16 text-center\">\n    <h2 class=\"mb-4 text-2xl font-bold text-gray-900 dark:text-white\">Start selling today</h2>\n    <p class=\"max-w-md mb-6 text-gray-600 dark:text-gray-300\">\n      Everything wired up out of the box, so you spend the weekend on the part that's yours.\n    </p>\n    <.button label=\"Get started\" color=\"primary\" />\n  </div>\n</.aurora>",
+          "description": "Slow the drift with speed and drop a full call-to-action straight inside.",
+          "title": "Aurora with Content"
+        },
+        {
+          "code": "<.aurora\n  id=\"showcase-aurora-card\"\n  colors={[\"#6366f1\", \"#4f46e5\", \"#4338ca\", \"#3730a3\"]}\n  opacity=\"0.35\"\n  class=\"w-full max-w-md mx-auto rounded-xl\"\n>\n  <.card class=\"relative z-10 bg-transparent border-0 shadow-none dark:bg-transparent\">\n    <.card_content category=\"Feature\" heading=\"Fast development\">\n      <p class=\"text-gray-700 dark:text-white/80\">\n        Build interfaces in record time with a component library and design system that agree.\n      </p>\n    </.card_content>\n  </.card>\n</.aurora>",
+          "description": "Set it behind cards for feature highlights. A lower opacity keeps the copy readable.",
+          "title": "Aurora Card"
+        },
+        {
+          "code": "<.aurora\n  id=\"showcase-aurora-testimonial\"\n  colors={[\"#c084fc\", \"#a855f7\", \"#9333ea\", \"#7e22ce\"]}\n  opacity=\"0.35\"\n  mask_position=\"center top\"\n  mask_coverage=\"0%, 100%\"\n  class=\"w-full max-w-2xl mx-auto rounded-xl\"\n>\n  <div class=\"flex flex-col items-center px-8 py-16 text-center\">\n    <p class=\"max-w-2xl mb-8 text-xl text-gray-900 dark:text-white\">\n      \"The aurora took our landing page from fine to the thing people mention on calls. Two attributes and it was done.\"\n    </p>\n    <div class=\"font-bold text-gray-900 dark:text-white\">Jordan Lee</div>\n    <div class=\"text-purple-700 dark:text-purple-300\">Founder, Northwind</div>\n  </div>\n</.aurora>",
+          "description": "Push the mask out with mask_position and mask_coverage to flood more of the container - a testimonial that pulls the eye without shouting.",
+          "title": "Testimonial with Aurora"
+        }
       ]
     },
     {
@@ -491,7 +599,8 @@
           "doc": "presence dot on the bottom-right corner, ringed to separate from the image",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Avatar",
@@ -545,7 +654,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Badge",
@@ -646,7 +756,8 @@
           "doc": "adds some icon base classes",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -677,7 +788,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.BorderBeam",
@@ -808,6 +920,38 @@
           "doc": "length of the beam. Also sets how widely the beam swings through corners",
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<.border_beam id=\"showcase-beam-basic\" class=\"w-full max-w-md mx-auto\">\n  <div class=\"flex items-center justify-center px-8 py-16\">\n    <h3 class=\"text-2xl font-bold\">Default border beam</h3>\n  </div>\n</.border_beam>",
+          "description": "Wrap your content and you get the panel plus a single beam on the default gradient.",
+          "title": "Basic Border Beam"
+        },
+        {
+          "code": "<.border_beam\n  id=\"showcase-beam-cyan\"\n  color_from=\"#22d3ee\"\n  color_to=\"#0891b2\"\n  duration=\"5s\"\n  class=\"w-full max-w-md mx-auto\"\n>\n  <div class=\"flex items-center justify-center px-8 py-16\">\n    <h3 class=\"text-2xl font-bold\">Cyan beam</h3>\n  </div>\n</.border_beam>",
+          "description": "Set color_from and color_to for the gradient, and duration for the lap time.",
+          "title": "Custom Colors"
+        },
+        {
+          "code": "<.border_beam\n  id=\"showcase-beam-content\"\n  color_from=\"#8b5cf6\"\n  color_to=\"#ec4899\"\n  class=\"w-full max-w-md mx-auto\"\n>\n  <div class=\"flex flex-col items-center px-8 py-12 text-center\">\n    <h3 class=\"text-2xl font-bold\">Ready when you are</h3>\n    <p class=\"max-w-sm mt-2 text-gray-600 dark:text-gray-300\">\n      Clone the repo, run the generators, ship by the weekend.\n    </p>\n    <.button label=\"Get started\" class=\"mt-5\" />\n  </div>\n</.border_beam>",
+          "description": "No z-index dance - drop a full call-to-action straight inside the panel.",
+          "title": "Beam with Content"
+        },
+        {
+          "code": "<.border_beam\n  id=\"showcase-beam-pricing\"\n  color_from=\"#f59e0b\"\n  color_to=\"#ef4444\"\n  size=\"200px\"\n  class=\"w-full max-w-xs mx-auto\"\n>\n  <div class=\"px-8 py-8 text-center\">\n    <div class=\"text-sm font-semibold text-primary-600 dark:text-primary-400\">Pro</div>\n    <div class=\"mt-2 text-4xl font-bold\">\n      $99<span class=\"text-base font-normal text-gray-500\">/mo</span>\n    </div>\n    <.button label=\"Choose Pro\" class=\"w-full mt-6\" />\n  </div>\n</.border_beam>",
+          "description": "The classic use: run a beam around the plan you want people to pick.",
+          "title": "Pricing Cards"
+        },
+        {
+          "code": "<.border_beam\n  id=\"showcase-beam-glow\"\n  glow\n  beams={2}\n  size=\"400px\"\n  duration=\"9s\"\n  color_from=\"#f43f5e\"\n  color_to=\"#3b82f6\"\n  class=\"w-full max-w-sm mx-auto\"\n>\n  <div class=\"p-6\">\n    <div class=\"font-semibold leading-none text-gray-900 dark:text-gray-100\">Now playing</div>\n    <div class=\"mt-1.5 text-sm text-gray-500 dark:text-gray-400\">\n      Stairway to Heaven - Led Zeppelin\n    </div>\n    <div class=\"w-40 h-40 mx-auto mt-5 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500\">\n    </div>\n    <div class=\"mt-5\">\n      <.progress value={34} size=\"xs\" />\n    </div>\n    <div class=\"flex justify-between mt-2 text-sm text-gray-500 dark:text-gray-400\">\n      <span>2:45</span><span>8:02</span>\n    </div>\n    <div class=\"flex justify-center gap-3 mt-4\">\n      <.button variant=\"outline\" size=\"icon\" radius=\"full\" aria-label=\"Previous\">\n        <.icon name=\"hero-backward\" />\n      </.button>\n      <.button size=\"icon\" radius=\"full\" aria-label=\"Play\">\n        <.icon name=\"hero-play\" />\n      </.button>\n      <.button variant=\"outline\" size=\"icon\" radius=\"full\" aria-label=\"Next\">\n        <.icon name=\"hero-forward\" />\n      </.button>\n    </div>\n  </div>\n</.border_beam>",
+          "description": "glow swaps the sharp head for a soft comet - which unlocks the full beam length, since a long sharp beam clamps at the corners for safety. beams runs several at once.",
+          "title": "Glow and Multiple Beams"
+        },
+        {
+          "code": "<.border_beam\n  id=\"showcase-beam-newsletter\"\n  color_from=\"#a855f7\"\n  color_to=\"#6366f1\"\n  duration=\"10s\"\n  class=\"w-full max-w-md mx-auto\"\n>\n  <div class=\"px-8 py-10 text-center\">\n    <h3 class=\"text-xl font-bold\">Join the list</h3>\n    <p class=\"mt-1 text-sm text-gray-600 dark:text-gray-300\">One email a week. No noise.</p>\n    <div class=\"flex max-w-sm gap-2 mx-auto mt-5\">\n      <.input type=\"email\" name=\"email\" value=\"\" placeholder=\"you@example.com\" class=\"flex-1\" />\n      <.button label=\"Subscribe\" />\n    </div>\n  </div>\n</.border_beam>",
+          "description": "A subtle beam turns a plain signup box into something worth stopping for.",
+          "title": "Newsletter Signup"
+        }
       ]
     },
     {
@@ -875,7 +1019,8 @@
           "doc": "Separator div CSS class",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Button",
@@ -1034,7 +1179,8 @@
           "doc": "adds some icon base classes",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.ButtonGroup",
@@ -1136,7 +1282,8 @@
           "doc": "legacy slot API only - composed children carry their own size",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.ButtonGroup",
@@ -1152,7 +1299,8 @@
           "doc": "CSS class",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.ButtonGroup",
@@ -1183,7 +1331,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Card",
@@ -1226,7 +1375,8 @@
           "doc": "basic is THE card (bordered panel); muted is the tinted well for de-emphasised content. outline is a legacy alias of basic (identical look) slated for removal in a future major",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Card",
@@ -1281,7 +1431,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Card",
@@ -1312,7 +1463,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Card",
@@ -1365,7 +1517,8 @@
           "doc": "the card title",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Card",
@@ -1420,7 +1573,8 @@
           "doc": "hosted image URL",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Chart",
@@ -1495,6 +1649,28 @@
           "doc": null,
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<.chart\n  id=\"showcase-chart-line\"\n  height=\"16rem\"\n  option={\n    %{\n      grid: %{left: 8, right: 16, top: 16, bottom: 8, containLabel: true},\n      xAxis: %{type: \"category\", boundaryGap: false, data: ~w(Mon Tue Wed Thu Fri Sat Sun)},\n      yAxis: %{type: \"value\"},\n      tooltip: %{trigger: \"axis\"},\n      series: [\n        %{\n          type: \"line\",\n          name: \"Visitors\",\n          smooth: true,\n          areaStyle: %{color: \"petal:fade\"},\n          data: [820, 932, 901, 1290, 1330, 1520, 1710]\n        }\n      ]\n    }\n  }\n/>",
+          "description": "A smooth line with the soft gradient fade. The spec is a plain Elixir map; colours derive from your theme tokens at mount.",
+          "title": "Area line"
+        },
+        {
+          "code": "<.chart\n  id=\"showcase-chart-bar\"\n  height=\"16rem\"\n  option={\n    %{\n      grid: %{left: 8, right: 8, top: 32, bottom: 8, containLabel: true},\n      legend: %{top: 0},\n      tooltip: %{trigger: \"axis\"},\n      xAxis: %{type: \"category\", data: ~w(Q1 Q2 Q3 Q4)},\n      yAxis: %{type: \"value\"},\n      series: [\n        %{name: \"Pro\", type: \"bar\", barGap: 0, data: [320, 402, 391, 534]},\n        %{name: \"Teams\", type: \"bar\", data: [120, 182, 231, 290]}\n      ]\n    }\n  }\n/>",
+          "description": "Two series side by side. Series colours come from the --pc-chart-* palette, falling back to your semantic ramps.",
+          "title": "Grouped bars"
+        },
+        {
+          "code": "<.chart\n  id=\"showcase-chart-donut\"\n  height=\"16rem\"\n  option={\n    %{\n      tooltip: %{trigger: \"item\"},\n      legend: %{bottom: 0},\n      title: %{\n        text: \"960\",\n        subtext: \"customers\",\n        left: \"center\",\n        top: \"33%\",\n        itemGap: 2,\n        textStyle: %{fontSize: 24, fontWeight: 650},\n        subtextStyle: %{fontSize: 12}\n      },\n      series: [\n        %{\n          name: \"Plan\",\n          type: \"pie\",\n          radius: [\"48%\", \"72%\"],\n          center: [\"50%\", \"44%\"],\n          itemStyle: %{borderRadius: 5, borderWidth: 2},\n          label: %{show: false},\n          data: [\n            %{value: 580, name: \"Individual\"},\n            %{value: 260, name: \"Team\"},\n            %{value: 120, name: \"Legacy\"}\n          ]\n        }\n      ]\n    }\n  }\n/>",
+          "description": "A pie with an inner radius and a title placed in the hole.",
+          "title": "Donut with a centre total"
+        },
+        {
+          "code": "<.chart\n  id=\"showcase-chart-currency\"\n  height=\"16rem\"\n  option={\n    %{\n      grid: %{left: 8, right: 16, top: 16, bottom: 8, containLabel: true},\n      xAxis: %{type: \"category\", boundaryGap: false, data: ~w(Jan Feb Mar Apr May Jun)},\n      yAxis: %{type: \"value\", axisLabel: %{formatter: \"petal:currency-compact:USD\"}},\n      tooltip: %{trigger: \"axis\", valueFormatter: \"petal:currency:USD\"},\n      series: [\n        %{\n          type: \"line\",\n          name: \"MRR\",\n          smooth: true,\n          areaStyle: %{color: \"petal:fade\"},\n          data: [9200, 9840, 10100, 11200, 11900, 12480]\n        }\n      ]\n    }\n  }\n/>",
+          "description": "Named formatters stand in for the JavaScript callbacks ECharts normally wants: petal:currency-compact for the axis, petal:currency for the tooltip.",
+          "title": "Money axes and tooltips"
+        }
       ]
     },
     {
@@ -1533,6 +1709,63 @@
           "values": null,
           "doc": null,
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -1589,6 +1822,63 @@
           "doc": null,
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
+        }
       ]
     },
     {
@@ -1637,7 +1927,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -1712,7 +2003,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -1760,7 +2052,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Command",
@@ -1806,6 +2099,18 @@
           "values": null,
           "doc": null,
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
+          "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
+          "title": "Inline palette"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
+          "title": "The ⌘K dialog"
         }
       ]
     },
@@ -1870,6 +2175,18 @@
           "doc": "the key bound with Cmd (mac) / Ctrl to toggle the dialog. Set to nil to disable the global binding",
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
+          "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
+          "title": "Inline palette"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
+          "title": "The ⌘K dialog"
+        }
       ]
     },
     {
@@ -1900,6 +2217,18 @@
           "values": null,
           "doc": null,
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
+          "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
+          "title": "Inline palette"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
+          "title": "The ⌘K dialog"
         }
       ]
     },
@@ -1940,6 +2269,18 @@
           "doc": null,
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
+          "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
+          "title": "Inline palette"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
+          "title": "The ⌘K dialog"
+        }
       ]
     },
     {
@@ -1979,6 +2320,18 @@
           "values": null,
           "doc": null,
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
+          "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
+          "title": "Inline palette"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
+          "title": "The ⌘K dialog"
         }
       ]
     },
@@ -2059,6 +2412,18 @@
           "doc": "the text the filter matches against. Defaults to the item's visible text",
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
+          "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
+          "title": "Inline palette"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
+          "title": "The ⌘K dialog"
+        }
       ]
     },
     {
@@ -2098,6 +2463,18 @@
           "doc": null,
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
+          "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
+          "title": "Inline palette"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
+          "title": "The ⌘K dialog"
+        }
       ]
     },
     {
@@ -2121,6 +2498,18 @@
           "values": null,
           "doc": null,
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
+          "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
+          "title": "Inline palette"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
+          "title": "The ⌘K dialog"
         }
       ]
     },
@@ -2152,6 +2541,18 @@
           "values": null,
           "doc": null,
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
+          "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
+          "title": "Inline palette"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
+          "title": "The ⌘K dialog"
         }
       ]
     },
@@ -2201,7 +2602,8 @@
           "doc": "default spread of a burst, in degrees",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Container",
@@ -2254,7 +2656,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Chat",
@@ -2310,6 +2713,63 @@
           "doc": "plain is the AI convention (ChatGPT/Claude): assistant text sits on the surface, only the user gets a bubble. bubbles puts both sides in bubbles (messenger style)",
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
+        }
       ]
     },
     {
@@ -2357,6 +2817,63 @@
           "values": null,
           "doc": "the text to copy",
           "required": true
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -2406,7 +2923,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -2454,7 +2972,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -2502,7 +3021,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -2550,7 +3070,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Dropdown",
@@ -2638,7 +3159,8 @@
           "doc": "additional classes for the trigger button",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Dropdown",
@@ -2706,7 +3228,8 @@
           "doc": "link path",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Dropdown",
@@ -2737,7 +3260,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Dropdown",
@@ -2761,7 +3285,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -2809,7 +3334,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Field",
@@ -3163,7 +3689,8 @@
           "doc": "the wrapper div classes",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Field",
@@ -3177,7 +3704,8 @@
         }
       ],
       "kind": "def",
-      "attrs": []
+      "attrs": [],
+      "examples": []
     },
     {
       "module": "PetalComponents.Field",
@@ -3216,7 +3744,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Field",
@@ -3263,7 +3792,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Field",
@@ -3318,7 +3848,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -3366,7 +3897,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -3470,7 +4002,8 @@
           "doc": "CSS class for wrapper",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -3502,7 +4035,8 @@
           "doc": "",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -3541,7 +4075,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -3604,7 +4139,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.TextAnimation",
@@ -3659,7 +4195,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.ButtonGroup",
@@ -3771,7 +4308,8 @@
           "doc": null,
           "required": true
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -3834,7 +4372,8 @@
           "doc": "underlines a heading",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -3897,7 +4436,8 @@
           "doc": "underlines a heading",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -3960,7 +4500,8 @@
           "doc": "underlines a heading",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -4023,7 +4564,8 @@
           "doc": "underlines a heading",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -4086,7 +4628,8 @@
           "doc": "underlines a heading",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -4118,7 +4661,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -4142,7 +4686,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Icon",
@@ -4174,7 +4719,8 @@
           "doc": "the arbitrary HTML attributes for the heroicon container",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Button",
@@ -4303,7 +4849,8 @@
           "doc": "adds some icon base classes",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -4334,7 +4881,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Input",
@@ -4563,7 +5111,8 @@
           "doc": "If true, adds a toggle to show/hide the password text",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.InputGroup",
@@ -4636,7 +5185,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.InputOtp",
@@ -4719,7 +5269,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -4750,7 +5301,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Chat",
@@ -4781,6 +5333,63 @@
           "values": null,
           "doc": "pass a unique id to enable per-code-block copy buttons",
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -4840,6 +5449,63 @@
           ],
           "doc": "inline note, centred labelled separator, or a full-width bordered row",
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -4958,7 +5624,8 @@
           "doc": "Display the marquee vertically",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Menu",
@@ -4998,7 +5665,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Menu",
@@ -5022,7 +5690,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Chat",
@@ -5055,6 +5724,63 @@
           ],
           "doc": "hover reveals the bar on message-row hover/focus; always shows on touch",
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -5120,7 +5846,8 @@
           "doc": "vary this when rendering several meteor fields on one page so each gets a different scatter pattern",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Modal",
@@ -5238,7 +5965,8 @@
           "doc": "modal title",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.NavigationMenu",
@@ -5345,7 +6073,8 @@
           "doc": "how flyout panels open. hover (default): the PetalNavMenu hook opens on pointer hover or keyboard focus, holds open across the trigger-to-panel gap with a close grace period, and nudges the panel to stay inside the viewport - the convention for a top nav. click: explicit toggle via JS (opens on click, closes on click-away/Escape) - use for touch-first apps that want a deliberate tap",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.NavigationMenu",
@@ -5376,7 +6105,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.NavigationMenu",
@@ -5428,7 +6158,8 @@
           "doc": "link destination",
           "required": true
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.NavigationMenu",
@@ -5496,7 +6227,8 @@
           "doc": "link destination",
           "required": true
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -5544,7 +6276,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.NumberTicker",
@@ -5632,7 +6365,8 @@
           "doc": "the target number (integer or float)",
           "required": true
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -5663,7 +6397,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -5702,7 +6437,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Pagination",
@@ -5803,7 +6539,8 @@
           "doc": "sets a total page count",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -5851,7 +6588,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Popover",
@@ -5949,7 +6687,8 @@
           "doc": "extra classes for the trigger button",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Progress",
@@ -6038,7 +6777,8 @@
           "doc": "adds a value to your progress bar",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Chat",
@@ -6157,6 +6897,63 @@
           "doc": "initial textarea value. The field is uncontrolled after mount (phx-update=ignore, so keystrokes never re-render and lose focus); set it later - edit, quote, clear - by pushing a `pc-chat-set-input` event (`%{value: text}`, optional `%{id: composer_id}`) to the PetalChatComposer hook",
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
+        }
       ]
     },
     {
@@ -6188,7 +6985,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -6244,7 +7042,8 @@
           "doc": "the radio value",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -6311,7 +7110,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -6359,7 +7159,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Rating",
@@ -6516,7 +7317,8 @@
           "doc": "The total number of icons to display",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Rating",
@@ -6548,7 +7350,8 @@
           "doc": null,
           "required": true
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Rating",
@@ -6572,7 +7375,8 @@
           "doc": "The type of star to display",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Chat",
@@ -6610,6 +7414,63 @@
           "values": null,
           "doc": null,
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -6667,7 +7528,8 @@
           "doc": "The reviewer's username",
           "required": true
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Chat",
@@ -6698,6 +7560,63 @@
           "values": null,
           "doc": "fn(name :: String.t(), args :: map) -> rendered | nil",
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -6747,7 +7666,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -6803,7 +7723,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.TextAnimation",
@@ -6842,7 +7763,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.ShineBorder",
@@ -6905,7 +7827,8 @@
           "doc": "the shimmer colour. A single CSS colour, or a list of colours to blend across the sweep",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Skeleton",
@@ -6972,7 +7895,8 @@
           "doc": "the brick shape: block (theme-radius rectangle), text (a rounded line with a sensible default height), circle (avatar)",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Skeleton",
@@ -7024,7 +7948,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Skeleton",
@@ -7069,7 +7994,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.SlideOver",
@@ -7206,7 +8132,8 @@
           "doc": "slideover title",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Table",
@@ -7222,7 +8149,8 @@
           "doc": null,
           "required": true
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Sparkline",
@@ -7278,6 +8206,18 @@
           "doc": null,
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"grid w-full gap-4 sm:grid-cols-3\">\n  <div class=\"flex items-center justify-between px-5 py-4 border border-gray-200 rounded-xl dark:border-gray-800\">\n    <div>\n      <div class=\"text-xs text-gray-400 dark:text-gray-500\">MRR</div>\n      <div class=\"mt-1 text-xl font-semibold\">$12,480</div>\n    </div>\n    <.sparkline data={[8, 9, 9, 11, 10, 12, 13, 14]} class=\"h-10 w-24 text-primary-500\" />\n  </div>\n  <div class=\"flex items-center justify-between px-5 py-4 border border-gray-200 rounded-xl dark:border-gray-800\">\n    <div>\n      <div class=\"text-xs text-gray-400 dark:text-gray-500\">Signups</div>\n      <div class=\"mt-1 text-xl font-semibold\">1,204</div>\n    </div>\n    <.sparkline data={[30, 34, 31, 38, 36, 41, 40, 44]} class=\"h-10 w-24 text-success-500\" />\n  </div>\n  <div class=\"flex items-center justify-between px-5 py-4 border border-gray-200 rounded-xl dark:border-gray-800\">\n    <div>\n      <div class=\"text-xs text-gray-400 dark:text-gray-500\">Churn</div>\n      <div class=\"mt-1 text-xl font-semibold\">1.9%</div>\n    </div>\n    <.sparkline data={[9, 8, 9, 7, 8, 6, 7, 5]} class=\"h-10 w-24 text-danger-500\" />\n  </div>\n</div>",
+          "description": "Pure server-rendered SVG - zero JavaScript. The line inherits currentColor, so a text class sets the colour.",
+          "title": "Trends in stat cards"
+        },
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-8\">\n  <.sparkline data={[4, 7, 5, 9, 8, 12, 11, 14]} class=\"h-10 w-32 text-primary-500\" />\n  <.sparkline\n    data={[4, 7, 5, 9, 8, 12, 11, 14]}\n    smooth={false}\n    class=\"h-10 w-32 text-info-500\"\n  />\n  <.sparkline\n    data={[4, 7, 5, 9, 8, 12, 11, 14]}\n    fill={false}\n    class=\"h-10 w-32 text-secondary-500\"\n  />\n</div>",
+          "description": "Smooth or linear, with or without the area fill.",
+          "title": "Line styles"
+        }
       ]
     },
     {
@@ -7330,7 +8270,8 @@
           "doc": "custom CSS classes for size. eg: h-4 w-4",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.SpotlightCard",
@@ -7385,7 +8326,8 @@
           "doc": "radius of the glow",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Stepper",
@@ -7432,7 +8374,8 @@
           "doc": null,
           "required": true
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Chat",
@@ -7475,6 +8418,63 @@
           "doc": null,
           "required": true
         }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
+        }
       ]
     },
     {
@@ -7506,6 +8506,63 @@
           "values": null,
           "doc": "event pushed with phx-value-prompt",
           "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -7569,7 +8626,8 @@
           "doc": "the size of the switch",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Tabs",
@@ -7681,7 +8739,8 @@
           "doc": "match the parent tabs variant. Overrides the legacy underline flag",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Table",
@@ -7879,7 +8938,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Tabs",
@@ -7931,7 +8991,8 @@
           "doc": "tab style: pill (default), underline, or segmented - active tab is a raised white pill on a muted track. Overrides the legacy underline flag",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Table",
@@ -7962,7 +9023,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -8010,7 +9072,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -8058,7 +9121,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -8089,7 +9153,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -8120,7 +9185,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -8151,7 +9217,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -8199,7 +9266,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Table",
@@ -8230,7 +9298,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -8278,7 +9347,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -8326,7 +9396,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Chat",
@@ -8377,6 +9448,63 @@
           "doc": null,
           "required": false
         }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
+        }
       ]
     },
     {
@@ -8392,6 +9520,63 @@
           "values": null,
           "doc": null,
           "required": true
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.conversation id=\"showcase-chat-flagship\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">How do I install petal_components?</.chat_message>\n  <.tool_call name=\"search_docs\" status={:complete} label=\"Searched the docs\">\n    <div class=\"flex items-center gap-3 text-sm\">\n      <.icon name=\"hero-book-open\" class=\"w-8 h-8 text-primary-500\" />\n      <div>\n        <div class=\"font-medium text-gray-900 dark:text-gray-100\">Installation guide</div>\n        <div class=\"text-xs text-gray-500 dark:text-gray-400\">hexdocs.pm/petal_components</div>\n      </div>\n    </div>\n  </.tool_call>\n  <.chat_message role=\"assistant\">\n    <.markdown\n      id=\"showcase-chat-flagship-md\"\n      content={\"Add the dep and pull it in:\\n\\n```elixir\\ndef deps do\\n  [{:petal_components, \\\"~> 4.5\\\"}]\\nend\\n```\\n\\nThen `use PetalComponents` in your web module and every component is a plain HEEx tag.\"}\n    />\n    <:actions>\n      <.message_actions visible=\"always\">\n        <.copy_button\n          id=\"showcase-chat-flagship-copy\"\n          text={\"{:petal_components, \\\"~> 4.5\\\"}\"}\n          icon\n        />\n        <.action_button icon=\"hero-hand-thumb-up\" label=\"Good response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-hand-thumb-down\" label=\"Bad response\" phx-click=\"noop\" />\n        <.action_button icon=\"hero-arrow-path\" label=\"Regenerate\" phx-click=\"noop\" />\n      </.message_actions>\n    </:actions>\n  </.chat_message>\n  <:footer>\n    <.suggestions\n      class=\"mb-2\"\n      items={[\"What makes this different from React AI kits?\", \"Show me a tool call\"]}\n      on_select=\"noop\"\n    />\n    <.prompt_input\n      id=\"showcase-chat-flagship-composer\"\n      placeholder=\"Ask about petal_components...\"\n    />\n  </:footer>\n</.conversation>",
+          "description": "The pieces below, assembled - a thread, a tool call, a markdown answer with a highlighted code block, an action bar, starter chips and the composer.",
+          "title": "A complete chat"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-plain\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">What's the weather in Tokyo?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's 22°C and clear in Tokyo right now, with a light breeze from the south.\n  </.chat_message>\n</.conversation>",
+          "description": "The default plain variant - full-width turns, the ChatGPT / Claude look. Messages are just slots.",
+          "title": "Conversation"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-bubbles\" variant=\"bubbles\" class=\"w-full max-w-xl mx-auto\">\n  <.chat_message role=\"user\">Can you summarise this in one line?</.chat_message>\n  <.chat_message role=\"assistant\">\n    It's a Phoenix component library that ships an MCP server so AI tools use the real API.\n  </.chat_message>\n</.conversation>",
+          "description": "Pass variant=\"bubbles\" for the messaging-app layout.",
+          "title": "Bubbles"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto space-y-3\">\n  <.tool_call name=\"search_web\" status={:running} label=\"Searching the web\" />\n  <.tool_call name=\"get_weather\" status={:complete}>\n    <div class=\"flex items-center justify-between px-4 py-3 text-white rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600\">\n      <div>\n        <div class=\"text-sm font-medium opacity-90\">Tokyo</div>\n        <div class=\"text-2xl font-bold\">21°C</div>\n      </div>\n      <div class=\"text-4xl\">☀️</div>\n    </div>\n  </.tool_call>\n  <.tool_call name=\"charge_card\" status={:error} label=\"Payment failed\" />\n</div>",
+          "description": "Generative UI. The model emits data, you map the tool name to a real Phoenix component. status drives the header: running spins, complete checks, error warns.",
+          "title": "Tool calls"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.reasoning label=\"Thought for 2s\" open>\n    First I considered the user's location, then looked up the current conditions and picked the most relevant detail.\n  </.reasoning>\n</div>",
+          "description": "A collapsible thinking block for reasoning-model output.",
+          "title": "Reasoning"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.markdown content={\"## Forecast\\n\\nTokyo is **21°C** and sunny.\\n\\n- Light breeze\\n- UV index moderate\\n\\n```elixir\\nIO.puts(\\\"pack light\\\")\\n```\"} />\n</div>",
+          "description": "Render a committed assistant reply as sanitized, syntax-highlighted markdown. Needs the optional :mdex dep.",
+          "title": "Markdown"
+        },
+        {
+          "code": "<.message_actions class=\"max-w-xl mx-auto\">\n  <.copy_button id=\"showcase-chat-copy\" text=\"The full assistant reply, copied to the clipboard.\" />\n  <button type=\"button\" class=\"pc-chat__action\" phx-click=\"noop\">Regenerate</button>\n</.message_actions>",
+          "description": "A row of actions under a reply. copy_button copies text client-side via a bundled hook.",
+          "title": "Message actions"
+        },
+        {
+          "code": "<.suggestions\n  class=\"max-w-xl mx-auto\"\n  items={[\"What is Phoenix LiveView?\", \"Show me a markdown demo\", \"Write a haiku\"]}\n  on_select=\"suggestion\"\n/>",
+          "description": "Prompt-starter chips for the empty state. Each pushes on_select with phx-value-prompt.",
+          "title": "Suggestions"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.chat_error on_retry=\"retry\">\n    Something went wrong generating a response.\n  </.chat_error>\n</div>",
+          "description": "An error notice with an optional retry button.",
+          "title": "Error"
+        },
+        {
+          "code": "<.conversation id=\"showcase-chat-markers\" class=\"w-full max-w-xl mx-auto\">\n  <.marker variant=\"separator\">Today</.marker>\n  <.chat_message role=\"user\">Pick up where we left off.</.chat_message>\n  <.marker variant=\"border\" icon=\"hero-wrench-screwdriver\">Running search_docs</.marker>\n  <.chat_message role=\"assistant\">Found 3 matches. Here's the most relevant one.</.chat_message>\n</.conversation>",
+          "description": "Section dividers between turns - a date, a \"new messages\" line, or a tool-call header.",
+          "title": "Markers"
+        },
+        {
+          "code": "<div class=\"w-full max-w-xl mx-auto\">\n  <.prompt_input id=\"showcase-chat-composer\" placeholder=\"Message the assistant...\" />\n</div>",
+          "description": "The composer - an autogrowing textarea with the arrow-up send button. Enter submits, Shift+Enter adds a line.",
+          "title": "Prompt input"
         }
       ]
     },
@@ -8483,7 +9668,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Table",
@@ -8514,7 +9700,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.TextAnimation",
@@ -8586,7 +9773,8 @@
           "doc": "the text to type out",
           "required": true
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Typography",
@@ -8617,7 +9805,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Form",
@@ -8665,7 +9854,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.UserDropdownMenu",
@@ -8697,7 +9887,8 @@
           "doc": "list of maps with keys :path, :icon (atom), :label, :method (atom - optional)",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Table",
@@ -8745,7 +9936,8 @@
           "doc": "Adds a sub-label your to your user, e.g title",
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Menu",
@@ -8785,7 +9977,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Menu",
@@ -8873,7 +10066,8 @@
           "doc": null,
           "required": false
         }
-      ]
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.TextAnimation",
@@ -8921,8 +10115,9 @@
           "doc": "the words to cycle through",
           "required": true
         }
-      ]
+      ],
+      "examples": []
     }
   ],
-  "generated_at": "2026-07-23T04:58:34.374046Z"
+  "generated_at": "2026-07-26T01:48:03.137512Z"
 }
