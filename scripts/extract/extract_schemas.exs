@@ -76,8 +76,22 @@ defmodule SchemaExtractor do
       kind: meta[:kind] || :def,
       attrs: Enum.map(meta[:attrs] || [], &build_attr/1),
       slots: Enum.map(meta[:slots] || [], &build_slot/1),
-      examples: Map.get(examples, inspect(module), [])
+      examples: component_examples(examples, module, name)
     }
+  end
+
+  # An example belongs to a component only when its code actually renders that
+  # component's tag (`<.name` or `<Alias.name`). Matching on the showcase
+  # module alone would copy the full example set onto every sibling function
+  # of multi-component modules like chat and command.
+  defp component_examples(examples, module, name) do
+    examples
+    |> Map.get(inspect(module), [])
+    |> Enum.filter(&example_uses?(&1, name))
+  end
+
+  defp example_uses?(%{code: code}, name) do
+    Regex.match?(~r/<(?:[A-Z][\w.]*\.|\.)#{Regex.escape(to_string(name))}[\s\/>]/, code)
   end
 
   defp build_attr(attr) do
