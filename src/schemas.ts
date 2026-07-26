@@ -75,17 +75,22 @@ export function renderComponent(c: Component): string {
   ];
 
   // Prefer the library's own curated examples - real, idiomatic usage lifted
-  // from the showcase. The generated skeleton below is only a fallback for
-  // components the showcase does not cover yet.
-  if (c.examples?.length) {
+  // from the showcase. When every curated example is a broader composition
+  // (the component only ever appears as a part of a larger whole), keep the
+  // generated skeleton as the minimal form so a focused usage always leads.
+  const curated = c.examples ?? [];
+  const showSkeleton = curated.length === 0 || !hasDedicatedExample(c);
+
+  if (showSkeleton) {
+    lines.push("## Usage", "", "```heex", exampleUsage(c), "```", "");
+  }
+  if (curated.length) {
     lines.push("## Examples", "");
-    for (const ex of c.examples) {
+    for (const ex of curated) {
       lines.push(`### ${ex.title}`);
       if (ex.description) lines.push("", ex.description);
       lines.push("", "```heex", ex.code.trim(), "```", "");
     }
-  } else {
-    lines.push("## Usage", "", "```heex", exampleUsage(c), "```", "");
   }
 
   if (c.attrs.length) {
@@ -122,6 +127,19 @@ function renderSlot(slot: ComponentSlot): string {
   let line = parts.join(" · ");
   if (slot.doc) line += ` — ${slot.doc}`;
   return line;
+}
+
+// True when at least one curated example renders ONLY this component among
+// its module siblings - i.e. a dedicated example, not a composition it
+// appears in. Extraction orders examples most-focused-first, so checking the
+// first example suffices.
+function hasDedicatedExample(c: Component): boolean {
+  const first = c.examples?.[0];
+  if (!first) return false;
+  const siblings = schemas.components.filter((s) => s.module === c.module).map((s) => s.name);
+  const tagUsed = (name: string) =>
+    new RegExp(`<(?:[A-Z][\\w.]*\\.|\\.)${name}[\\s/>]`).test(first.code);
+  return siblings.filter(tagUsed).length === 1;
 }
 
 function exampleUsage(c: Component): string {
