@@ -1,5 +1,5 @@
 {
-  "version": "4.8.0",
+  "version": "4.8.1",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -9562,7 +9562,7 @@
       ],
       "examples": [
         {
-          "code": "<div class=\"flex flex-wrap items-center justify-center gap-2\">\n  <.toast_group id=\"showcase-toasts\" />\n\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={\n      JS.dispatch(\"petal:toast\",\n        detail: %{\n          kind: \"success\",\n          title: \"Changes saved\",\n          description: \"Your profile is up to date.\"\n        }\n      )\n    }\n  >\n    Success\n  </.button>\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={\n      JS.dispatch(\"petal:toast\",\n        detail: %{kind: \"danger\", title: \"Export failed\", description: \"The server returned 500.\"}\n      )\n    }\n  >\n    Danger\n  </.button>\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={JS.dispatch(\"petal:toast\", detail: %{kind: \"info\", title: \"Deploy started\"})}\n  >\n    Info\n  </.button>\n</div>",
+          "code": "<%!-- once, in your root layout: <.toast_group flash={@flash} /> --%>\n<div class=\"flex flex-wrap items-center justify-center gap-2\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={\n      JS.dispatch(\"petal:toast\",\n        detail: %{\n          kind: \"success\",\n          title: \"Changes saved\",\n          description: \"Your profile is up to date.\"\n        }\n      )\n    }\n  >\n    Success\n  </.button>\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={\n      JS.dispatch(\"petal:toast\",\n        detail: %{kind: \"danger\", title: \"Export failed\", description: \"The server returned 500.\"}\n      )\n    }\n  >\n    Danger\n  </.button>\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={JS.dispatch(\"petal:toast\", detail: %{kind: \"info\", title: \"Deploy started\"})}\n  >\n    Info\n  </.button>\n</div>",
           "description": "One toast_group in the layout catches everything: Toast.send_toast/3 from the server, put_flash for free, or - as here - a plain petal:toast CustomEvent from the client. Fire a few and hover the stack.",
           "title": "Fire from anywhere"
         }
@@ -10187,5 +10187,5 @@
       "examples": []
     }
   ],
-  "generated_at": "2026-07-27T06:41:21.239987Z"
+  "generated_at": "2026-07-28T22:07:53.406510Z"
 }
