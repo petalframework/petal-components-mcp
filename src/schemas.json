@@ -1,5 +1,5 @@
 {
-  "version": "4.10.1",
+  "version": "4.11.0",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -356,8 +356,8 @@
       ],
       "examples": [
         {
-          "code": "<div class=\"w-full space-y-3\">\n  <.alert color=\"info\" with_icon>A new version of this page is available.</.alert>\n  <.alert color=\"success\" with_icon>Your changes were saved.</.alert>\n  <.alert color=\"warning\" with_icon>Your trial ends in 3 days.</.alert>\n  <.alert color=\"danger\" with_icon>Payment failed. Check your card details.</.alert>\n</div>",
-          "description": "A prominent message tied to state. Danger and warning announce as role=\"alert\" (assertive); info, success and gray as polite status - the same kind split the toast uses. with_icon adds the matching glyph.",
+          "code": "<div class=\"w-full space-y-3\">\n  <.alert color=\"info\" variant=\"outline\" with_icon>\n    A new version of this page is available.\n  </.alert>\n  <.alert color=\"success\" variant=\"outline\" with_icon>Your changes were saved.</.alert>\n  <.alert color=\"warning\" variant=\"outline\" with_icon>Your trial ends in 3 days.</.alert>\n  <.alert color=\"danger\" variant=\"outline\" with_icon>\n    Payment failed. Check your card details.\n  </.alert>\n</div>",
+          "description": "A prominent message tied to state, shown here in the outline variant - the coloured border and glyph on a calm surface. Danger and warning announce as role=\"alert\" (assertive); info, success and gray as polite status - the same kind split the toast uses. with_icon adds the matching glyph. Drop the variant attribute and you get light, the filled default.",
           "title": "Semantic colours"
         },
         {
@@ -6149,7 +6149,7 @@
           "title": "Grouped"
         },
         {
-          "code": "<div class=\"pc-form-field-wrapper pc-form-field-wrapper--error mb-0!\">\n  <.input_otp name=\"error_code\" length={6} value=\"123\" />\n  <p class=\"pc-form-field-error\">that code has expired - we sent a new one</p>\n</div>",
+          "code": "<div class=\"pc-form-field-wrapper pc-form-field-wrapper--error mb-0\">\n  <.input_otp name=\"error_code\" length={6} value=\"123\" />\n  <p class=\"pc-form-field-error\">that code has expired - we sent a new one</p>\n</div>",
           "description": "Drop it inside a field wrapper and the error tone carries through to the boxes - the shared form-field classes do the painting, no OTP-specific styling.",
           "title": "In a form field"
         }
@@ -6887,6 +6887,14 @@
           "required": false
         },
         {
+          "default": "false",
+          "name": "hide_header",
+          "type": ":boolean",
+          "values": null,
+          "doc": "visually hides the header bar (screen-reader-only, not removed) for confirmation-style modals that carry their heading in the content. Pass a real title anyway - it stays in the DOM as the dialog's accessible name via aria-labelledby. Implies no close button, so give the content its own way to close",
+          "required": false
+        },
+        {
           "default": "\"modal\"",
           "name": "id",
           "type": ":string",
@@ -6947,6 +6955,11 @@
           "code": "<.button color=\"gray\" variant=\"outline\" phx-click={show_modal(\"showcase-modal\")}>\n  Open modal\n</.button>\n\n<.modal id=\"showcase-modal\" title=\"Invite your team\" hide max_width=\"sm\">\n  <p class=\"text-sm text-gray-500 dark:text-gray-400\">\n    Share this link with your teammates and they'll join the workspace\n    with member access.\n  </p>\n  <div class=\"mt-4\">\n    <.input_group>\n      <.input type=\"text\" name=\"invite_url\" value=\"https://example.com/join/x1y2z3\" readonly />\n      <:trailing><kbd><span>⌘</span>C</kbd></:trailing>\n    </.input_group>\n  </div>\n  <div class=\"flex justify-end gap-2 mt-6\">\n    <.button color=\"gray\" variant=\"outline\" phx-click={hide_modal(\"showcase-modal\")}>\n      Cancel\n    </.button>\n    <.button phx-click={hide_modal(\"showcase-modal\")}>Copy link</.button>\n  </div>\n</.modal>",
           "description": "The whole wiring in one place: a modal rendered with hide stays out of view until show_modal/1 - a plain LiveView.JS command on any phx-click, no server round-trip - and hide_modal/1 closes it the same way. Escape and click-away close by default (close_on_escape / close_on_click_away), title labels the dialog for screen readers, and max_width sizes the box.",
           "title": "Invite dialog"
+        },
+        {
+          "code": "<.button color=\"gray\" variant=\"outline\" phx-click={show_modal(\"showcase-modal-headerless\")}>\n  Open confirmation\n</.button>\n\n<.modal\n  id=\"showcase-modal-headerless\"\n  title=\"Unsubscribed successfully\"\n  hide\n  hide_header\n  max_width=\"sm\"\n>\n  <div class=\"text-center\">\n    <div class=\"flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-success-100 dark:bg-success-500/15\">\n      <.icon name=\"hero-check\" class=\"w-6 h-6 text-success-600 dark:text-success-400\" />\n    </div>\n    <h3 class=\"mt-3 text-lg font-semibold text-gray-800 dark:text-gray-200\">\n      Unsubscribed successfully\n    </h3>\n    <p class=\"mt-2 text-sm text-gray-500 dark:text-gray-400\">\n      You won't get marketing emails from us anymore. You can resubscribe\n      any time from your notification settings.\n    </p>\n    <.button\n      class=\"mt-6\"\n      color=\"gray\"\n      variant=\"outline\"\n      phx-click={hide_modal(\"showcase-modal-headerless\")}\n    >\n      Back to settings\n    </.button>\n  </div>\n</.modal>",
+          "description": "Confirmation dialogs often center their heading in the content instead of a header bar. hide_header hides the bar visually but keeps it in the DOM, so the title you pass still names the dialog for screen readers via aria-labelledby. It also drops the corner close button, so give the content its own way out (here a button, plus escape and click-away).",
+          "title": "Headerless confirmation"
         }
       ]
     },
@@ -10686,6 +10699,11 @@
           "title": "Multiple select"
         },
         {
+          "code": "<div class=\"flex flex-col items-start gap-4\">\n  <.toggle_group aria_label=\"View\" value=\"grid\">\n    <:item value=\"list\"><.icon name=\"hero-list-bullet\" /> List</:item>\n    <:item value=\"grid\"><.icon name=\"hero-squares-2x2\" /> Grid</:item>\n    <:item value=\"board\"><.icon name=\"hero-view-columns\" /> Board</:item>\n  </.toggle_group>\n  <.toggle_group\n    multiple\n    aria_label=\"Formatting\"\n    value={[\"bold\"]}\n    on_change={JS.toggle_attribute({\"aria-pressed\", \"true\", \"false\"})}\n  >\n    <:item value=\"bold\" aria-label=\"Bold\"><.icon name=\"hero-bold\" /></:item>\n    <:item value=\"italic\" aria-label=\"Italic\"><.icon name=\"hero-italic\" /></:item>\n    <:item value=\"underline\" aria-label=\"Underline\"><.icon name=\"hero-underline\" /></:item>\n  </.toggle_group>\n</div>",
+          "description": "Click around. The single rail needs nothing from you: it renders native radios, so the browser moves the chip itself - no JavaScript, no server. The multiple rail toggles each chip with a client-side LiveView.JS command on on_change. In a real app you would usually send an event and let the server own the value instead; these two are here to show the pressed states are real, not screenshots.",
+          "title": "Try it - this one is live"
+        },
+        {
           "code": "<.toggle_group aria_label=\"Preview device\" value=\"tablet\" on_change=\"set_device\">\n  <:item value=\"desktop\" aria-label=\"Desktop\"><.icon name=\"hero-computer-desktop\" /></:item>\n  <:item value=\"tablet\" aria-label=\"Tablet\"><.icon name=\"hero-device-tablet\" /></:item>\n  <:item value=\"mobile\" aria-label=\"Phone\"><.icon name=\"hero-device-phone-mobile\" /></:item>\n</.toggle_group>",
           "description": "The canonical icon-only use: a desktop / tablet / phone switcher above a preview frame, the strip every component playground puts in its toolbar. Icon-only items carry aria-labels so the options still read out. The playground's Try it section runs this one live against real content.",
           "title": "The device rail"
@@ -11379,5 +11397,5 @@
       ]
     }
   ],
-  "generated_at": "2026-08-04T20:19:33.173096Z"
+  "generated_at": "2026-08-04T21:08:46.216987Z"
 }
