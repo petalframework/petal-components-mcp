@@ -1,5 +1,5 @@
 {
-  "version": "4.9.0",
+  "version": "4.10.0",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -635,6 +635,11 @@
           "code": "<div class=\"flex flex-wrap items-center justify-center gap-4\">\n  <.avatar name=\"Petal Framework\" size=\"lg\" shape=\"rounded\" random_gradient />\n  <.avatar name=\"Acme Corp\" size=\"lg\" shape=\"rounded\" art=\"mesh\" />\n  <.avatar name=\"Initech\" size=\"lg\" shape=\"rounded\" art=\"dither\" />\n  <.avatar name=\"Globex\" size=\"lg\" shape=\"rounded\" random_color />\n</div>",
           "description": "Circles are the convention for people; shape=\"rounded\" gives orgs, teams and workspaces proportional soft corners instead. Deliberately independent of the radius dial - avatars are identity, not surface.",
           "title": "Rounded for orgs"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-6\">\n  <div class=\"flex flex-wrap items-end justify-center gap-3\">\n    <.avatar name=\"Sarah Chen\" size=\"xs\" random_color />\n    <.avatar name=\"Sarah Chen\" size=\"sm\" random_color />\n    <.avatar name=\"Sarah Chen\" size=\"md\" random_color />\n    <.avatar name=\"Sarah Chen\" size=\"lg\" random_color />\n    <.avatar name=\"Sarah Chen\" size=\"xl\" random_color />\n  </div>\n  <div class=\"flex flex-wrap items-center justify-center gap-4\">\n    <.avatar name=\"Amelia Ward\" size=\"md\" art=\"mesh\" status=\"online\" />\n    <.avatar name=\"Jonah Reyes\" size=\"md\" art=\"mesh\" status=\"busy\" />\n    <.avatar name=\"Priya Anand\" size=\"md\" art=\"mesh\" status=\"away\" />\n    <.avatar name=\"Tom Hale\" size=\"md\" art=\"mesh\" status=\"offline\" />\n  </div>\n</div>",
+          "description": "The size ladder from xs to xl, and the status dot - online, busy, away, offline - ringed so it reads against any image or placeholder. Presence works on every avatar form.",
+          "title": "Five sizes, four presence states"
         }
       ]
     },
@@ -702,7 +707,13 @@
           "required": false
         }
       ],
-      "examples": []
+      "examples": [
+        {
+          "code": "<div class=\"flex flex-col items-center gap-4\">\n  <.avatar_group\n    size=\"md\"\n    max={3}\n    avatars={[\n      \"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><rect width='8' height='8' fill='%23f59e0b'/></svg>\",\n      \"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><rect width='8' height='8' fill='%2310b981'/></svg>\",\n      \"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><rect width='8' height='8' fill='%236366f1'/></svg>\",\n      \"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><rect width='8' height='8' fill='%23ec4899'/></svg>\",\n      \"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><rect width='8' height='8' fill='%2306b6d4'/></svg>\"\n    ]}\n  />\n</div>",
+          "description": "avatar_group overlaps your hosted image URLs into the classic team pile; max caps the row and folds the rest into a +N bubble. shape passes through to every avatar and the bubble. The URLs here are inline SVG stand-ins - swap in real photos and nothing else changes.",
+          "title": "The team stack"
+        }
+      ]
     },
     {
       "module": "PetalComponents.Badge",
@@ -1097,6 +1108,57 @@
           "title": "Newsletter Signup"
         }
       ]
+    },
+    {
+      "module": "PetalComponents.BrandIcon",
+      "name": "brand_icon",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "colored",
+          "type": ":boolean",
+          "values": null,
+          "doc": "official brand colours instead of currentColor",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": ":string",
+          "values": [
+            "google",
+            "github",
+            "apple",
+            "x",
+            "facebook",
+            "microsoft",
+            "gitlab",
+            "discord",
+            "linkedin"
+          ],
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        }
+      ],
+      "examples": []
     },
     {
       "module": "PetalComponents.Breadcrumbs",
@@ -1613,7 +1675,7 @@
           "title": "The panel and the well"
         },
         {
-          "code": "<.card class=\"w-full max-w-sm\">\n  <.card_header title=\"Login to your account\" description=\"Enter your email below to login\">\n    <:action>\n      <.button color=\"gray\" variant=\"ghost\" size=\"sm\" link_type=\"a\" to=\"#\">\n        Sign up\n      </.button>\n    </:action>\n  </.card_header>\n  <.card_content>\n    <div class=\"flex flex-col gap-4\">\n      <.field type=\"email\" name=\"email\" value=\"\" label=\"Email\" placeholder=\"m@example.com\" />\n      <.field type=\"password\" name=\"password\" value=\"\" label=\"Password\" />\n    </div>\n  </.card_content>\n  <.card_footer class=\"flex-col\">\n    <.button class=\"w-full\">Login</.button>\n    <.button color=\"gray\" variant=\"outline\" class=\"w-full\">Login with Google</.button>\n  </.card_footer>\n</.card>",
+          "code": "<.card class=\"w-full max-w-sm\">\n  <.card_header title=\"Login to your account\" description=\"Enter your email below to login\">\n    <:action>\n      <.button color=\"gray\" variant=\"ghost\" size=\"sm\" link_type=\"a\" to=\"#\">\n        Sign up\n      </.button>\n    </:action>\n  </.card_header>\n  <.card_content>\n    <div class=\"flex flex-col gap-4\">\n      <.field type=\"email\" name=\"email\" value=\"\" label=\"Email\" placeholder=\"m@example.com\" />\n      <.field type=\"password\" name=\"password\" value=\"\" label=\"Password\" />\n    </div>\n  </.card_content>\n  <.card_footer class=\"flex-col\">\n    <.button class=\"w-full\">Login</.button>\n    <.social_button provider=\"google\" label=\"Login with Google\" class=\"w-full\" />\n  </.card_footer>\n</.card>",
           "description": "The container for everything, assembled from parts: card_header carries title, description and a top-right :action; card_content and card_footer pad themselves so media can run full-bleed when you add it. The login card is the canonical composition.",
           "title": "Composed from parts"
         }
@@ -1680,7 +1742,7 @@
           "title": "The panel and the well"
         },
         {
-          "code": "<.card class=\"w-full max-w-sm\">\n  <.card_header title=\"Login to your account\" description=\"Enter your email below to login\">\n    <:action>\n      <.button color=\"gray\" variant=\"ghost\" size=\"sm\" link_type=\"a\" to=\"#\">\n        Sign up\n      </.button>\n    </:action>\n  </.card_header>\n  <.card_content>\n    <div class=\"flex flex-col gap-4\">\n      <.field type=\"email\" name=\"email\" value=\"\" label=\"Email\" placeholder=\"m@example.com\" />\n      <.field type=\"password\" name=\"password\" value=\"\" label=\"Password\" />\n    </div>\n  </.card_content>\n  <.card_footer class=\"flex-col\">\n    <.button class=\"w-full\">Login</.button>\n    <.button color=\"gray\" variant=\"outline\" class=\"w-full\">Login with Google</.button>\n  </.card_footer>\n</.card>",
+          "code": "<.card class=\"w-full max-w-sm\">\n  <.card_header title=\"Login to your account\" description=\"Enter your email below to login\">\n    <:action>\n      <.button color=\"gray\" variant=\"ghost\" size=\"sm\" link_type=\"a\" to=\"#\">\n        Sign up\n      </.button>\n    </:action>\n  </.card_header>\n  <.card_content>\n    <div class=\"flex flex-col gap-4\">\n      <.field type=\"email\" name=\"email\" value=\"\" label=\"Email\" placeholder=\"m@example.com\" />\n      <.field type=\"password\" name=\"password\" value=\"\" label=\"Password\" />\n    </div>\n  </.card_content>\n  <.card_footer class=\"flex-col\">\n    <.button class=\"w-full\">Login</.button>\n    <.social_button provider=\"google\" label=\"Login with Google\" class=\"w-full\" />\n  </.card_footer>\n</.card>",
           "description": "The container for everything, assembled from parts: card_header carries title, description and a top-right :action; card_content and card_footer pad themselves so media can run full-bleed when you add it. The login card is the canonical composition.",
           "title": "Composed from parts"
         }
@@ -1718,7 +1780,7 @@
       ],
       "examples": [
         {
-          "code": "<.card class=\"w-full max-w-sm\">\n  <.card_header title=\"Login to your account\" description=\"Enter your email below to login\">\n    <:action>\n      <.button color=\"gray\" variant=\"ghost\" size=\"sm\" link_type=\"a\" to=\"#\">\n        Sign up\n      </.button>\n    </:action>\n  </.card_header>\n  <.card_content>\n    <div class=\"flex flex-col gap-4\">\n      <.field type=\"email\" name=\"email\" value=\"\" label=\"Email\" placeholder=\"m@example.com\" />\n      <.field type=\"password\" name=\"password\" value=\"\" label=\"Password\" />\n    </div>\n  </.card_content>\n  <.card_footer class=\"flex-col\">\n    <.button class=\"w-full\">Login</.button>\n    <.button color=\"gray\" variant=\"outline\" class=\"w-full\">Login with Google</.button>\n  </.card_footer>\n</.card>",
+          "code": "<.card class=\"w-full max-w-sm\">\n  <.card_header title=\"Login to your account\" description=\"Enter your email below to login\">\n    <:action>\n      <.button color=\"gray\" variant=\"ghost\" size=\"sm\" link_type=\"a\" to=\"#\">\n        Sign up\n      </.button>\n    </:action>\n  </.card_header>\n  <.card_content>\n    <div class=\"flex flex-col gap-4\">\n      <.field type=\"email\" name=\"email\" value=\"\" label=\"Email\" placeholder=\"m@example.com\" />\n      <.field type=\"password\" name=\"password\" value=\"\" label=\"Password\" />\n    </div>\n  </.card_content>\n  <.card_footer class=\"flex-col\">\n    <.button class=\"w-full\">Login</.button>\n    <.social_button provider=\"google\" label=\"Login with Google\" class=\"w-full\" />\n  </.card_footer>\n</.card>",
           "description": "The container for everything, assembled from parts: card_header carries title, description and a top-right :action; card_content and card_footer pad themselves so media can run full-bleed when you add it. The login card is the canonical composition.",
           "title": "Composed from parts"
         }
@@ -1783,7 +1845,7 @@
           "title": "The panel and the well"
         },
         {
-          "code": "<.card class=\"w-full max-w-sm\">\n  <.card_header title=\"Login to your account\" description=\"Enter your email below to login\">\n    <:action>\n      <.button color=\"gray\" variant=\"ghost\" size=\"sm\" link_type=\"a\" to=\"#\">\n        Sign up\n      </.button>\n    </:action>\n  </.card_header>\n  <.card_content>\n    <div class=\"flex flex-col gap-4\">\n      <.field type=\"email\" name=\"email\" value=\"\" label=\"Email\" placeholder=\"m@example.com\" />\n      <.field type=\"password\" name=\"password\" value=\"\" label=\"Password\" />\n    </div>\n  </.card_content>\n  <.card_footer class=\"flex-col\">\n    <.button class=\"w-full\">Login</.button>\n    <.button color=\"gray\" variant=\"outline\" class=\"w-full\">Login with Google</.button>\n  </.card_footer>\n</.card>",
+          "code": "<.card class=\"w-full max-w-sm\">\n  <.card_header title=\"Login to your account\" description=\"Enter your email below to login\">\n    <:action>\n      <.button color=\"gray\" variant=\"ghost\" size=\"sm\" link_type=\"a\" to=\"#\">\n        Sign up\n      </.button>\n    </:action>\n  </.card_header>\n  <.card_content>\n    <div class=\"flex flex-col gap-4\">\n      <.field type=\"email\" name=\"email\" value=\"\" label=\"Email\" placeholder=\"m@example.com\" />\n      <.field type=\"password\" name=\"password\" value=\"\" label=\"Password\" />\n    </div>\n  </.card_content>\n  <.card_footer class=\"flex-col\">\n    <.button class=\"w-full\">Login</.button>\n    <.social_button provider=\"google\" label=\"Login with Google\" class=\"w-full\" />\n  </.card_footer>\n</.card>",
           "description": "The container for everything, assembled from parts: card_header carries title, description and a top-right :action; card_content and card_footer pad themselves so media can run full-bleed when you add it. The login card is the canonical composition.",
           "title": "Composed from parts"
         }
@@ -2149,6 +2211,16 @@
           "code": "<.carousel\n  id=\"showcase-carousel-outside\"\n  transition_type=\"slide\"\n  button_style=\"outside\"\n  indicator\n  indicator_position=\"below\"\n  class=\"max-w-lg mx-auto\"\n>\n  <:slide title=\"Slide one\" class=\"bg-gradient-to-br from-gray-700 to-gray-900\" />\n  <:slide title=\"Slide two\" class=\"bg-gradient-to-br from-gray-600 to-gray-800\" />\n  <:slide title=\"Slide three\" class=\"bg-gradient-to-br from-gray-500 to-gray-700\" />\n</.carousel>",
           "description": "The slide transition with buttons flanking the frame and page-coloured dots underneath - the product-gallery arrangement.",
           "title": "Controls outside the frame"
+        },
+        {
+          "code": "<.carousel\n  id=\"showcase-carousel-thumbs\"\n  thumbnails\n  transition_type=\"slide\"\n  class=\"max-w-lg mx-auto\"\n>\n  <:slide title=\"Overview\" class=\"bg-gradient-to-br from-primary-500 to-secondary-500\" />\n  <:slide title=\"Pricing\" class=\"bg-gradient-to-br from-secondary-500 to-primary-700\" />\n  <:slide title=\"Testimonials\" class=\"bg-gradient-to-br from-primary-700 to-secondary-400\" />\n  <:slide title=\"FAQ\" class=\"bg-gradient-to-br from-secondary-400 to-primary-500\" />\n</.carousel>",
+          "description": "thumbnails swaps the indicators for miniature slides - the media-browser arrangement. Each thumbnail is the slide itself scaled down, so gradient panels, images and custom content all preview correctly.",
+          "title": "Thumbnail navigation"
+        },
+        {
+          "code": "<.carousel\n  id=\"showcase-carousel-multi\"\n  slides_per_view={3}\n  transition_type=\"slide\"\n  gap=\"1rem\"\n  loop\n  size=\"small\"\n  class=\"max-w-2xl mx-auto\"\n>\n  <:slide title=\"Alpha\" class=\"bg-gradient-to-br from-primary-400 to-primary-600\" />\n  <:slide title=\"Beta\" class=\"bg-gradient-to-br from-secondary-400 to-secondary-600\" />\n  <:slide title=\"Gamma\" class=\"bg-gradient-to-br from-primary-600 to-secondary-500\" />\n  <:slide title=\"Delta\" class=\"bg-gradient-to-br from-secondary-600 to-primary-400\" />\n  <:slide title=\"Epsilon\" class=\"bg-gradient-to-br from-primary-500 to-secondary-700\" />\n</.carousel>",
+          "description": "slides_per_view turns the carousel into a scrolling row - cards, products, team members - with gap between items and loop wrapping the ends. Swipe works on touch; the buttons page a full view at a time.",
+          "title": "Several slides per view"
         }
       ]
     },
@@ -2645,6 +2717,16 @@
           "code": "<div class=\"flex flex-wrap items-center justify-center gap-8\">\n  <.color_scheme_switch id=\"scheme-toggle\" />\n  <.color_scheme_switch id=\"scheme-dropdown\" variant=\"dropdown\" labels />\n  <.color_scheme_switch id=\"scheme-segmented\" variant=\"segmented\" />\n</div>",
           "description": "The same no-flash contract in three forms: toggle flips light/dark with the rotating sun and moon, dropdown offers Light / Dark / System, segmented keeps every state visible. All three need <.color_scheme_script /> once in the layout head. These are live - try them.",
           "title": "Three faces"
+        },
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-8\">\n  <.color_scheme_switch\n    id=\"scheme-dropdown-de\"\n    variant=\"dropdown\"\n    labels\n    light_label=\"Hell\"\n    dark_label=\"Dunkel\"\n    system_label=\"System\"\n  />\n  <.color_scheme_switch\n    id=\"scheme-segmented-de\"\n    variant=\"segmented\"\n    labels\n    light_label=\"Hell\"\n    dark_label=\"Dunkel\"\n    system_label=\"System\"\n  />\n</div>",
+          "description": "labels puts text next to the icons, and the three label attrs are plain strings - hand them to gettext and the switch speaks your locale. Dropdown and segmented shown here in German.",
+          "title": "Labelled, in any language"
+        },
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-8\">\n  <.color_scheme_switch id=\"scheme-emoji-toggle\">\n    <:light_icon><span class=\"text-base leading-none\">🌞</span></:light_icon>\n    <:dark_icon><span class=\"text-base leading-none\">🌚</span></:dark_icon>\n  </.color_scheme_switch>\n  <.color_scheme_switch id=\"scheme-emoji-segmented\" variant=\"segmented\">\n    <:light_icon><span class=\"text-sm leading-none\">🌞</span></:light_icon>\n    <:dark_icon><span class=\"text-sm leading-none\">🌚</span></:dark_icon>\n    <:system_icon><span class=\"text-sm leading-none\">🖥️</span></:system_icon>\n  </.color_scheme_switch>\n</div>",
+          "description": "The icon slots replace the sun, moon and monitor with anything - an svg, an emoji, a brand glyph - sized to fill. The no-flash behaviour and persistence don't change.",
+          "title": "Your icons, same contract"
         }
       ]
     },
@@ -2769,6 +2851,11 @@
           "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
           "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
           "title": "The ⌘K dialog"
+        },
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-4\">\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" label=\"Search docs…\" />\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" variant=\"icon\" label=\"Search\" />\n  <.command_dialog id=\"showcase-trigger-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search…\" />\n    <.command_list>\n      <.command_empty>Nothing matches.</.command_empty>\n      <.command_group heading=\"Pages\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The search affordance every ⌘K app puts in its header, so you stop hand-rolling it: a labelled pill for wide headers and an icon-only sibling for tight rows. Both open the dialog named in dialog_id, and both work on dead views - the click runs through a hook, not a phx-click JS command. The kbd chip is the visible hint; the shortcut itself lives on the dialog.",
+          "title": "The trigger"
         }
       ]
     },
@@ -2807,6 +2894,11 @@
           "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
           "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
           "title": "The ⌘K dialog"
+        },
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-4\">\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" label=\"Search docs…\" />\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" variant=\"icon\" label=\"Search\" />\n  <.command_dialog id=\"showcase-trigger-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search…\" />\n    <.command_list>\n      <.command_empty>Nothing matches.</.command_empty>\n      <.command_group heading=\"Pages\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The search affordance every ⌘K app puts in its header, so you stop hand-rolling it: a labelled pill for wide headers and an icon-only sibling for tight rows. Both open the dialog named in dialog_id, and both work on dead views - the click runs through a hook, not a phx-click JS command. The kbd chip is the visible hint; the shortcut itself lives on the dialog.",
+          "title": "The trigger"
         },
         {
           "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
@@ -2860,6 +2952,11 @@
           "title": "The ⌘K dialog"
         },
         {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-4\">\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" label=\"Search docs…\" />\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" variant=\"icon\" label=\"Search\" />\n  <.command_dialog id=\"showcase-trigger-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search…\" />\n    <.command_list>\n      <.command_empty>Nothing matches.</.command_empty>\n      <.command_group heading=\"Pages\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The search affordance every ⌘K app puts in its header, so you stop hand-rolling it: a labelled pill for wide headers and an icon-only sibling for tight rows. Both open the dialog named in dialog_id, and both work on dead views - the click runs through a hook, not a phx-click JS command. The kbd chip is the visible hint; the shortcut itself lives on the dialog.",
+          "title": "The trigger"
+        },
+        {
           "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
           "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
           "title": "Inline palette"
@@ -2910,6 +3007,11 @@
           "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
           "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
           "title": "The ⌘K dialog"
+        },
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-4\">\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" label=\"Search docs…\" />\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" variant=\"icon\" label=\"Search\" />\n  <.command_dialog id=\"showcase-trigger-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search…\" />\n    <.command_list>\n      <.command_empty>Nothing matches.</.command_empty>\n      <.command_group heading=\"Pages\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The search affordance every ⌘K app puts in its header, so you stop hand-rolling it: a labelled pill for wide headers and an icon-only sibling for tight rows. Both open the dialog named in dialog_id, and both work on dead views - the click runs through a hook, not a phx-click JS command. The kbd chip is the visible hint; the shortcut itself lives on the dialog.",
+          "title": "The trigger"
         },
         {
           "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
@@ -3003,6 +3105,11 @@
           "title": "The ⌘K dialog"
         },
         {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-4\">\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" label=\"Search docs…\" />\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" variant=\"icon\" label=\"Search\" />\n  <.command_dialog id=\"showcase-trigger-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search…\" />\n    <.command_list>\n      <.command_empty>Nothing matches.</.command_empty>\n      <.command_group heading=\"Pages\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The search affordance every ⌘K app puts in its header, so you stop hand-rolling it: a labelled pill for wide headers and an icon-only sibling for tight rows. Both open the dialog named in dialog_id, and both work on dead views - the click runs through a hook, not a phx-click JS command. The kbd chip is the visible hint; the shortcut itself lives on the dialog.",
+          "title": "The trigger"
+        },
+        {
           "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
           "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
           "title": "Inline palette"
@@ -3052,6 +3159,11 @@
           "code": "<div class=\"flex flex-col items-center gap-3\">\n  <.button\n    color=\"gray\"\n    variant=\"outline\"\n    phx-click={PetalComponents.Command.open_command(\"showcase-cmdk\")}\n  >\n    <.icon name=\"hero-magnifying-glass\" class=\"w-4 h-4 mr-1\" /> Open command palette\n  </.button>\n\n  <.command_dialog id=\"showcase-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search components and actions...\" />\n    <.command_list>\n      <.command_empty>Nothing matches. Try a component name.</.command_empty>\n      <.command_group heading=\"Navigation\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\", \"components\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n        <.command_item keywords={[\"price\", \"plans\"]}>\n          <.icon name=\"hero-credit-card\" /> Pricing\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
           "description": "The same palette in a native <dialog> - top layer, focus trap and Escape for free. Open it from any element.",
           "title": "The ⌘K dialog"
+        },
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-4\">\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" label=\"Search docs…\" />\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" variant=\"icon\" label=\"Search\" />\n  <.command_dialog id=\"showcase-trigger-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search…\" />\n    <.command_list>\n      <.command_empty>Nothing matches.</.command_empty>\n      <.command_group heading=\"Pages\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The search affordance every ⌘K app puts in its header, so you stop hand-rolling it: a labelled pill for wide headers and an icon-only sibling for tight rows. Both open the dialog named in dialog_id, and both work on dead views - the click runs through a hook, not a phx-click JS command. The kbd chip is the visible hint; the shortcut itself lives on the dialog.",
+          "title": "The trigger"
         },
         {
           "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
@@ -3126,6 +3238,72 @@
           "code": "<div class=\"w-full max-w-md mx-auto\">\n  <.command\n    id=\"showcase-command\"\n    loop\n    class=\"border border-gray-200 shadow-xs dark:border-white/15\"\n  >\n    <.command_input placeholder=\"Type a command or search...\" />\n    <.command_list>\n      <.command_empty>No results found.</.command_empty>\n      <.command_group heading=\"Suggestions\">\n        <.command_item keywords={[\"date\", \"schedule\"]}>\n          <.icon name=\"hero-calendar\" /> Calendar\n        </.command_item>\n        <.command_item keywords={[\"smile\"]}>\n          <.icon name=\"hero-face-smile\" /> Search emoji\n        </.command_item>\n        <.command_item disabled>\n          <.icon name=\"hero-calculator\" /> Calculator\n        </.command_item>\n      </.command_group>\n      <.command_separator />\n      <.command_group heading=\"Settings\">\n        <.command_item keywords={[\"account\", \"user\"]}>\n          <.icon name=\"hero-user\" /> Profile\n          <.command_shortcut>⌘P</.command_shortcut>\n        </.command_item>\n        <.command_item keywords={[\"payment\", \"card\"]}>\n          <.icon name=\"hero-credit-card\" /> Billing\n          <.command_shortcut>⌘B</.command_shortcut>\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command>\n</div>",
           "description": "A palette panel you drop into a page, sidebar or picker. Type to filter; arrow keys move, Enter runs.",
           "title": "Inline palette"
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.Command",
+      "name": "command_trigger",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "dialog_id",
+          "type": ":string",
+          "values": null,
+          "doc": "the command_dialog this trigger opens",
+          "required": true
+        },
+        {
+          "default": "\"⌘K\"",
+          "name": "kbd",
+          "type": ":string",
+          "values": null,
+          "doc": "the shortcut hint rendered on the pill. Set nil to hide it",
+          "required": false
+        },
+        {
+          "default": "\"Search…\"",
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "pill text, and the icon variant's aria-label",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"pill\"",
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            "pill",
+            "icon"
+          ],
+          "doc": "pill is the labelled search affordance for wide headers; icon is the compact trigger",
+          "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-4\">\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" label=\"Search docs…\" />\n  <.command_trigger dialog_id=\"showcase-trigger-cmdk\" variant=\"icon\" label=\"Search\" />\n  <.command_dialog id=\"showcase-trigger-cmdk\" shortcut=\"\">\n    <.command_input placeholder=\"Search…\" />\n    <.command_list>\n      <.command_empty>Nothing matches.</.command_empty>\n      <.command_group heading=\"Pages\">\n        <.command_item keywords={[\"home\"]}>\n          <.icon name=\"hero-home\" /> Overview\n        </.command_item>\n        <.command_item keywords={[\"ui\"]}>\n          <.icon name=\"hero-squares-2x2\" /> Components\n        </.command_item>\n      </.command_group>\n    </.command_list>\n  </.command_dialog>\n</div>",
+          "description": "The search affordance every ⌘K app puts in its header, so you stop hand-rolling it: a labelled pill for wide headers and an icon-only sibling for tight rows. Both open the dialog named in dialog_id, and both work on dead views - the click runs through a hook, not a phx-click JS command. The kbd chip is the visible hint; the shortcut itself lives on the dialog.",
+          "title": "The trigger"
         }
       ]
     },
@@ -5978,6 +6156,110 @@
       ]
     },
     {
+      "module": "PetalComponents.LanguageSelect",
+      "name": "language_select",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the dropdown container",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "current_locale",
+          "type": ":string",
+          "values": null,
+          "doc": "the active locale, e.g. from Gettext.get_locale/1",
+          "required": true
+        },
+        {
+          "default": "\"\"",
+          "name": "current_path",
+          "type": ":string",
+          "values": null,
+          "doc": "the path the locale links return to; the locale query param is appended",
+          "required": false
+        },
+        {
+          "default": "\"Change language\"",
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "accessible name for the trigger",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "language_options",
+          "type": ":list",
+          "values": null,
+          "doc": "one map per language: %{locale: \"en\", flag: \"🇬🇧\", label: \"English\"} - :flag is optional",
+          "required": true
+        },
+        {
+          "default": "\"left\"",
+          "name": "placement",
+          "type": ":string",
+          "values": [
+            "left",
+            "right"
+          ],
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "true",
+          "name": "show_chevron",
+          "type": ":boolean",
+          "values": null,
+          "doc": "hide for the cleanest text triggers - the flag or code stands alone",
+          "required": false
+        },
+        {
+          "default": "\"flag\"",
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            "flag",
+            "code",
+            "label"
+          ],
+          "doc": "what the trigger shows: the current flag, the locale code (EN), or the language name",
+          "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"flex justify-center py-4\">\n  <.language_select\n    current_locale=\"en\"\n    current_path=\"#\"\n    language_options={[\n      %{locale: \"en\", flag: \"🇬🇧\", label: \"English\"},\n      %{locale: \"fr\", flag: \"🇫🇷\", label: \"Français\"},\n      %{locale: \"de\", flag: \"🇩🇪\", label: \"Deutsch\"},\n      %{locale: \"es\", flag: \"🇪🇸\", label: \"Español\"}\n    ]}\n  />\n</div>",
+          "description": "The flag dropdown for a header or footer. Items are plain links carrying ?locale= (&-joined when the path already has a query) - the conventional Phoenix contract, working on live and dead views alike. The current language is marked with aria-current and a check.",
+          "title": "The locale switcher"
+        },
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-10 py-4\">\n  <.language_select\n    current_locale=\"en\"\n    current_path=\"#\"\n    variant=\"code\"\n    language_options={[\n      %{locale: \"en\", label: \"English\"},\n      %{locale: \"pt\", label: \"Português\"},\n      %{locale: \"de\", label: \"Deutsch\"}\n    ]}\n  />\n  <.language_select\n    current_locale=\"pt\"\n    current_path=\"#\"\n    variant=\"label\"\n    show_chevron={false}\n    language_options={[\n      %{locale: \"en\", flag: \"🇬🇧\", label: \"English\"},\n      %{locale: \"pt\", flag: \"🇵🇹\", label: \"Português\"},\n      %{locale: \"de\", flag: \"🇩🇪\", label: \"Deutsch\"}\n    ]}\n  />\n</div>",
+          "description": "A flag is a country, not a language - Portuguese isn't only 🇵🇹. variant=\"code\" puts the locale code on the trigger, variant=\"label\" the language name, and options that omit :flag render as clean text rows.",
+          "title": "Text triggers, flags optional"
+        },
+        {
+          "code": "<div class=\"flex justify-center py-4\">\n  <.language_select\n    current_locale=\"xx\"\n    current_path=\"#\"\n    language_options={[\n      %{locale: \"en\", flag: \"🇬🇧\", label: \"English\"},\n      %{locale: \"fr\", flag: \"🇫🇷\", label: \"Français\"}\n    ]}\n  />\n</div>",
+          "description": "An unknown current_locale falls back to a language glyph instead of raising - a half-configured app renders a working menu, not a crash.",
+          "title": "Graceful when unconfigured"
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Typography",
       "name": "lead",
       "slots": [
@@ -6103,6 +6385,11 @@
           "code": "<div class=\"flex flex-col gap-2 text-sm\">\n  <.local_time\n    id=\"showcase-lt-zone-1\"\n    at={~U[2026-07-21 08:30:00Z]}\n    locale=\"de-DE\"\n    timezone=\"Europe/Berlin\"\n  />\n  <.local_time\n    id=\"showcase-lt-zone-2\"\n    at={~U[2026-07-21 08:30:00Z]}\n    locale=\"en-AU\"\n    timezone=\"Australia/Sydney\"\n  />\n</div>",
           "description": "The same instant for a Berlin colleague and a Sydney one - locale and timezone override the browser defaults per element.",
           "title": "Pinned locales and timezones"
+        },
+        {
+          "code": "<div class=\"flex flex-col gap-2 text-sm\">\n  <.local_time\n    id=\"showcase-lt-threshold-1\"\n    at={DateTime.add(DateTime.utc_now(), -259_200)}\n    format=\"relative\"\n  />\n  <.local_time\n    id=\"showcase-lt-threshold-2\"\n    at={DateTime.add(DateTime.utc_now(), -259_200)}\n    format=\"relative\"\n    threshold={86_400}\n  />\n</div>",
+          "description": "Relative copy is for recency - \"3 days ago\" helps, \"47 weeks ago\" is noise. threshold (seconds, default 7 days) is the cutoff: older than that and the same element renders the absolute form instead. Same timestamp below, two thresholds.",
+          "title": "Where relative gives up"
         }
       ]
     },
@@ -6339,9 +6626,19 @@
       ],
       "examples": [
         {
-          "code": "<.marquee pause_on_hover duration=\"24s\">\n  <div\n    :for={name <- ~w(Phoenix LiveView Tailwind Elixir Postgres Oban Ecto)}\n    class=\"flex items-center gap-2 px-5 py-3 mx-2 border border-gray-200 rounded-xl dark:border-gray-700\"\n  >\n    <.icon name=\"hero-bolt\" class=\"w-4 h-4 text-gray-400\" />\n    <span class=\"text-sm font-medium\">{name}</span>\n  </div>\n</.marquee>",
-          "description": "Logos, testimonials, anything - pure CSS animation with edge fade, pausing under the pointer with pause_on_hover. repeat controls how many copies keep the loop seamless; duration and gap tune the feel; reverse and vertical change direction. Holds still under prefers-reduced-motion.",
-          "title": "An infinite scroller"
+          "code": "<.marquee pause_on_hover duration=\"30s\" gap=\"4rem\">\n  <span\n    :for={\n      {name, style} <- [\n        {\"ACME\", \"font-black tracking-tighter\"},\n        {\"Globex\", \"font-serif italic font-bold\"},\n        {\"INITECH\", \"font-mono font-semibold tracking-widest\"},\n        {\"Umbra\", \"font-extrabold tracking-tight\"},\n        {\"Vandelay\", \"font-serif font-medium tracking-wide\"},\n        {\"hooli\", \"font-black tracking-wide\"}\n      ]\n    }\n    class={[\"text-3xl text-gray-400 dark:text-gray-500\", style]}\n  >\n    {name}\n  </span>\n</.marquee>",
+          "description": "The trusted-by row: an infinite scroller with edge fade, pausing under the pointer with pause_on_hover. Wordmarks here are plain styled text - swap in your logos as <img> tags and nothing else changes. repeat controls how many copies keep the loop seamless; duration and gap tune the feel. Holds still under prefers-reduced-motion.",
+          "title": "The logo strip"
+        },
+        {
+          "code": "<div class=\"flex w-full flex-col gap-4\">\n  <.marquee pause_on_hover duration=\"45s\">\n    <.review_card\n      :for={\n        {name, username, body} <- [\n          {\"Amelia Ward\", \"@ameliabuilds\",\n           \"Shipped our whole settings area in an afternoon. The form components alone paid for the switch.\"},\n          {\"Jonah Reyes\", \"@jonahdev\",\n           \"The dark mode just works. Every component, first try, no audit pass needed.\"},\n          {\"Priya Anand\", \"@priya_a\",\n           \"Our AI assistant generates petal code that compiles. That was the moment for me.\"}\n        ]\n      }\n      name={name}\n      username={username}\n      body={body}\n      class=\"w-80 mx-2\"\n    />\n  </.marquee>\n  <.marquee pause_on_hover reverse duration=\"45s\">\n    <.review_card\n      :for={\n        {name, username, body} <- [\n          {\"Maya Okafor\", \"@mayacodes\",\n           \"Radius token, colour dials, done. The whole app restyled without touching a component.\"},\n          {\"Tom Hale\", \"@tomhale\",\n           \"Went from Figma to a working LiveView in a day. The stepper and slide-over are exactly right.\"},\n          {\"Ana Silva\", \"@anasilva\",\n           \"put_flash renders as toasts now. Deleted a hundred lines of notification code.\"}\n        ]\n      }\n      name={name}\n      username={username}\n      body={body}\n      class=\"w-80 mx-2\"\n    />\n  </.marquee>\n</div>",
+          "description": "Two counter-rotating rows of review cards - the social-proof wall from two marquees and one card component. No photo assets: review_card without img hashes a deterministic gradient monogram from each name. reverse sends the second row the other way; hover either row and it pauses for reading.",
+          "title": "The testimonial wall"
+        },
+        {
+          "code": "<.marquee vertical pause_on_hover duration=\"25s\" gap=\"0.75rem\" max_height=\"md\">\n  <div\n    :for={\n      {name, action} <- [\n        {\"Amelia\", \"upgraded to Pro\"},\n        {\"Jonah\", \"deployed to Fly\"},\n        {\"Priya\", \"added an org\"},\n        {\"Tom\", \"shipped the billing page\"},\n        {\"Maya\", \"connected Stripe\"},\n        {\"Ana\", \"invited 3 teammates\"}\n      ]\n    }\n    class=\"w-64 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-600 dark:border-gray-700 dark:text-gray-300\"\n  >\n    <span class=\"font-medium text-gray-900 dark:text-white\">{name}</span> {action}\n  </div>\n</.marquee>",
+          "description": "vertical scrolls a column instead of a row - activity feeds, changelogs, live signups - capped by max_height (sm through 2xl) with the same edge fade and hover pause. reverse works here too for a bottom-up ticker.",
+          "title": "The vertical feed"
         }
       ]
     },
@@ -8164,8 +8461,8 @@
           "name": "img",
           "type": ":string",
           "values": null,
-          "doc": "URL of the reviewer's avatar",
-          "required": true
+          "doc": "URL of the reviewer's avatar; without one, a deterministic gradient monogram is hashed from the name - no photo assets required",
+          "required": false
         },
         {
           "default": null,
@@ -8795,6 +9092,128 @@
           "code": "<.button\n  color=\"gray\"\n  variant=\"outline\"\n  phx-click={show_slide_over(\"right\", \"showcase-sheet-cart\")}\n>\n  <.icon name=\"hero-shopping-bag\" class=\"w-4 h-4 mr-1\" /> Open cart\n  <.badge color=\"primary\" size=\"sm\" label=\"3\" class=\"ml-2\" />\n</.button>\n\n<.slide_over\n  id=\"showcase-sheet-cart\"\n  hide\n  origin=\"right\"\n  max_width=\"sm\"\n  title=\"Your cart\"\n  description=\"3 items\"\n>\n  <div class=\"flex flex-col divide-y divide-gray-100 dark:divide-white/10\">\n    <div\n      :for={\n        {name, meta, price} <- [\n          {\"Petal Pro licence\", \"Single project\", \"$299\"},\n          {\"Petal Pro team\", \"Unlimited projects\", \"$599\"},\n          {\"Petal stickers\", \"Pack of 12\", \"$9\"}\n        ]\n      }\n      class=\"flex items-center gap-3 py-4\"\n    >\n      <div class=\"flex items-center justify-center flex-none w-12 h-12 rounded-lg bg-gray-100 dark:bg-white/10\">\n        <.icon name=\"hero-cube\" class=\"w-5 h-5 text-gray-400\" />\n      </div>\n      <div class=\"flex-1 min-w-0\">\n        <p class=\"text-sm font-medium text-gray-900 truncate dark:text-gray-100\">{name}</p>\n        <p class=\"text-xs text-gray-500 dark:text-gray-400\">{meta}</p>\n      </div>\n      <p class=\"text-sm font-medium tabular-nums text-gray-900 dark:text-gray-100\">{price}</p>\n    </div>\n  </div>\n  <:footer>\n    <div class=\"flex items-center justify-between w-full gap-4\">\n      <div>\n        <p class=\"text-xs text-gray-500 dark:text-gray-400\">Total</p>\n        <p class=\"text-base font-semibold tabular-nums text-gray-900 dark:text-gray-100\">\n          $907\n        </p>\n      </div>\n      <.button phx-click={hide_slide_over(\"right\", \"showcase-sheet-cart\")}>\n        Checkout\n      </.button>\n    </div>\n  </:footer>\n</.slide_over>",
           "description": "The panel is the floating surface: the body scrolls while the :footer stays put, so totals and the checkout button never leave the screen. Escape and click-away close by default.",
           "title": "A cart - scrolling body, pinned summary"
+        }
+      ]
+    },
+    {
+      "module": "PetalComponents.SocialButton",
+      "name": "social_button",
+      "slots": [],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "href",
+          "type": ":string",
+          "values": null,
+          "doc": "plain link target - OAuth flows are GETs",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "icon_only",
+          "type": ":boolean",
+          "values": null,
+          "doc": "glyph only; the label becomes the accessible name",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "button text; defaults to \"Continue with {Provider}\"",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "navigate",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "patch",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "provider",
+          "type": ":string",
+          "values": [
+            "google",
+            "github",
+            "apple",
+            "x",
+            "facebook",
+            "microsoft",
+            "gitlab",
+            "discord",
+            "linkedin"
+          ],
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": "phx-click and friends work here when rendered as a button",
+          "required": false
+        },
+        {
+          "default": "\"md\"",
+          "name": "size",
+          "type": ":string",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"outline\"",
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            "outline",
+            "solid"
+          ],
+          "doc": "outline is the neutral button with the coloured glyph; solid paints the brand colour",
+          "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<div class=\"flex flex-col w-full max-w-xs gap-3 mx-auto\">\n  <.social_button provider=\"google\" href=\"#\" class=\"w-full\" />\n  <.social_button provider=\"github\" href=\"#\" class=\"w-full\" />\n  <.social_button provider=\"apple\" href=\"#\" class=\"w-full\" />\n  <.social_button provider=\"x\" href=\"#\" class=\"w-full\" />\n</div>",
+          "description": "The canonical auth-card column: outline buttons, coloured glyphs, riding pc-button geometry so they match every other button and follow the radius dial. OAuth flows are plain GETs, so href points at /auth/:provider.",
+          "title": "The sign-in stack"
+        },
+        {
+          "code": "<div class=\"flex flex-wrap items-center justify-center gap-3\">\n  <.social_button provider=\"google\" variant=\"solid\" href=\"#\" />\n  <.social_button provider=\"github\" variant=\"solid\" href=\"#\" />\n  <.social_button provider=\"discord\" variant=\"solid\" href=\"#\" />\n  <.social_button provider=\"gitlab\" variant=\"solid\" href=\"#\" />\n</div>",
+          "description": "variant=\"solid\" puts the provider's colour on the button. The black brands (GitHub, Apple, X) keep a hairline border in dark mode so they never dissolve into the page.",
+          "title": "Solid, the brand's own paint"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-center gap-4\">\n  <div class=\"flex items-center gap-2\">\n    <.social_button provider=\"google\" icon_only href=\"#\" />\n    <.social_button provider=\"github\" icon_only href=\"#\" />\n    <.social_button provider=\"microsoft\" icon_only href=\"#\" />\n    <.social_button provider=\"linkedin\" icon_only href=\"#\" />\n    <.social_button provider=\"facebook\" icon_only href=\"#\" />\n  </div>\n  <.social_button provider=\"google\" label=\"Login with Google\" size=\"sm\" href=\"#\" />\n</div>",
+          "description": "icon_only for tight layouts - the label moves into aria-label, so the compact row stays accessible. Custom labels replace the default \"Continue with\" copy.",
+          "title": "Icon-only rows"
         }
       ]
     },
@@ -10121,6 +10540,179 @@
       ]
     },
     {
+      "module": "PetalComponents.ToggleGroup",
+      "name": "toggle_group",
+      "slots": [
+        {
+          "name": "item",
+          "doc": null,
+          "required": true,
+          "attrs": [
+            {
+              "default": null,
+              "name": "value",
+              "type": ":any",
+              "values": null,
+              "doc": "the option this item represents",
+              "required": true
+            },
+            {
+              "default": null,
+              "name": "disabled",
+              "type": ":boolean",
+              "values": null,
+              "doc": "disables this item only",
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "class",
+              "type": ":any",
+              "values": null,
+              "doc": "extra classes for this item",
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "aria-label",
+              "type": ":string",
+              "values": null,
+              "doc": "accessible name for icon-only items - reaches the radio/button itself",
+              "required": false
+            }
+          ]
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": null,
+          "name": "aria_label",
+          "type": ":string",
+          "values": null,
+          "doc": "the ARIA label for the group",
+          "required": true
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": "extra classes for the rail",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "disabled",
+          "type": ":boolean",
+          "values": null,
+          "doc": "disables every item",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "multiple",
+          "type": ":boolean",
+          "values": null,
+          "doc": "treat value as a list; any number of options can be pressed",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "on_change",
+          "type": ":any",
+          "values": null,
+          "doc": "event name (or JS command) sent on press; the pressed option arrives in phx-value-toggle. Omit it and put phx-click on individual items instead",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "rest",
+          "type": ":global",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"md\"",
+          "name": "size",
+          "type": ":string",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ],
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "value",
+          "type": ":any",
+          "values": null,
+          "doc": "the selected value - a single term, or a list when `multiple`",
+          "required": false
+        },
+        {
+          "default": "\"solid\"",
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            "solid",
+            "outline",
+            "accent"
+          ],
+          "doc": "solid is the wash rail with a neutral chip; outline is the bordered toolbar rail; accent paints the selection in the brand colour",
+          "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<.toggle_group aria_label=\"Density\" value=\"cozy\" on_change=\"set_density\">\n  <:item value=\"compact\">Compact</:item>\n  <:item value=\"cozy\">Cozy</:item>\n  <:item value=\"comfortable\">Comfortable</:item>\n</.toggle_group>",
+          "description": "One rail, one pressed option, rendered as native radios: real radiogroup semantics, one tab stop, arrow keys move the selection, no JavaScript. Pass the current value and an on_change event; in your app you assign the value the event hands back and the chip follows. This preview renders a fixed value - registry examples are static by design.",
+          "title": "Single select"
+        },
+        {
+          "code": "<.toggle_group\n  multiple\n  aria_label=\"Formatting\"\n  value={[\"bold\", \"italic\"]}\n  on_change=\"toggle_format\"\n>\n  <:item value=\"bold\" aria-label=\"Bold\"><.icon name=\"hero-bold\" /></:item>\n  <:item value=\"italic\" aria-label=\"Italic\"><.icon name=\"hero-italic\" /></:item>\n  <:item value=\"underline\" aria-label=\"Underline\"><.icon name=\"hero-underline\" /></:item>\n</.toggle_group>",
+          "description": "With multiple, value is a list and every member renders pressed. The server owns the toggle logic: add the option if it is missing, drop it if it is there. Icon-only items carry an aria-label so the option still reads out.",
+          "title": "Multiple select"
+        },
+        {
+          "code": "<.toggle_group aria_label=\"Preview device\" value=\"tablet\" on_change=\"set_device\">\n  <:item value=\"desktop\" aria-label=\"Desktop\"><.icon name=\"hero-computer-desktop\" /></:item>\n  <:item value=\"tablet\" aria-label=\"Tablet\"><.icon name=\"hero-device-tablet\" /></:item>\n  <:item value=\"mobile\" aria-label=\"Phone\"><.icon name=\"hero-device-phone-mobile\" /></:item>\n</.toggle_group>",
+          "description": "The canonical icon-only use: a desktop / tablet / phone switcher above a preview frame, the strip every component playground puts in its toolbar. Icon-only items carry aria-labels so the options still read out. The playground's Try it section runs this one live against real content.",
+          "title": "The device rail"
+        },
+        {
+          "code": "<.toggle_group\n  variant=\"outline\"\n  aria_label=\"Preview device\"\n  value=\"desktop\"\n  on_change=\"set_device\"\n>\n  <:item value=\"desktop\" aria-label=\"Desktop\"><.icon name=\"hero-computer-desktop\" /></:item>\n  <:item value=\"tablet\" aria-label=\"Tablet\"><.icon name=\"hero-device-tablet\" /></:item>\n  <:item value=\"mobile\" aria-label=\"Phone\"><.icon name=\"hero-device-phone-mobile\" /></:item>\n</.toggle_group>",
+          "description": "The toolbar look: a bordered rail with floating chips, on the same border and wash ramp as outline buttons - compose it next to a button_group and the two read as kin. The wash rail suits settings and content; the outline rail suits chrome.",
+          "title": "Outline variant"
+        },
+        {
+          "code": "<.toggle_group variant=\"accent\" aria_label=\"Billing period\" value=\"annual\" on_change=\"set_period\">\n  <:item value=\"monthly\">Monthly</:item>\n  <:item value=\"annual\">Annual</:item>\n</.toggle_group>",
+          "description": "The selection painted in the brand accent instead of a neutral chip. Same wash rail as solid, so it stays in the family - reach for it when the choice is a committed setting rather than a view preference. It follows your primary colour, so it retints with the theme.",
+          "title": "Accent variant"
+        },
+        {
+          "code": "<.toggle_group aria_label=\"View\" value=\"grid\" on_change=\"set_view\">\n  <:item value=\"list\"><.icon name=\"hero-list-bullet\" /> List</:item>\n  <:item value=\"grid\"><.icon name=\"hero-squares-2x2\" /> Grid</:item>\n  <:item value=\"board\"><.icon name=\"hero-view-columns\" /> Board</:item>\n</.toggle_group>",
+          "description": "Items take any content: icon plus text reads fastest for view switchers. The pressed chip and the wash come from the rail, so mixed content stays aligned without extra classes.",
+          "title": "Icons with labels"
+        },
+        {
+          "code": "<div class=\"flex flex-col items-start gap-4\">\n  <.toggle_group aria_label=\"Page size small\" size=\"sm\" value=\"10\" on_change=\"set_page_size\">\n    <:item value=\"6\">6</:item>\n    <:item value=\"10\">10</:item>\n    <:item value=\"14\">14</:item>\n    <:item value=\"full\" disabled>Full</:item>\n  </.toggle_group>\n  <.toggle_group aria_label=\"Page size medium\" size=\"md\" value=\"10\" on_change=\"set_page_size\">\n    <:item value=\"6\">6</:item>\n    <:item value=\"10\">10</:item>\n    <:item value=\"14\">14</:item>\n  </.toggle_group>\n  <.toggle_group aria_label=\"Page size large\" size=\"lg\" value=\"10\" on_change=\"set_page_size\">\n    <:item value=\"6\">6</:item>\n    <:item value=\"10\">10</:item>\n    <:item value=\"14\">14</:item>\n  </.toggle_group>\n</div>",
+          "description": "Three sizes share the same radii math as the rest of the rail family, so a sm toggle group next to a scheme switch reads as kin. Disabled works per item or for the whole rail.",
+          "title": "Sizes"
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Chat",
       "name": "tool_call",
       "slots": [
@@ -10522,6 +11114,14 @@
           "required": false
         },
         {
+          "default": "true",
+          "name": "show_chevron",
+          "type": ":boolean",
+          "values": null,
+          "doc": "hide for the chevron-less avatar trigger - the leaner app-shell look",
+          "required": false
+        },
+        {
           "default": null,
           "name": "user_menu_items",
           "type": ":list",
@@ -10532,8 +11132,8 @@
       ],
       "examples": [
         {
-          "code": "<div class=\"flex items-start justify-center gap-16\">\n  <.user_dropdown_menu\n    current_user_name=\"Sarah Chen\"\n    user_menu_items={[\n      %{path: \"#\", icon: \"hero-user\", label: \"Profile\"},\n      %{path: \"#\", icon: \"hero-cog-6-tooth\", label: \"Settings\"},\n      %{path: \"#\", icon: \"hero-arrow-right-start-on-rectangle\", label: \"Sign out\"}\n    ]}\n  />\n  <.user_dropdown_menu user_menu_items={[\n    %{path: \"#\", icon: \"hero-arrow-left-end-on-rectangle\", label: \"Sign in\"}\n  ]} />\n</div>",
-          "description": "The avatar-with-chevron every app shell ends up needing: an avatar trigger and menu items from plain maps - path, icon and label, plus an optional method (:delete for sign-out routes). A name alone renders deterministic initials, avatar_src adds the photo, and with neither the trigger falls back to the placeholder avatar - the anonymous state.",
+          "code": "<div class=\"flex items-start justify-center gap-16\">\n  <.user_dropdown_menu\n    current_user_name=\"Sarah Chen\"\n    user_menu_items={[\n      %{path: \"#\", icon: \"hero-user\", label: \"Profile\"},\n      %{path: \"#\", icon: \"hero-cog-6-tooth\", label: \"Settings\"},\n      %{path: \"#\", icon: \"hero-arrow-right-start-on-rectangle\", label: \"Sign out\"}\n    ]}\n  />\n  <.user_dropdown_menu\n    current_user_name=\"Sarah Chen\"\n    show_chevron={false}\n    user_menu_items={[\n      %{path: \"#\", icon: \"hero-user\", label: \"Profile\"},\n      %{path: \"#\", icon: \"hero-arrow-right-start-on-rectangle\", label: \"Sign out\"}\n    ]}\n  />\n  <.user_dropdown_menu user_menu_items={[\n    %{path: \"#\", icon: \"hero-arrow-left-end-on-rectangle\", label: \"Sign in\"}\n  ]} />\n</div>",
+          "description": "The avatar trigger and menu items from plain maps - path, icon and label, plus an optional method (:delete for sign-out routes). A name alone renders deterministic initials, avatar_src adds the photo, and with neither the trigger falls back to the placeholder avatar - the anonymous state. show_chevron={false} is the leaner chevron-less look the big app shells run.",
           "title": "The app-shell user menu"
         }
       ]
@@ -10779,5 +11379,5 @@
       ]
     }
   ],
-  "generated_at": "2026-07-30T04:15:15.594284Z"
+  "generated_at": "2026-08-04T00:30:18.208657Z"
 }
