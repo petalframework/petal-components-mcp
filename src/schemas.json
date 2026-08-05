@@ -1,5 +1,5 @@
 {
-  "version": "4.11.1",
+  "version": "4.11.2",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -11397,5 +11397,5 @@
       ]
     }
   ],
-  "generated_at": "2026-08-04T22:56:44.241240Z"
+  "generated_at": "2026-08-05T00:22:41.514601Z"
 }
