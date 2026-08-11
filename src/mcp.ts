@@ -63,7 +63,7 @@ If \`use PetalComponents\` is already there, skip this step.
 
 ## 5. Register the JS hooks
 
-petal_components v4 ships a bundled JS hook set - toasts, the command palette and its trigger, the colour-scheme switch, carousel, charts, local time, sliders, OTP input, the chat family, popover, the navigation menu's hover mode, the effects, and the enhanced inputs (everything else is CSS + LiveView.JS only). You never register hooks individually - spread the whole set once. Open \`assets/js/app.js\`, import the hooks, and merge them into the \`LiveSocket\`:
+petal_components v4 ships a bundled JS hook set - toasts, the command palette and its trigger, the colour-scheme switch, carousel, charts, local time, sliders, OTP input, the chat family, popover, the combobox, the data table, the navigation menu's hover mode, the effects, and the enhanced inputs (everything else is CSS + LiveView.JS only). You never register hooks individually - spread the whole set once. Open \`assets/js/app.js\`, import the hooks, and merge them into the \`LiveSocket\`:
 
 \`\`\`js
 import PetalComponents from "../../deps/petal_components/assets/js/petal_components"

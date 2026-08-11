@@ -1,5 +1,5 @@
 {
-  "version": "4.12.0",
+  "version": "4.13.0",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -2744,7 +2744,7 @@
         },
         {
           "name": "footer",
-          "doc": "panel chrome rendered below the option list - counts, \"manage\"\nlinks. Lives OUTSIDE the listbox; pointer-interactive content works,\nkeyboard focus stays with the options.\n",
+          "doc": "panel chrome rendered below the option list - counts, \"manage\"\nlinks. Lives OUTSIDE the listbox. Pointer-interactive content works,\nand a focusable control here (input, select, button) takes focus on\nclick without closing the panel; the arrow-key highlight stays with\nthe options either way.\n",
           "required": false,
           "attrs": []
         },
@@ -2822,7 +2822,7 @@
           "name": "disabled",
           "type": ":boolean",
           "values": null,
-          "doc": null,
+          "doc": "disables the control and all of its chrome",
           "required": false
         },
         {
@@ -2858,6 +2858,14 @@
           "required": false
         },
         {
+          "default": null,
+          "name": "label",
+          "type": ":string",
+          "values": null,
+          "doc": "the control's accessible name, rendered as aria-label on the visible\ncombobox (the input, or the trigger button). `<.field type=\"combobox\">`\nsupplies this from its own label - pass it here when you use the\ncomponent standalone, or the placeholder ends up being the only name\na screen reader has.\n",
+          "required": false
+        },
+        {
           "default": "\"Options\"",
           "name": "listbox_label",
           "type": ":string",
@@ -2878,7 +2886,15 @@
           "name": "max_items",
           "type": ":integer",
           "values": null,
-          "doc": "multiple only: cap on chosen options; at the cap, unchosen options render inert",
+          "doc": "multiple only: cap on chosen options; at the cap, unchosen options go genuinely inert - aria-disabled and skipped by the keyboard - until something is removed",
+          "required": false
+        },
+        {
+          "default": "\"Maximum selections reached\"",
+          "name": "max_items_text",
+          "type": ":string",
+          "values": null,
+          "doc": "multiple with max_items: announced (and shown in place of the placeholder) once the cap blocks further picks",
           "required": false
         },
         {
@@ -2902,7 +2918,7 @@
           "name": "no_results_text",
           "type": ":string",
           "values": null,
-          "doc": null,
+          "doc": "the empty-state row's text, also announced in the live region",
           "required": false
         },
         {
@@ -2918,7 +2934,7 @@
           "name": "placeholder",
           "type": ":string",
           "values": null,
-          "doc": null,
+          "doc": "empty-state text in the control - a hint, never the accessible name (see label)",
           "required": false
         },
         {
@@ -2950,7 +2966,7 @@
           "name": "required",
           "type": ":boolean",
           "values": null,
-          "doc": "renders on the hidden select, so native required validation guards the real control",
+          "doc": "marks the control required: `aria-required` on the visible combobox and\n`required` on the hidden select, so native constraint validation guards\nthe real control. The select is inert and off-screen, so the hook takes\nthe browser's failed-validation report over - it shows the browser's own\nmessage on the visible control and puts focus there.\n",
           "required": false
         },
         {
@@ -2958,7 +2974,7 @@
           "name": "rest",
           "type": ":global",
           "values": null,
-          "doc": null,
+          "doc": "arbitrary HTML attributes for the wrapper element (phx-* bindings, data-*). Use label for the accessible name - aria-* on a wrapper div names nothing",
           "required": false
         },
         {
@@ -3887,6 +3903,509 @@
       ]
     },
     {
+      "module": "PetalComponents.DataTable",
+      "name": "data_table",
+      "slots": [
+        {
+          "name": "action",
+          "doc": "trailing actions column, `:let` receives the row",
+          "required": false,
+          "attrs": []
+        },
+        {
+          "name": "bulk_action",
+          "doc": "toolbar content while rows are selected; `:let` receives the selected ids",
+          "required": false,
+          "attrs": []
+        },
+        {
+          "name": "col",
+          "doc": null,
+          "required": true,
+          "attrs": [
+            {
+              "default": null,
+              "name": "field",
+              "type": ":atom",
+              "values": null,
+              "doc": null,
+              "required": true
+            },
+            {
+              "default": null,
+              "name": "label",
+              "type": ":string",
+              "values": null,
+              "doc": null,
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "sortable",
+              "type": ":boolean",
+              "values": null,
+              "doc": null,
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "filterable",
+              "type": ":string",
+              "values": [
+                "text",
+                "number",
+                "select",
+                "date"
+              ],
+              "doc": "render a typed filter button + popover editor for this column",
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "options",
+              "type": ":list",
+              "values": null,
+              "doc": "select filters: the pickable values, as strings or {label, value} tuples",
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "align",
+              "type": ":string",
+              "values": [
+                "left",
+                "center",
+                "right"
+              ],
+              "doc": null,
+              "required": false
+            },
+            {
+              "default": null,
+              "name": "class",
+              "type": ":any",
+              "values": null,
+              "doc": null,
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "empty",
+          "doc": "custom empty state; a filters-aware default renders otherwise",
+          "required": false,
+          "attrs": []
+        },
+        {
+          "name": "toolbar",
+          "doc": "custom toolbar content rendered above the table",
+          "required": false,
+          "attrs": []
+        }
+      ],
+      "kind": "def",
+      "attrs": [
+        {
+          "default": "\"Actions\"",
+          "name": "actions_label",
+          "type": ":string",
+          "values": null,
+          "doc": "the actions column's header, announced but not shown",
+          "required": false
+        },
+        {
+          "default": "\"Apply\"",
+          "name": "apply_label",
+          "type": ":string",
+          "values": null,
+          "doc": "the filter editors' submit label, localizable",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "class",
+          "type": ":any",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"Clear filters\"",
+          "name": "clear_filters_label",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"Clear selection\"",
+          "name": "clear_selection_label",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "[]",
+          "name": "column_order",
+          "type": ":list",
+          "values": null,
+          "doc": "fields in display order (atoms or strings) - presentation state on\nthe `on_ui` event, like `hidden_columns`, never in URLs. Fields not\nlisted keep their declared order after the listed ones. Empty means\nthe declared `:col` order.\n",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "column_toggle",
+          "type": ":boolean",
+          "values": null,
+          "doc": "render a columns-visibility dropdown in the toolbar (rides the `on_ui` event)",
+          "required": false
+        },
+        {
+          "default": "\"Columns\"",
+          "name": "column_toggle_label",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"comfortable\"",
+          "name": "density",
+          "type": ":string",
+          "values": [
+            "comfortable",
+            "compact"
+          ],
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "%{}",
+          "name": "filter_op_labels",
+          "type": ":map",
+          "values": null,
+          "doc": "overrides for the operator display names, e.g. %{contains: \"enthält\"}",
+          "required": false
+        },
+        {
+          "default": "\"Filter options…\"",
+          "name": "filter_options_placeholder",
+          "type": ":string",
+          "values": null,
+          "doc": "the select editor's option-filter placeholder (shown from 8 options up), localizable",
+          "required": false
+        },
+        {
+          "default": "[]",
+          "name": "hidden_columns",
+          "type": ":list",
+          "values": null,
+          "doc": "fields currently hidden (atoms or strings) - presentation state, never in URLs",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "id",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": "false",
+          "name": "loading",
+          "type": ":boolean",
+          "values": null,
+          "doc": "render skeleton rows instead of data",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "max_height",
+          "type": ":string",
+          "values": null,
+          "doc": "caps the table body's height (any CSS length), making it scroll under a pinned header",
+          "required": false
+        },
+        {
+          "default": "\"Move down\"",
+          "name": "move_down_label",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"Move up\"",
+          "name": "move_up_label",
+          "type": ":string",
+          "values": null,
+          "doc": "reorder buttons, localizable",
+          "required": false
+        },
+        {
+          "default": "\"No results for these filters\"",
+          "name": "no_filtered_results_text",
+          "type": ":string",
+          "values": null,
+          "doc": "the empty message while filters are active",
+          "required": false
+        },
+        {
+          "default": "\"No results\"",
+          "name": "no_results_text",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"of\"",
+          "name": "of_label",
+          "type": ":string",
+          "values": null,
+          "doc": "the range summary's connective, localizable",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "on_change",
+          "type": ":string",
+          "values": null,
+          "doc": "event mode: the event every table interaction pushes, with an\nop-shaped payload (`op` of \"sort\" | \"page\" | \"clear_filters\").\n",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "on_ui",
+          "type": ":string",
+          "values": null,
+          "doc": "the event UI-state ops (selection) push, both wiring modes. Defaults\nto `on_change`; required alongside `selectable` in link mode.\n",
+          "required": false
+        },
+        {
+          "default": "\"Page\"",
+          "name": "page_label",
+          "type": ":string",
+          "values": null,
+          "doc": "cursor mode's page word, localizable",
+          "required": false
+        },
+        {
+          "default": "[]",
+          "name": "page_size_options",
+          "type": ":list",
+          "values": null,
+          "doc": "when non-empty, render a rows-per-page select in the footer",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "path",
+          "type": ":string",
+          "values": null,
+          "doc": "link mode: the base path sort and page changes patch to, with the\nstate encoded as query params. Required unless `on_change` is set.\n",
+          "required": false
+        },
+        {
+          "default": "\"Per page\"",
+          "name": "per_page_label",
+          "type": ":string",
+          "values": null,
+          "doc": "the rows-per-page label, localizable",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "reorderable",
+          "type": ":boolean",
+          "values": null,
+          "doc": "render move up/down controls in the Columns menu (requires `column_toggle`)",
+          "required": false
+        },
+        {
+          "default": "\"Reset filters\"",
+          "name": "reset_filters_label",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "\"results\"",
+          "name": "results_label",
+          "type": ":string",
+          "values": null,
+          "doc": "the announced result-count noun, localizable",
+          "required": false
+        },
+        {
+          "default": ":id",
+          "name": "row_id",
+          "type": ":any",
+          "values": null,
+          "doc": "row identity for selection: a field (atom) or a 1-arity function of\nthe row. The key must uniquely identify a record across ALL pages,\nnot just the visible one - a selection retained while paging is only\nas sound as this key. Same-page duplicates raise.\n",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "row_label",
+          "type": ":any",
+          "values": null,
+          "doc": "a 1-arity function returning a human name for a row, used as the\nselection checkbox's accessible name. Without it the checkbox\nannounces its position (\"Select row 3\"), because a primary key -\na UUID, say - is not something a screen reader user can act on.\n",
+          "required": false
+        },
+        {
+          "default": "[]",
+          "name": "rows",
+          "type": ":list",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "300",
+          "name": "search_debounce",
+          "type": ":integer",
+          "values": null,
+          "doc": "quick-search debounce in ms, both wiring modes",
+          "required": false
+        },
+        {
+          "default": "\"Search…\"",
+          "name": "search_placeholder",
+          "type": ":string",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "searchable",
+          "type": ":boolean",
+          "values": null,
+          "doc": "render the quick-search input in the toolbar (drives `state.search`)",
+          "required": false
+        },
+        {
+          "default": "\"Select all rows\"",
+          "name": "select_all_label",
+          "type": ":string",
+          "values": null,
+          "doc": "the header checkbox's aria-label",
+          "required": false
+        },
+        {
+          "default": "\"Select row\"",
+          "name": "select_row_label",
+          "type": ":string",
+          "values": null,
+          "doc": "the row checkbox's aria-label prefix, localizable",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "selectable",
+          "type": ":boolean",
+          "values": null,
+          "doc": "render a leading checkbox column",
+          "required": false
+        },
+        {
+          "default": "[]",
+          "name": "selected",
+          "type": ":list",
+          "values": null,
+          "doc": "the currently selected row ids (any terms; compared as strings)",
+          "required": false
+        },
+        {
+          "default": "\"selected\"",
+          "name": "selected_label",
+          "type": ":string",
+          "values": null,
+          "doc": "the selection count's word, localizable",
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "state",
+          "type": "{:struct, PetalComponents.DataTable.State}",
+          "values": null,
+          "doc": null,
+          "required": true
+        },
+        {
+          "default": "false",
+          "name": "sticky_header",
+          "type": ":boolean",
+          "values": null,
+          "doc": "pin the header row. Inside a data table this needs `max_height` too:\nthe scroll region is what the header sticks to, and a wrapper that\nscrolls only sideways cannot pin anything.\n",
+          "required": false
+        },
+        {
+          "default": "false",
+          "name": "striped",
+          "type": ":boolean",
+          "values": null,
+          "doc": null,
+          "required": false
+        },
+        {
+          "default": null,
+          "name": "target",
+          "type": ":any",
+          "values": null,
+          "doc": "event mode: the phx-target (e.g. @myself)",
+          "required": false
+        },
+        {
+          "default": "\"basic\"",
+          "name": "variant",
+          "type": ":string",
+          "values": [
+            "ghost",
+            "basic"
+          ],
+          "doc": null,
+          "required": false
+        }
+      ],
+      "examples": [
+        {
+          "code": "<% state = %State{order_by: [amount: :desc], page: 1, page_size: 5} %>\n<% {rows, state} = Engine.List.run(PetalComponents.Showcase.DataTable.sample_rows(), state) %>\n<.data_table id=\"sx-dt-basic\" rows={rows} state={state} path=\"#\">\n  <:col :let={row} field={:name} sortable>{row.name}</:col>\n  <:col :let={row} field={:email}>{row.email}</:col>\n  <:col :let={row} field={:amount} sortable align=\"right\">${row.amount}</:col>\n</.data_table>",
+          "description": "The whole surface from one State struct: sortable headers (aria-sort included), the range summary, and pagination that picks numbered mode because total is known. This static example runs the free in-memory engine over 20 rows at render time - zero setup, no database. In your app the same State drives handle_params (link mode) or a single op-grammar event (event mode).",
+          "title": "Sorted, paged, engine-run"
+        },
+        {
+          "code": "<% state = %State{\n  search: \"i\",\n  filters: [%{field: :status, op: :in, value: [\"pending\", \"refunded\"]}],\n  page_size: 5\n} %>\n<% {rows, state} = Engine.List.run(PetalComponents.Showcase.DataTable.sample_rows(), state) %>\n<.data_table\n  id=\"sx-dt-toolbar\"\n  rows={rows}\n  state={state}\n  on_change=\"table\"\n  searchable\n  page_size_options={[5, 10, 20]}\n>\n  <:col :let={row} field={:name} sortable>{row.name}</:col>\n  <:col :let={row} field={:email} filterable=\"text\">{row.email}</:col>\n  <:col\n    :let={row}\n    field={:status}\n    filterable=\"select\"\n    options={[{\"Paid\", \"paid\"}, {\"Pending\", \"pending\"}, {\"Refunded\", \"refunded\"}]}\n  >\n    <.badge\n      size=\"sm\"\n      variant=\"soft\"\n      color={\n        case row.status do\n          \"paid\" -> \"success\"\n          \"pending\" -> \"warning\"\n          _ -> \"danger\"\n        end\n      }\n      label={row.status}\n    />\n  </:col>\n  <:col :let={row} field={:amount} sortable align=\"right\" filterable=\"number\">\n    ${row.amount}\n  </:col>\n</.data_table>",
+          "description": "searchable sweeps string fields case-insensitively before filters (totals stay honest); filterable columns get buttons that open typed popover editors - operator + value for text/number/date (between reveals its second bound, no JS), a checkbox list for select - and read their predicate while active, with an inline clear. page_size_options adds the per-page select; Reset filters appears while any filter is active. Event mode posts one op-grammar event for all of it (State.handle_op/3 is the whole handler); link mode patches curl-able URLs.",
+          "title": "The full toolbar: search, typed filters, per-page"
+        },
+        {
+          "code": "<% state = %State{page_size: 4} %>\n<% {rows, state} = Engine.List.run(PetalComponents.Showcase.DataTable.sample_rows(), state) %>\n<.data_table\n  id=\"sx-dt-selection\"\n  rows={rows}\n  state={state}\n  on_change=\"table\"\n  selectable\n  selected={[\"1\", \"3\"]}\n>\n  <:col :let={row} field={:name} sortable>{row.name}</:col>\n  <:col :let={row} field={:email}>{row.email}</:col>\n  <:col :let={row} field={:amount} align=\"right\">${row.amount}</:col>\n  <:bulk_action :let={ids}>\n    <.button size=\"sm\" variant=\"soft\" color=\"danger\">Archive {length(ids)}</.button>\n  </:bulk_action>\n</.data_table>",
+          "description": "selectable adds a checkbox column keyed by row_id (a field or a function - it must uniquely identify records across ALL pages). The header checkbox is tri-state; while rows are selected the toolbar morphs into the count, your :bulk_action slot (:let receives the ids) and a clear button. Selection is UI state: it rides the on_ui event (defaulting to on_change) with select / select_all / clear_selection ops and never touches URLs - a MapSet plus three clauses is the whole backend.",
+          "title": "Row selection with a morphing toolbar"
+        },
+        {
+          "code": "<% state = %State{page_size: 4} %>\n<% {rows, state} = Engine.List.run(PetalComponents.Showcase.DataTable.sample_rows(), state) %>\n<.data_table\n  id=\"sx-dt-columns\"\n  rows={rows}\n  state={state}\n  on_change=\"table\"\n  column_toggle\n  reorderable\n  hidden_columns={[\"email\"]}\n>\n  <:col :let={row} field={:name} sortable>{row.name}</:col>\n  <:col :let={row} field={:email}>{row.email}</:col>\n  <:col :let={row} field={:amount} align=\"right\">${row.amount}</:col>\n</.data_table>",
+          "description": "column_toggle renders a Columns dropdown - every declared column with a checkbox, toggling immediately (the panel stays open for multi-toggling). reorderable adds move controls posting a field + dir delta; DataTable.move_column/4 applies it to your current order in one line, race-free under rapid clicks. Both are presentation state on the on_ui event, never in URLs; the last visible column can't be hidden.",
+          "title": "Columns visibility and order"
+        },
+        {
+          "code": "<% state = %State{total: 74, page_size: 4} %>\n<.data_table id=\"sx-dt-loading\" rows={[]} state={state} path=\"#\" loading>\n  <:col :let={row} field={:name}>{row}</:col>\n  <:col :let={row} field={:email}>{row}</:col>\n  <:col :let={row} field={:amount} align=\"right\">{row}</:col>\n</.data_table>",
+          "description": "loading swaps the page for skeleton rows - one per page_size row, respecting column count and alignment. Flip it off when the query resolves.",
+          "title": "Loading skeletons"
+        },
+        {
+          "code": "<% state = %State{total: 0, filters: [%{field: :name, op: :contains, value: \"zz\"}]} %>\n<.data_table id=\"sx-dt-empty\" rows={[]} state={state} path=\"#\">\n  <:col :let={row} field={:name}>{row}</:col>\n  <:col :let={row} field={:email}>{row}</:col>\n</.data_table>",
+          "description": "An empty result set with active filters says so and offers the way out - a clear-filters patch link in link mode, the op-grammar event in event mode. Without filters it is a plain no-results line. Override either with the :empty slot.",
+          "title": "The filters-aware empty state"
+        }
+      ]
+    },
+    {
       "module": "PetalComponents.Form",
       "name": "date_input",
       "slots": [],
@@ -4700,6 +5219,7 @@
             "checkbox",
             "checkbox-group",
             "color",
+            "combobox",
             "date",
             "datetime-local",
             "email",
@@ -7791,6 +8311,14 @@
       "kind": "def",
       "attrs": [
         {
+          "default": "\"Pagination\"",
+          "name": "aria_label",
+          "type": ":string",
+          "values": null,
+          "doc": "names the navigation landmark, localizable",
+          "required": false
+        },
+        {
           "default": "1",
           "name": "boundary_count",
           "type": ":integer",
@@ -7817,9 +8345,17 @@
         {
           "default": "false",
           "name": "event",
-          "type": ":boolean",
+          "type": ":any",
           "values": null,
-          "doc": "whether to use `phx-click` events instead of linking. Enabling this will disable `link_type` and `path`.",
+          "doc": "use `phx-click` events instead of linking (disables `link_type` and\n`path`). `true` fires the classic \"goto-page\" event; a STRING fires\nthat event name instead - how the data table routes page changes\nthrough its single on_change grammar.\n",
+          "required": false
+        },
+        {
+          "default": "%{}",
+          "name": "event_values",
+          "type": ":map",
+          "values": null,
+          "doc": "extra phx-value-* pairs sent with event-mode clicks, e.g. %{\"op\" => \"page\"}",
           "required": false
         },
         {
@@ -7840,7 +8376,7 @@
           "name": "next_label",
           "type": ":string",
           "values": null,
-          "doc": "simple variant: label for the next button",
+          "doc": "the next button's label - visible in the simple variant, announced in the numbered one",
           "required": false
         },
         {
@@ -7856,7 +8392,7 @@
           "name": "previous_label",
           "type": ":string",
           "values": null,
-          "doc": "simple variant: label for the previous button",
+          "doc": "the previous button's label - visible in the simple variant, announced in the numbered one",
           "required": false
         },
         {
@@ -10184,9 +10720,9 @@
             {
               "default": null,
               "name": "label",
-              "type": ":string",
+              "type": ":any",
               "values": null,
-              "doc": null,
+              "doc": "header content - a string, or any rendered fragment",
               "required": false
             },
             {
@@ -10279,7 +10815,7 @@
           "name": "on_sort",
           "type": ":any",
           "values": null,
-          "doc": "event name (or JS command) fired when a sortable header is clicked; receives phx-value-sort of the column's sort_key",
+          "doc": "event name (or JS command) fired when a sortable header is clicked;\nreceives phx-value-sort of the column's sort_key. May also be a\n1-arity function of the sort_key returning the event/JS per column -\nhow the data table patches per-column sort URLs in link mode.\n",
           "required": false
         },
         {
@@ -10371,12 +10907,12 @@
       ],
       "examples": [
         {
-          "code": "<.table\n  sort_by=\"age\"\n  sort_dir=\"asc\"\n  rows={[\n    %{name: \"Sarah Chen\", role: \"Engineering\", age: 34, status: \"Active\"},\n    %{name: \"Alex Rivera\", role: \"Design\", age: 29, status: \"Active\"},\n    %{name: \"Jordan Lee\", role: \"Support\", age: 41, status: \"Away\"}\n  ]}\n>\n  <:col :let={p} label=\"Name\" sortable sort_key=\"name\">{p.name}</:col>\n  <:col :let={p} label=\"Role\">{p.role}</:col>\n  <:col :let={p} label=\"Age\" sortable sort_key=\"age\">{p.age}</:col>\n  <:col :let={p} label=\"Status\">\n    <.badge\n      color={if p.status == \"Active\", do: \"success\", else: \"gray\"}\n      variant=\"soft\"\n      size=\"sm\"\n      label={p.status}\n    />\n  </:col>\n  <:footer>\n    <.td colspan={2}>3 people</.td>\n    <.td>avg 35</.td>\n    <.td></.td>\n  </:footer>\n</.table>",
+          "code": "<div class=\"max-w-full overflow-x-auto\">\n  <.table\n    sort_by=\"age\"\n    sort_dir=\"asc\"\n    rows={[\n      %{name: \"Sarah Chen\", role: \"Engineering\", age: 34, status: \"Active\"},\n      %{name: \"Alex Rivera\", role: \"Design\", age: 29, status: \"Active\"},\n      %{name: \"Jordan Lee\", role: \"Support\", age: 41, status: \"Away\"}\n    ]}\n  >\n    <:col :let={p} label=\"Name\" sortable sort_key=\"name\">{p.name}</:col>\n    <:col :let={p} label=\"Role\">{p.role}</:col>\n    <:col :let={p} label=\"Age\" sortable sort_key=\"age\">{p.age}</:col>\n    <:col :let={p} label=\"Status\">\n      <.badge\n        color={if p.status == \"Active\", do: \"success\", else: \"gray\"}\n        variant=\"soft\"\n        size=\"sm\"\n        label={p.status}\n      />\n    </:col>\n    <:footer>\n      <.td colspan={2}>3 people</.td>\n      <.td>avg 35</.td>\n      <.td></.td>\n    </:footer>\n  </.table>\n</div>",
           "description": "Rows in, markup out - and honest sorting: a sortable header is a real button that fires on_sort (default event \"sort\") with the column's sort_key, aria-sort announces the state, and your app owns the actual reorder. The :footer slot pins a totals row (colspan works); :empty_state renders whenever rows is empty. density=\"compact\", striped, sticky_header and the frameless variant=\"ghost\" restyle it; LiveView streams work unchanged.",
           "title": "The presentation layer for data"
         },
         {
-          "code": "<.table rows={[\n  %{name: \"Alex Rivera\", email: \"alex@example.com\", plan: \"Team\"},\n  %{name: \"Ada Lovelace\", email: \"ada@analytical.engine\", plan: \"Pro\"}\n]}>\n  <:col :let={u} label=\"User\">\n    <.user_inner_td\n      label={u.name}\n      sub_label={u.email}\n      avatar_assigns={%{name: u.name, size: \"sm\"}}\n    />\n  </:col>\n  <:col :let={u} label=\"Plan\">{u.plan}</:col>\n</.table>",
+          "code": "<div class=\"max-w-full overflow-x-auto\">\n  <.table rows={[\n    %{name: \"Alex Rivera\", email: \"alex@example.com\", plan: \"Team\"},\n    %{name: \"Ada Lovelace\", email: \"ada@analytical.engine\", plan: \"Pro\"}\n  ]}>\n    <:col :let={u} label=\"User\">\n      <.user_inner_td\n        label={u.name}\n        sub_label={u.email}\n        avatar_assigns={%{name: u.name, size: \"sm\"}}\n      />\n    </:col>\n    <:col :let={u} label=\"Plan\">{u.plan}</:col>\n  </.table>\n</div>",
           "description": "user_inner_td is the avatar + name + sub-label cell in one helper - avatar_assigns passes straight through to the avatar, so name-hashed initials work with no photos anywhere.",
           "title": "People cells"
         }
@@ -10478,7 +11014,7 @@
       ],
       "examples": [
         {
-          "code": "<.table\n  sort_by=\"age\"\n  sort_dir=\"asc\"\n  rows={[\n    %{name: \"Sarah Chen\", role: \"Engineering\", age: 34, status: \"Active\"},\n    %{name: \"Alex Rivera\", role: \"Design\", age: 29, status: \"Active\"},\n    %{name: \"Jordan Lee\", role: \"Support\", age: 41, status: \"Away\"}\n  ]}\n>\n  <:col :let={p} label=\"Name\" sortable sort_key=\"name\">{p.name}</:col>\n  <:col :let={p} label=\"Role\">{p.role}</:col>\n  <:col :let={p} label=\"Age\" sortable sort_key=\"age\">{p.age}</:col>\n  <:col :let={p} label=\"Status\">\n    <.badge\n      color={if p.status == \"Active\", do: \"success\", else: \"gray\"}\n      variant=\"soft\"\n      size=\"sm\"\n      label={p.status}\n    />\n  </:col>\n  <:footer>\n    <.td colspan={2}>3 people</.td>\n    <.td>avg 35</.td>\n    <.td></.td>\n  </:footer>\n</.table>",
+          "code": "<div class=\"max-w-full overflow-x-auto\">\n  <.table\n    sort_by=\"age\"\n    sort_dir=\"asc\"\n    rows={[\n      %{name: \"Sarah Chen\", role: \"Engineering\", age: 34, status: \"Active\"},\n      %{name: \"Alex Rivera\", role: \"Design\", age: 29, status: \"Active\"},\n      %{name: \"Jordan Lee\", role: \"Support\", age: 41, status: \"Away\"}\n    ]}\n  >\n    <:col :let={p} label=\"Name\" sortable sort_key=\"name\">{p.name}</:col>\n    <:col :let={p} label=\"Role\">{p.role}</:col>\n    <:col :let={p} label=\"Age\" sortable sort_key=\"age\">{p.age}</:col>\n    <:col :let={p} label=\"Status\">\n      <.badge\n        color={if p.status == \"Active\", do: \"success\", else: \"gray\"}\n        variant=\"soft\"\n        size=\"sm\"\n        label={p.status}\n      />\n    </:col>\n    <:footer>\n      <.td colspan={2}>3 people</.td>\n      <.td>avg 35</.td>\n      <.td></.td>\n    </:footer>\n  </.table>\n</div>",
           "description": "Rows in, markup out - and honest sorting: a sortable header is a real button that fires on_sort (default event \"sort\") with the column's sort_key, aria-sort announces the state, and your app owns the actual reorder. The :footer slot pins a totals row (colspan works); :empty_state renders whenever rows is empty. density=\"compact\", striped, sticky_header and the frameless variant=\"ghost\" restyle it; LiveView streams work unchanged.",
           "title": "The presentation layer for data"
         }
@@ -11580,7 +12116,7 @@
       ],
       "examples": [
         {
-          "code": "<.table rows={[\n  %{name: \"Alex Rivera\", email: \"alex@example.com\", plan: \"Team\"},\n  %{name: \"Ada Lovelace\", email: \"ada@analytical.engine\", plan: \"Pro\"}\n]}>\n  <:col :let={u} label=\"User\">\n    <.user_inner_td\n      label={u.name}\n      sub_label={u.email}\n      avatar_assigns={%{name: u.name, size: \"sm\"}}\n    />\n  </:col>\n  <:col :let={u} label=\"Plan\">{u.plan}</:col>\n</.table>",
+          "code": "<div class=\"max-w-full overflow-x-auto\">\n  <.table rows={[\n    %{name: \"Alex Rivera\", email: \"alex@example.com\", plan: \"Team\"},\n    %{name: \"Ada Lovelace\", email: \"ada@analytical.engine\", plan: \"Pro\"}\n  ]}>\n    <:col :let={u} label=\"User\">\n      <.user_inner_td\n        label={u.name}\n        sub_label={u.email}\n        avatar_assigns={%{name: u.name, size: \"sm\"}}\n      />\n    </:col>\n    <:col :let={u} label=\"Plan\">{u.plan}</:col>\n  </.table>\n</div>",
           "description": "user_inner_td is the avatar + name + sub-label cell in one helper - avatar_assigns passes straight through to the avatar, so name-hashed initials work with no photos anywhere.",
           "title": "People cells"
         }
@@ -11772,5 +12308,5 @@
       ]
     }
   ],
-  "generated_at": "2026-08-07T05:44:57.366094Z"
+  "generated_at": "2026-08-11T02:05:55.752673Z"
 }
