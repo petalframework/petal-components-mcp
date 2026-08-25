@@ -1,5 +1,5 @@
 {
-  "version": "4.15.0",
+  "version": "4.15.1",
   "components": [
     {
       "module": "PetalComponents.Link",
@@ -14959,7 +14959,7 @@
           "title": "Handle only"
         },
         {
-          "code": "<.sortable id=\"showcase-gallery\" on_reorder=\"reorder_photos\" orientation=\"grid\">\n  <:item id=\"harbour\" label=\"Harbour at dawn\">\n    <span class=\"text-sm\">Harbour at dawn</span>\n  </:item>\n  <:item id=\"ridge\" label=\"Ridge line\">\n    <span class=\"text-sm\">Ridge line</span>\n  </:item>\n  <:item id=\"salt\" label=\"Salt flats\">\n    <span class=\"text-sm\">Salt flats</span>\n  </:item>\n  <:item id=\"pines\" label=\"Pines in fog\">\n    <span class=\"text-sm\">Pines in fog</span>\n  </:item>\n</.sortable>",
+          "code": "<.sortable\n  id=\"showcase-gallery\"\n  on_reorder=\"reorder_photos\"\n  orientation=\"grid\"\n  class=\"grid-cols-2 sm:grid-cols-3\"\n>\n  <:item\n    :for={photo <- gallery()}\n    id={photo.id}\n    label={photo.title}\n    class=\"flex-col items-stretch gap-2 p-2\"\n  >\n    <div class={[\"aspect-video w-full rounded-md bg-gradient-to-br\", photo.tone]}></div>\n    <span class=\"text-sm font-medium\">{photo.title}</span>\n  </:item>\n</.sortable>",
           "description": "orientation=\"grid\" wraps items into a grid and teaches the arrow keys to move in two dimensions. The column count is read from the live layout, so a responsive grid steps correctly at every breakpoint.",
           "title": "Grid"
         },
@@ -16793,7 +16793,7 @@
         },
         {
           "name": "inner_block",
-          "doc": "the rendered widget / tool result. Always visible, never collapsed",
+          "doc": "the rendered widget / tool result. Always visible, never collapsed. Wrap bare text in an element - the body hides itself when it contains no element, which is what keeps whitespace-only inner content (a formatted call whose only real content is a named slot) from rendering an empty padded strip",
           "required": false,
           "attrs": []
         },
@@ -17990,5 +17990,5 @@
       ]
     }
   ],
-  "generated_at": "2026-08-24T07:19:32.660831Z"
+  "generated_at": "2026-08-25T01:05:08.948681Z"
 }
