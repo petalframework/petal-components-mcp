@@ -99,6 +99,22 @@ defmodule SchemaExtractor do
     |> Map.get(inspect(module), [])
     |> Enum.filter(&example_uses?(&1, name))
     |> Enum.sort_by(&focus_score(&1, siblings))
+    |> Enum.map(&namespace_chat_calls(&1, module, siblings))
+  end
+
+  # The Chat family is not imported by `use PetalComponents` - callers need
+  # `alias PetalComponents.Chat` and `<Chat.name>` tags. The showcase sources
+  # call siblings bare (those modules import the family directly), so a copied
+  # example would not compile in a normal web module. Rewrite sibling tags to
+  # the namespaced form; imported components used in passing (<.icon>, ...)
+  # keep their bare calls.
+  defp namespace_chat_calls(example, module, siblings) do
+    if List.last(Module.split(module)) == "Chat" do
+      names = Enum.map_join(siblings, "|", &Regex.escape(to_string(&1)))
+      %{example | code: Regex.replace(~r{<(/?)\.(#{names})\b}, example.code, "<\\1Chat.\\2")}
+    else
+      example
+    end
   end
 
   defp focus_score(example, siblings) do
