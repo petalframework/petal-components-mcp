@@ -44,7 +44,7 @@ defmodule SchemaExtractor do
     }
 
     File.mkdir_p!(Path.dirname(@output_path))
-    File.write!(@output_path, Jason.encode!(output, pretty: true))
+    File.write!(@output_path, Jason.encode!(deterministic(output), pretty: true))
 
     IO.puts("Wrote #{length(components)} components to #{@output_path}")
   end
@@ -172,6 +172,20 @@ defmodule SchemaExtractor do
       []
     end
   end
+
+  # Atom-keyed map iteration follows the atom table, which shifts with OTP
+  # version and module load order - so regenerating on a different toolchain
+  # used to rewrite every line of schemas.json and bury the real changes.
+  # Sorting keys makes the emitted JSON byte-stable across environments.
+  defp deterministic(%{} = map) when not is_struct(map) do
+    map
+    |> Enum.map(fn {key, value} -> {to_string(key), deterministic(value)} end)
+    |> Enum.sort_by(&elem(&1, 0))
+    |> Jason.OrderedObject.new()
+  end
+
+  defp deterministic(list) when is_list(list), do: Enum.map(list, &deterministic/1)
+  defp deterministic(other), do: other
 
   defp inspect_safe(nil), do: nil
   defp inspect_safe(value), do: inspect(value)
