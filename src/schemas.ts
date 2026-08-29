@@ -143,7 +143,11 @@ function hasDedicatedExample(c: Component): boolean {
 }
 
 function exampleUsage(c: Component): string {
-  const tag = `.${c.name}`;
+  // The Chat family is not imported by `use PetalComponents` - it is called
+  // through `alias PetalComponents.Chat`, so the skeleton must show the
+  // namespaced tag (the extractor applies the same rule to curated examples).
+  const isChatFamily = c.module.split(".").pop() === "Chat";
+  const tag = isChatFamily ? `Chat.${c.name}` : `.${c.name}`;
   const requiredAttrs = c.attrs.filter((a) => a.required && a.name !== "rest");
   const attrStrs = requiredAttrs.map((a) => `${a.name}={...}`);
   const hasInnerBlock = c.slots.some((s) => s.name === "inner_block");
