@@ -12,6 +12,8 @@ import {
 } from "./schemas.js";
 import { recordToolCall } from "./telemetry.js";
 
+// TODO: step 7 says "petal_components 4.18 or later". Confirm that version once
+// petalframework/petal_components#716 (rules.md -> usage-rules.md) ships in a release.
 const INSTALL_INSTRUCTIONS = `# Installing petal_components into a Phoenix project
 
 Follow these steps. They are idempotent - safe to re-run if any step is partially done. Read each file before editing.
@@ -82,6 +84,37 @@ Run: \`mix compile\`
 
 Should compile cleanly. To smoke test, drop \`<.button>Hello</.button>\` in any HEEx template and load the page.
 
+## 7. Keep the rules in sync automatically (optional)
+
+petal_components ships its AI usage rules as \`usage-rules.md\`, the file the [usage_rules](https://hexdocs.pm/usage_rules) package reads from each dependency. With usage_rules set up, \`mix usage_rules.sync\` copies the rules into the project's agent instructions file and refreshes them after every petal_components upgrade.
+
+This needs petal_components 4.18 or later. Check the locked version in \`mix.lock\`. If it is older, skip this step unless the user wants to upgrade first with \`mix deps.update petal_components\`.
+
+Offer this step rather than doing it unasked: it adds a dev dependency and writes several hundred lines of rules into the agent instructions file.
+
+In \`mix.exs\`, add this entry to \`deps/0\` if it is not already present:
+
+\`\`\`elixir
+{:usage_rules, "~> 1.1", only: [:dev]}
+\`\`\`
+
+In the \`project/0\` function in \`mix.exs\`, add a \`usage_rules:\` key:
+
+\`\`\`elixir
+def project do
+  [
+    # ... existing config
+    usage_rules: [file: "CLAUDE.md", usage_rules: [:petal_components]]
+  ]
+end
+\`\`\`
+
+Set \`file:\` to the file the project's agent reads: \`AGENTS.md\` for most agents, \`CLAUDE.md\` for Claude Code. Use the one that already exists if there is one. If the project already has a \`usage_rules:\` config, add \`:petal_components\` to its existing \`usage_rules:\` list instead of replacing it - the sync drops the rules for any package that is not listed.
+
+Then run: \`mix deps.get\` and \`mix usage_rules.sync\`
+
+The sync only rewrites the block between \`<!-- usage-rules-start -->\` and \`<!-- usage-rules-end -->\`, so the rest of the file is left alone and it is safe to re-run after each upgrade. If the inlined rules make the file too long, list \`{:petal_components, link: :markdown}\` instead of \`:petal_components\` to add a link to the rules rather than the full text.
+
 ## Notes
 
 - \`use PetalComponents\` imports every component so you can call them as \`<.button>\`, \`<.modal>\`, \`<.table>\`, etc. without explicit aliases.
@@ -107,7 +140,7 @@ export function createServer() {
       {
         name: "get_install_instructions",
         description:
-          "Get the canonical steps for installing petal_components in a Phoenix project. Call this when the user asks to install petal_components, when you are setting up a new Phoenix project that needs UI components, or when verifying an existing installation. Returns step-by-step instructions covering mix.exs, mix deps.get, Tailwind v4 CSS config, and the web module import. Steps are idempotent - safe to follow on a project that is partially configured.",
+          "Get the canonical steps for installing petal_components in a Phoenix project. Call this when the user asks to install petal_components, when you are setting up a new Phoenix project that needs UI components, or when verifying an existing installation. Returns step-by-step instructions covering mix.exs, mix deps.get, Tailwind v4 CSS config, and the web module import, plus an optional step that keeps the petal_components usage rules synced into CLAUDE.md or AGENTS.md with the usage_rules package. Steps are idempotent - safe to follow on a project that is partially configured.",
         inputSchema: {
           type: "object",
           properties: {},
