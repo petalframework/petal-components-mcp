@@ -14,8 +14,9 @@ Then in any Phoenix project, ask the AI to build something. It'll call `list_com
 
 ## Available tools
 
-- `list_components` — every component in the library with a one-line summary
-- `get_component` — full schema (attrs, slots, defaults, values, docs) + HEEx usage example
+- `get_install_instructions` - step-by-step install for a Phoenix project (dep, Tailwind v4 CSS, `use PetalComponents`, JS hooks), plus an optional step that syncs the petal_components usage rules into `CLAUDE.md` or `AGENTS.md` via [usage_rules](https://hexdocs.pm/usage_rules)
+- `list_components` - every component in the library with a one-line summary
+- `get_component` - full schema (attrs, slots, defaults, values, docs) + HEEx usage example
 
 Coming soon: `search_components` (natural-language match) and `generate_pattern` (composed blocks like form-in-card, modal-with-form, dashboard skeletons).
 
