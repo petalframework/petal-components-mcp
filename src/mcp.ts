@@ -32,14 +32,17 @@ Run: \`mix deps.get\`
 
 ## 3. Configure Tailwind CSS
 
-Open \`assets/css/app.css\`. Find the \`@import "tailwindcss";\` line and add the two lines below it:
+Open \`assets/css/app.css\`. Find the \`@import "tailwindcss";\` line and add the lines below it:
 
 \`\`\`css
 @import "tailwindcss";
 @source "../deps/petal_components/**/*.*ex";
 @source not "../deps/petal_components/lib/petal_components/showcase";
 @import "../deps/petal_components/assets/default.css";
+@plugin "@tailwindcss/forms";
 \`\`\`
+
+The \`@tailwindcss/forms\` plugin is required: petal's form controls (\`.pc-text-input\`, selects, textareas) rely on its base border and padding, and without it Tailwind's preflight collapses inputs to an unpadded, borderless box. Skip this line only if the plugin is already registered. The Tailwind v4 standalone CLI used by the \`tailwind\` hex package bundles it, so no npm install is needed; for an npm/Node Tailwind setup, run \`npm install -D @tailwindcss/forms\` in \`assets/\`.
 
 If \`@import "tailwindcss";\` is missing, the project is on Tailwind v3 and petal_components 4.x will not work. Tell the user to upgrade to Tailwind v4, or pin to \`petal_components ~> 1.0\` for Tailwind v3 support.
 
