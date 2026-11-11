@@ -12,8 +12,8 @@ import {
 } from "./schemas.js";
 import { recordToolCall } from "./telemetry.js";
 
-// TODO: step 7 says "petal_components 4.18 or later". Confirm that version once
-// petalframework/petal_components#716 (rules.md -> usage-rules.md) ships in a release.
+// Step 7 needs petal_components 4.18.0 or later: that release is the first to ship
+// usage-rules.md in the Hex package (petalframework/petal_components#716).
 const INSTALL_INSTRUCTIONS = `# Installing petal_components into a Phoenix project
 
 Follow these steps. They are idempotent - safe to re-run if any step is partially done. Read each file before editing.
