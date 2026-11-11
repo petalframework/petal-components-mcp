@@ -32,16 +32,21 @@ Run: \`mix deps.get\`
 
 ## 3. Configure Tailwind CSS
 
-Open \`assets/css/app.css\`. Find the \`@import "tailwindcss";\` line and add the two lines below it:
+Open \`assets/css/app.css\`. Find the \`@import "tailwindcss"\` line (Phoenix 1.8 writes it as \`@import "tailwindcss" source(none);\`) and add these lines below it:
 
 \`\`\`css
 @import "tailwindcss";
-@source "../deps/petal_components/**/*.*ex";
-@source not "../deps/petal_components/lib/petal_components/showcase";
-@import "../deps/petal_components/assets/default.css";
+@source "../../deps/petal_components/**/*.*ex";
+@source not "../../deps/petal_components/lib/petal_components/showcase";
+@import "../../deps/petal_components/assets/default.css";
+@plugin "@tailwindcss/forms";
 \`\`\`
 
-If \`@import "tailwindcss";\` is missing, the project is on Tailwind v3 and petal_components 4.x will not work. Tell the user to upgrade to Tailwind v4, or pin to \`petal_components ~> 1.0\` for Tailwind v3 support.
+The paths are relative to \`assets/css/\`, so they start with \`../../deps\`. The \`@source\` line tells Tailwind to scan petal_components source for class usage. The \`@source not\` line skips the \`showcase/\` example modules, which power petal.build's own docs and would only add unused utility classes to the user's CSS. \`@source not\` needs Tailwind v4.1+; on v4.0 drop that line. The \`@import\` line brings in the default component styles (the \`pc-*\` CSS prefix).
+
+The \`@plugin\` line loads \`@tailwindcss/forms\`. The form components are styled on top of it: the plugin sets the border width and padding on text inputs, selects and textareas, and resets the native look of checkboxes and selects. Without it, Tailwind's preflight leaves inputs with no border and no padding. Skip the line if the app already loads the plugin. The \`tailwind\` Hex package that Phoenix uses runs the standalone Tailwind CLI, which already includes the plugin, so there is nothing to install. If the app builds Tailwind through Node instead, run \`npm install -D @tailwindcss/forms\` in \`assets/\`.
+
+If there is no \`@import "tailwindcss"\` line, the project is on Tailwind v3 and petal_components 4.x will not work. Tell the user to upgrade to Tailwind v4, or pin to \`petal_components ~> 1.0\` for Tailwind v3 support.
 
 ## 4. Import the components in the web module
 
