@@ -5,7 +5,7 @@ import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import express from "express";
 
 import { createServer } from "./mcp.js";
-import { schemas } from "./schemas.js";
+import { publicComponents, schemas } from "./schemas.js";
 import { metrics, recordInitialize } from "./telemetry.js";
 
 const app = express();
@@ -64,7 +64,11 @@ app.get("/healthz", (_req, res) => {
   res.json({
     ok: true,
     petal_components_version: schemas.version,
+    // `components` is every function the extractor found, private helpers
+    // included, kept for existing readers such as the weekly email review.
+    // `public_components` is what list_components serves.
     components: schemas.components.length,
+    public_components: publicComponents.length,
     schemas_generated_at: schemas.generated_at,
   });
 });
@@ -78,5 +82,7 @@ app.listen(port, () => {
   console.log(`petal-components-mcp listening on :${port}`);
   console.log(`  - MCP endpoint:  POST /mcp`);
   console.log(`  - Health check:  GET  /healthz`);
-  console.log(`  - Loaded ${schemas.components.length} components from petal_components v${schemas.version}`);
+  console.log(
+    `  - Loaded ${schemas.components.length} components (${publicComponents.length} public) from petal_components v${schemas.version}`,
+  );
 });
