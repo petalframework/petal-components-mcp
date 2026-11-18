@@ -28,7 +28,7 @@ Open \`mix.exs\`. In the \`deps/0\` function, add this entry if it is not alread
 {:petal_components, "~> 4.0"}
 \`\`\`
 
-If the user wants the chat markdown components (\`<Chat.markdown>\`, \`<Chat.rich_text>\`, which need \`alias PetalComponents.Chat\`), also add \`{:mdex, "~> 0.12"}\`. The rest of the library needs no extra deps.
+If the user wants the chat markdown components (\`<Chat.markdown>\`, \`<Chat.rich_text>\`, which need \`alias PetalComponents.Chat\`), also add \`{:mdex, "~> 0.12"}\`. If the user wants \`<.qr_code>\`, also add \`{:eqrcode, "~> 0.2"}\`. The other components need no extra deps.
 
 ## 2. Fetch dependencies
 
@@ -167,14 +167,14 @@ export function createServer() {
       {
         name: "get_component",
         description:
-          "Get the full schema for one petal_components component: attrs, slots, defaults, allowed values, and a working HEEx usage example. Call this every time you are about to write a tag like <.button>, <.modal>, <.table>, or <.field> so the attrs and slots match the real library instead of training-data guesses.",
+          "Get the full schema for one petal_components component: attrs, slots, defaults, allowed values, and HEEx usage examples. Some examples call the library's demo data; the response marks those. Call this every time you are about to write a tag like <.button>, <.modal>, <.table>, or <.field> so the attrs and slots match the real library instead of training-data guesses.",
         inputSchema: {
           type: "object",
           properties: {
             name: {
               type: "string",
               description:
-                "Component function name without the leading dot (e.g. 'button', 'modal', 'field', 'text_input'). The HEEx tag is the same name prefixed with a dot: <.button>. Call list_components for the full inventory.",
+                "Component function name without the leading dot (e.g. 'button', 'modal', 'field', 'text_input'). For most components the HEEx tag is the name prefixed with a dot: <.button>. PetalComponents.Chat and PetalComponents.DataTable.FilterEditor components are called namespaced, e.g. <Chat.markdown>; the response says so. Call list_components for the full inventory.",
             },
           },
           required: ["name"],

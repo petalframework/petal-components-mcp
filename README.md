@@ -16,7 +16,7 @@ Then in any Phoenix project, ask the AI to build something. It'll call `list_com
 
 - `get_install_instructions` - step-by-step install for a Phoenix project (dep, Tailwind v4 CSS, `use PetalComponents`, JS hooks), plus an optional step that syncs the petal_components usage rules into `CLAUDE.md` or `AGENTS.md` via [usage_rules](https://hexdocs.pm/usage_rules)
 - `list_components` - every component in the library with a one-line summary
-- `get_component` - full schema (attrs, slots and slot attrs, defaults, values, docs) + HEEx usage example. Responses say when the HEEx needs an alias (`alias PetalComponents.Chat`, `alias PetalComponents.DataTable.{State, Engine}`) and mark examples that call the library's showcase demo data. Private helper functions (`defp`) are not served.
+- `get_component` - full schema (attrs, slots and slot attrs, defaults, values, docs) + HEEx usage example. Responses say when the HEEx needs an alias (`alias PetalComponents.Chat` for the response, and `alias PetalComponents.DataTable.{State, Engine}` or `alias Phoenix.LiveView.JS` on each example that uses them) or an optional dep (`eqrcode` for `<.qr_code>`), and mark examples that call the library's showcase demo data. Private helper functions (`defp`) are not served.
 
 Coming soon: `search_components` (natural-language match) and `generate_pattern` (composed blocks like form-in-card, modal-with-form, dashboard skeletons).
 

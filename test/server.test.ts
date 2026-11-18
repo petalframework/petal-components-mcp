@@ -187,10 +187,20 @@ describe("petal-components-mcp over HTTP", () => {
       assert.match(slots, /\n {2}- `filterable` \(:string\) · values: `text`, `number`, `select`, `date`/);
     });
 
-    it("says State and Engine need an alias", async () => {
+    it("says State and Engine need an alias, on the examples that use them", async () => {
       const { text } = await callText("get_component", { name: "data_table" });
-      const notes = section(text, "Before you paste");
-      assert.match(notes, /alias PetalComponents\.DataTable\.\{State, Engine\}/);
+      const examples = section(text, "Examples").split(/^### /m).slice(1);
+      const code = (ex: string) => ex.split("```heex")[1] ?? "";
+      const usesState = (ex: string) => /(?<![\w.])(%State\{|State\.)/.test(code(ex));
+      const usesEngine = (ex: string) => /(?<![\w.])Engine\./.test(code(ex));
+      const both = examples.filter((ex) => usesState(ex) && usesEngine(ex));
+      const stateOnly = examples.filter((ex) => usesState(ex) && !usesEngine(ex));
+      assert.ok(both.length > 0 && stateOnly.length > 0);
+      for (const ex of both) assert.match(ex, /alias PetalComponents\.DataTable\.\{State, Engine\}/);
+      for (const ex of stateOnly) {
+        assert.match(ex, /alias PetalComponents\.DataTable\.State`/);
+        assert.doesNotMatch(ex, /Engine/);
+      }
     });
 
     it("marks examples that call a Showcase fixture as demo data", async () => {
@@ -206,17 +216,29 @@ describe("petal-components-mcp over HTTP", () => {
       }
     });
 
-    it("names only the aliases a response uses", async () => {
+    it("names only the aliases each example uses", async () => {
       const { text } = await callText("get_component", { name: "empty" });
-      const notes = section(text, "Before you paste");
-      assert.match(notes, /alias PetalComponents\.DataTable\.State`/);
-      assert.doesNotMatch(notes, /Engine/);
+      const examples = section(text, "Examples").split(/^### /m).slice(1);
+      const withState = examples.filter((ex) => /(?<![\w.])(%State\{|State\.)/.test(ex.split("```heex")[1] ?? ""));
+      assert.ok(withState.length > 0 && withState.length < examples.length);
+      for (const ex of examples) {
+        if (withState.includes(ex)) assert.match(ex, /alias PetalComponents\.DataTable\.State`/);
+        else assert.doesNotMatch(ex, /alias PetalComponents\.DataTable/);
+        assert.doesNotMatch(ex, /Engine/);
+      }
     });
 
     it("marks showcase-private helpers as demo data", async () => {
       const { text } = await callText("get_component", { name: "questionnaire" });
       assert.match(text, /\*\*Demo data:\*\* this example calls `scoping_spec\(\)`/);
       assert.match(text, /private to the showcase module/);
+    });
+
+    it("marks the gallery() helper in the sortable grid as demo data", async () => {
+      const { text } = await callText("get_component", { name: "sortable" });
+      const grid = section(text, "Examples").split(/^### /m).find((ex) => ex.includes("gallery()"));
+      assert.ok(grid, "an example calls gallery()");
+      assert.match(grid, /\*\*Demo data:\*\* this example calls `gallery\(\)`/);
     });
   });
 
@@ -251,6 +273,14 @@ describe("petal-components-mcp over HTTP", () => {
       assert.match(text, /Chat components .* are not imported/);
       assert.match(text, /alias PetalComponents\.Chat/);
       assert.doesNotMatch(text, /`<\.markdown>`|`<\.rich_text>`/);
+    });
+
+    it("names the optional eqrcode dep for qr_code", async () => {
+      const { text } = await callText("get_install_instructions");
+      assert.match(text, /\{:eqrcode, "~> 0\.2"\}/);
+      assert.doesNotMatch(text, /The rest of the library needs no extra deps/);
+      const qr = await callText("get_component", { name: "qr_code" });
+      assert.match(section(qr.text, "Before you paste"), /\{:eqrcode, "~> 0\.2"\}/);
     });
   });
 });

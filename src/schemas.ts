@@ -120,6 +120,8 @@ export function renderComponent(c: Component): string {
     for (const ex of curated) {
       lines.push(`### ${ex.title}`);
       if (ex.description) lines.push("", ex.description);
+      const aliases = aliasNote(ex.code);
+      if (aliases) lines.push("", aliases);
       const note = demoDataNote(ex.code);
       if (note) lines.push("", note);
       lines.push("", "```heex", ex.code.trim(), "```", "");
@@ -181,9 +183,10 @@ export function renderSlot(slot: ComponentSlot): string {
   return line;
 }
 
-// Notes about names the served HEEx uses that `use PetalComponents` does not
-// bring into scope. The schema data is left as extracted; the response says
-// what the caller has to add.
+// Notes for the whole response: names the served HEEx uses that `use
+// PetalComponents` does not bring into scope, and optional deps a component
+// needs. The schema data is left as extracted; the response says what the
+// caller has to add.
 function scopeNotes(code: string): string[] {
   const notes: string[] = [];
   if (/<\/?Chat\./.test(code)) {
@@ -196,25 +199,59 @@ function scopeNotes(code: string): string[] {
       "- `PetalComponents.DataTable.FilterEditor` is not imported by `use PetalComponents`. `<.data_table>` renders this editor for its filterable columns, so you rarely call it yourself. To call it directly, add `alias PetalComponents.DataTable.FilterEditor` and use `<FilterEditor.filter_editor>`.",
     );
   }
-  const usesState = /(?<![\w.])(%State\{|State\.)/.test(code);
-  const usesEngine = /(?<![\w.])Engine\./.test(code);
-  if (usesState || usesEngine) {
-    const used = [usesState && "State", usesEngine && "Engine"].filter((n): n is string => Boolean(n));
-    const target =
-      used.length > 1 ? `PetalComponents.DataTable.{${used.join(", ")}}` : `PetalComponents.DataTable.${used[0]}`;
-    const full = used.map((n) => `\`PetalComponents.DataTable.${n}\``).join(" and ");
+  if (/<\.qr_code[\s/>]/.test(code)) {
     notes.push(
-      `- The examples use ${used.map((n) => `\`${n}\``).join(" and ")} without a module prefix, and \`use PetalComponents\` does not alias them. Add \`alias ${target}\` to the module, or write ${full} in full.`,
+      "- `<.qr_code>` needs the optional `eqrcode` package. Add `{:eqrcode, \"~> 0.2\"}` to your deps in mix.exs and run `mix deps.get`. Without it the page compiles but raises when the QR code renders.",
     );
   }
   return notes;
 }
 
+// Names a single example uses without a module prefix that `use PetalComponents`
+// does not alias. Computed per example, so an agent that pastes one example
+// adds only the aliases that example needs (an unused alias is a compile
+// warning, and an error under --warnings-as-errors).
+export function aliasNote(code: string): string | null {
+  const used = [
+    /(?<![\w.])(%State\{|State\.)/.test(code) && "State",
+    /(?<![\w.])Engine\./.test(code) && "Engine",
+  ].filter((n): n is string => Boolean(n));
+  const usesJs = /(?<![\w.])JS\./.test(code);
+  if (!used.length && !usesJs) return null;
+
+  const parts: string[] = [];
+  if (used.length) {
+    const target =
+      used.length > 1 ? `PetalComponents.DataTable.{${used.join(", ")}}` : `PetalComponents.DataTable.${used[0]}`;
+    const full = used.map((n) => `\`PetalComponents.DataTable.${n}\``).join(" and ");
+    parts.push(
+      `this example uses ${used.map((n) => `\`${n}\``).join(" and ")} without a module prefix, and \`use PetalComponents\` does not alias ${used.length > 1 ? "them" : "it"}. Add \`alias ${target}\` to the module, or write ${full} in full.`,
+    );
+  }
+  if (usesJs) {
+    parts.push(
+      `${used.length ? "It also calls" : "this example calls"} \`JS\` (\`Phoenix.LiveView.JS\`). A generated Phoenix web module aliases it in \`html_helpers\`. In a module without that alias, add \`alias Phoenix.LiveView.JS\`.`,
+    );
+  }
+  return `> **Aliases:** ${parts.join(" ")}`;
+}
+
 // Calls into the library's showcase fixtures. These produce demo data for the
 // playground and petal.build pages. `PetalComponents.Showcase.*` functions are
 // public but are demo data; the bare helpers below are private to their
-// showcase modules and do not exist in a caller's module at all.
-const SHOWCASE_PRIVATE_HELPERS = ["scoping_spec", "framework_spec", "rag_sources", "shell_menu_items"];
+// showcase modules and do not exist in a caller's module at all. They are the
+// `defp` helpers in lib/petal_components/showcase/*.ex. test/render.test.ts
+// fails when a served example makes a bare call this file does not know, so a
+// schema sync that brings in a new one is caught.
+export const SHOWCASE_PRIVATE_HELPERS = [
+  "scoping_spec",
+  "framework_spec",
+  "rag_sources",
+  "shot_image",
+  "logs_image",
+  "shell_menu_items",
+  "gallery",
+];
 
 export function demoFixtureCalls(code: string): string[] {
   const found = new Set<string>();
