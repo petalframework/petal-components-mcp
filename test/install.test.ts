@@ -70,6 +70,12 @@ describe("get_install_instructions text", () => {
     assert.match(text, /config :petal_components, :error_translator_function, \{MyAppWeb\.CoreComponents, :translate_error\}/);
   });
 
+  it("says many components need the hooks and what a missing hook looks like", () => {
+    assert.match(text, /a bundled JS hook set that many components need/);
+    assert.match(text, /the browser console reports an unknown hook/);
+    assert.doesNotMatch(text, /everything else is CSS \+ LiveView\.JS only/);
+  });
+
   it("merges the hooks with Phoenix 1.8's colocatedHooks", () => {
     assert.match(text, /hooks: \{\.\.\.colocatedHooks, \.\.\.PetalComponents\}/);
   });
