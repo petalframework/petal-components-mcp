@@ -191,6 +191,11 @@ function scopeNotes(code: string): string[] {
       "- The Chat family is not imported by `use PetalComponents`. Add `alias PetalComponents.Chat` to the module that renders this (or to the `html_helpers` block of your web module), then call the tags as `<Chat.name>`.",
     );
   }
+  if (/<\/?FilterEditor\./.test(code)) {
+    notes.push(
+      "- `PetalComponents.DataTable.FilterEditor` is not imported by `use PetalComponents`. `<.data_table>` renders this editor for its filterable columns, so you rarely call it yourself. To call it directly, add `alias PetalComponents.DataTable.FilterEditor` and use `<FilterEditor.filter_editor>`.",
+    );
+  }
   const usesState = /(?<![\w.])(%State\{|State\.)/.test(code);
   const usesEngine = /(?<![\w.])Engine\./.test(code);
   if (usesState || usesEngine) {
@@ -253,8 +258,11 @@ function exampleUsage(c: Component): string {
   // The Chat family is not imported by `use PetalComponents` - it is called
   // through `alias PetalComponents.Chat`, so the skeleton must show the
   // namespaced tag (the extractor applies the same rule to curated examples).
-  const isChatFamily = c.module.split(".").pop() === "Chat";
-  const tag = isChatFamily ? `Chat.${c.name}` : `.${c.name}`;
+  // PetalComponents.DataTable.FilterEditor is not imported either, so its
+  // skeleton gets the same treatment.
+  const lastSegment = c.module.split(".").pop();
+  const tag =
+    lastSegment === "Chat" || lastSegment === "FilterEditor" ? `${lastSegment}.${c.name}` : `.${c.name}`;
   const requiredAttrs = c.attrs.filter((a) => a.required && a.name !== "rest");
   const attrStrs = requiredAttrs.map((a) => `${a.name}={...}`);
   const hasInnerBlock = c.slots.some((s) => s.name === "inner_block");

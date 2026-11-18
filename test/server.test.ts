@@ -231,6 +231,14 @@ describe("petal-components-mcp over HTTP", () => {
     it("list_components carries the Chat alias note", async () => {
       const { text } = await callText("list_components");
       assert.match(text, /alias PetalComponents\.Chat/);
+      assert.doesNotMatch(text, /Every other component/);
+    });
+
+    it("filter_editor is not shown as an imported bare tag", async () => {
+      const { text } = await callText("get_component", { name: "filter_editor" });
+      assert.match(text, /<FilterEditor\.filter_editor /);
+      assert.doesNotMatch(text, /<\.filter_editor/);
+      assert.match(section(text, "Before you paste"), /alias PetalComponents\.DataTable\.FilterEditor/);
     });
   });
 
@@ -239,7 +247,8 @@ describe("petal-components-mcp over HTTP", () => {
       const { text, isError } = await callText("get_install_instructions");
       assert.equal(isError, false);
       assert.match(text, /^# Installing petal_components into a Phoenix project/);
-      assert.match(text, /imports every component except the Chat family/);
+      assert.doesNotMatch(text, /imports every component/);
+      assert.match(text, /Chat components .* are not imported/);
       assert.match(text, /alias PetalComponents\.Chat/);
       assert.doesNotMatch(text, /`<\.markdown>`|`<\.rich_text>`/);
     });

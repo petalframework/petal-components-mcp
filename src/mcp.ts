@@ -124,7 +124,7 @@ The sync only rewrites the block between \`<!-- usage-rules-start -->\` and \`<!
 
 ## Notes
 
-- \`use PetalComponents\` imports every component except the Chat family, so you can call them as \`<.button>\`, \`<.modal>\`, \`<.table>\`, etc. without explicit aliases. The Chat components (\`PetalComponents.Chat\`, including \`markdown\` and \`rich_text\`) are not imported: add \`alias PetalComponents.Chat\` and call them as \`<Chat.markdown>\`, \`<Chat.rich_text>\`.
+- \`use PetalComponents\` imports the core components, so you can call them as \`<.button>\`, \`<.modal>\`, \`<.table>\`, etc. without explicit aliases. The Chat components (\`PetalComponents.Chat\`, including \`markdown\` and \`rich_text\`) are not imported: add \`alias PetalComponents.Chat\` and call them as \`<Chat.markdown>\`, \`<Chat.rich_text>\`.
 - After installing, call \`list_components\` to see the full inventory and \`get_component <name>\` for any component's attrs and slots.
 - Report which steps you actually applied and which were already in place. Do not silently overwrite existing config.
 `;
@@ -203,7 +203,7 @@ export function createServer() {
         "",
         ...components.map((c) => `- \`${c.name}\` (${c.module}) — ${c.summary}`),
         "",
-        "Components in PetalComponents.Chat are not imported by `use PetalComponents`: add `alias PetalComponents.Chat` and call them as `<Chat.name>`. Every other component is a plain tag such as `<.button>`.",
+        "Components in PetalComponents.Chat are not imported by `use PetalComponents`: add `alias PetalComponents.Chat` and call them as `<Chat.name>`. The same goes for PetalComponents.DataTable.FilterEditor, which `<.data_table>` renders for you. The rest are plain tags such as `<.button>`.",
         "",
         "Call `get_component` with a name to get the full schema and usage example.",
       ].join("\n");
