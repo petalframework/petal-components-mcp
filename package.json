@@ -24,6 +24,7 @@
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
+    "test": "npm run build && node --import tsx --test test/*.test.ts",
     "extract": "cd scripts/extract && mix deps.get && mix run extract_schemas.exs"
   },
   "files": [
