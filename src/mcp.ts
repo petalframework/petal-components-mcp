@@ -6,8 +6,10 @@ import {
 import { z } from "zod";
 import {
   getComponent,
+  getPrivateHelper,
   listComponents,
   renderComponent,
+  renderPrivateHelper,
   schemas,
 } from "./schemas.js";
 import { recordToolCall } from "./telemetry.js";
@@ -214,6 +216,14 @@ export function createServer() {
       const component = getComponent(componentName);
 
       if (!component) {
+        const helper = getPrivateHelper(componentName);
+        if (helper) {
+          return {
+            content: [{ type: "text", text: renderPrivateHelper(helper) }],
+            isError: true,
+          };
+        }
+
         return {
           content: [
             {

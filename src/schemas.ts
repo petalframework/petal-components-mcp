@@ -41,8 +41,13 @@ export type SchemaFile = {
 
 export const schemas: SchemaFile = schemasJson as SchemaFile;
 
+// The extract records every function component in each module, including
+// private (`defp`) helpers. Those cannot be called from a template outside
+// their own module, so they are never listed, counted or served as usable.
+export const publicComponents: Component[] = schemas.components.filter((c) => c.kind === "def");
+
 export function listComponents() {
-  return schemas.components.map((c) => ({
+  return publicComponents.map((c) => ({
     name: c.name,
     module: c.module,
     summary: summarize(c),
@@ -50,7 +55,26 @@ export function listComponents() {
 }
 
 export function getComponent(name: string): Component | null {
-  return schemas.components.find((c) => c.name === name) ?? null;
+  return publicComponents.find((c) => c.name === name) ?? null;
+}
+
+// A private helper with this name, if there is one. Used to tell the caller
+// the name exists but is not callable, instead of serving it as a component.
+export function getPrivateHelper(name: string): Component | null {
+  return schemas.components.find((c) => c.name === name && c.kind !== "def") ?? null;
+}
+
+export function renderPrivateHelper(c: Component): string {
+  const siblings = publicComponents.filter((s) => s.module === c.module).map((s) => `\`${s.name}\``);
+  const lines = [
+    `"${c.name}" is a private helper (\`defp ${c.name}/1\`) inside ${c.module} in petal_components v${schemas.version}. It is not a callable component: code outside that module cannot call it, and \`<.${c.name}>\` fails to compile with "undefined function ${c.name}/1".`,
+  ];
+  if (siblings.length) {
+    lines.push("", `Use the public components from the same module instead: ${siblings.join(", ")}. Call get_component with one of those names.`);
+  } else {
+    lines.push("", "Call list_components to see the components you can use.");
+  }
+  return lines.join("\n");
 }
 
 function summarize(c: Component): string {
