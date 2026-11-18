@@ -6,7 +6,7 @@
     "url": "https://github.com/petalframework/petal-components-mcp",
     "source": "github"
   },
-  "version": "0.2.0",
+  "version": "0.1.0",
   "websiteUrl": "https://petal.build/components/mcp",
   "packages": [
     {
