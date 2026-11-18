@@ -92,6 +92,25 @@ describe("get_install_instructions text", () => {
     assert.match(text, /contains `\.pc-button`/);
   });
 
+  it("names the optional deps and what happens without them", () => {
+    assert.match(text, /\{:mdex, "~> 0\.12"\}/);
+    assert.match(text, /\{:eqrcode, "~> 0\.2"\}`; without it, rendering a QR code raises/);
+    assert.doesNotMatch(text, /rest of the library needs no extra deps/);
+  });
+
+  it("says <.prose> needs the typography plugin, as an optional line", () => {
+    assert.match(text, /`<\.prose>` renders Tailwind's `prose` classes, which come from the `@tailwindcss\/typography` plugin/);
+    assert.match(text, /add `@plugin "@tailwindcss\/typography";` below the forms line/);
+    // Optional: it is not one of the four required lines.
+    const css = codeBlockAfter(/^Open `assets\/css\/app\.css`/m);
+    assert.doesNotMatch(css, /typography/);
+  });
+
+  it("names the modules use PetalComponents leaves out", () => {
+    assert.match(text, /The one component family it does not import is Chat/);
+    assert.match(text, /`PetalComponents\.DataTable\.FilterEditor`, which `<\.data_table>` and `<\.filters>` render for you/);
+  });
+
   it("says the Chat family needs an alias", () => {
     assert.match(text, /alias PetalComponents\.Chat/);
     assert.match(text, /Chat family is not pulled in by `use PetalComponents`/);

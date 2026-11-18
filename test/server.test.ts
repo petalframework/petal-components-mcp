@@ -275,7 +275,7 @@ describe("petal-components-mcp over HTTP", () => {
       assert.equal(isError, false);
       assert.match(text, /^# Installing petal_components into a Phoenix project/);
       assert.doesNotMatch(text, /imports every component/);
-      assert.match(text, /Chat components .* are not imported/);
+      assert.match(text, /The one component family it does not import is Chat/);
       assert.match(text, /alias PetalComponents\.Chat/);
       assert.doesNotMatch(text, /`<\.markdown>`|`<\.rich_text>`/);
     });
