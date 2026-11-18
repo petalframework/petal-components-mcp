@@ -5,7 +5,8 @@ export type ComponentAttr = {
   type: string;
   required: boolean;
   default: string | null;
-  values: string[] | null;
+  // Atom values arrive as strings and nil as null (see formatValue).
+  values: (string | null)[] | null;
   doc: string | null;
 };
 
@@ -135,21 +136,40 @@ export function renderComponent(c: Component): string {
   return lines.join("\n");
 }
 
-function renderAttr(attr: ComponentAttr): string {
-  const parts = [`- \`${attr.name}\` (${attr.type})`];
+// The extract is JSON, so atom values arrive as plain strings ("row" for
+// :row) and nil arrives as null. Print them the way HEEx needs them.
+function formatValue(attr: ComponentAttr, v: string | null): string {
+  if (v === null) return "nil";
+  return attr.type === ":atom" ? `:${v}` : v;
+}
+
+function atomHint(attr: ComponentAttr): string {
+  const sample = attr.values?.find((v) => v !== null);
+  if (!sample) return `pass an atom: \`${attr.name}={:...}\`, not a string`;
+  return `pass an atom: \`${attr.name}={:${sample}}\`, not \`${attr.name}="${sample}"\``;
+}
+
+export function renderAttr(attr: ComponentAttr, indent = ""): string {
+  const parts = [`${indent}- \`${attr.name}\` (${attr.type})`];
   if (attr.required) parts.push("**required**");
   if (attr.default !== null && attr.default !== "nil") parts.push(`default: \`${attr.default}\``);
-  if (attr.values?.length) parts.push(`values: ${attr.values.map((v) => `\`${v}\``).join(", ")}`);
+  if (attr.values?.length) {
+    parts.push(`values: ${attr.values.map((v) => `\`${formatValue(attr, v)}\``).join(", ")}`);
+  }
+  if (attr.type === ":atom") parts.push(atomHint(attr));
   let line = parts.join(" · ");
   if (attr.doc) line += ` — ${attr.doc}`;
   return line;
 }
 
-function renderSlot(slot: ComponentSlot): string {
+export function renderSlot(slot: ComponentSlot): string {
   const parts = [`- \`<:${slot.name}>\``];
   if (slot.required) parts.push("**required**");
   let line = parts.join(" · ");
   if (slot.doc) line += ` — ${slot.doc}`;
+  if (slot.attrs?.length) {
+    line += "\n" + slot.attrs.map((a) => renderAttr(a, "  ")).join("\n");
+  }
   return line;
 }
 
