@@ -65,8 +65,8 @@ app.get("/healthz", (_req, res) => {
     ok: true,
     petal_components_version: schemas.version,
     // `components` is every function the extractor found, private helpers
-    // included. It is the number petal.build copy quotes, so it keeps that
-    // meaning; `public_components` is what list_components serves.
+    // included, kept for existing readers such as the weekly email review.
+    // `public_components` is what list_components serves.
     components: schemas.components.length,
     public_components: publicComponents.length,
     schemas_generated_at: schemas.generated_at,

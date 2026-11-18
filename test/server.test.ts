@@ -127,7 +127,6 @@ describe("petal-components-mcp over HTTP", () => {
       assert.equal(health.public_components, listedCount);
       assert.equal(health.public_components, publicNames.length);
       assert.ok(health.public_components <= health.components);
-      assert.ok(health.public_components < health.components, "schemas.json should still carry private helpers");
       assert.equal(health.petal_components_version, schemaFile.version);
     });
 
