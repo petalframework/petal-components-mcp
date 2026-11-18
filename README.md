@@ -117,8 +117,10 @@ The `/healthz` endpoint reports the bundled version, so you can confirm a deploy
 
 ```sh
 curl https://mcp.petal.build/healthz
-# {"ok":true,"petal_components_version":"4.18.0","components":190,...}
+# {"ok":true,"petal_components_version":"4.18.0","components":213,"public_components":190,...}
 ```
+
+`components` counts every function the extractor finds, private helpers included. `public_components` is the number `list_components` serves, the ones your agent can call.
 
 ## Background
 

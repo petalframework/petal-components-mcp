@@ -119,9 +119,15 @@ describe("petal-components-mcp over HTTP", () => {
       for (const name of privateNames) assert.ok(!listed.includes(name), `${name} should not be listed`);
     });
 
-    it("/healthz counts only public components", async () => {
+    it("/healthz keeps components as the full extracted count and adds public_components", async () => {
       const health = await (await fetch(`${baseUrl}/healthz`)).json();
-      assert.equal(health.components, publicNames.length);
+      const { text } = await callText("list_components");
+      const listedCount = [...text.matchAll(/^- `([^`]+)`/gm)].length;
+      assert.equal(health.components, schemaFile.components.length);
+      assert.equal(health.public_components, listedCount);
+      assert.equal(health.public_components, publicNames.length);
+      assert.ok(health.public_components <= health.components);
+      assert.ok(health.public_components < health.components, "schemas.json should still carry private helpers");
       assert.equal(health.petal_components_version, schemaFile.version);
     });
 

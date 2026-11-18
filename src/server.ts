@@ -64,7 +64,11 @@ app.get("/healthz", (_req, res) => {
   res.json({
     ok: true,
     petal_components_version: schemas.version,
-    components: publicComponents.length,
+    // `components` is every function the extractor found, private helpers
+    // included. It is the number petal.build copy quotes, so it keeps that
+    // meaning; `public_components` is what list_components serves.
+    components: schemas.components.length,
+    public_components: publicComponents.length,
     schemas_generated_at: schemas.generated_at,
   });
 });
@@ -78,5 +82,7 @@ app.listen(port, () => {
   console.log(`petal-components-mcp listening on :${port}`);
   console.log(`  - MCP endpoint:  POST /mcp`);
   console.log(`  - Health check:  GET  /healthz`);
-  console.log(`  - Loaded ${publicComponents.length} components from petal_components v${schemas.version}`);
+  console.log(
+    `  - Loaded ${schemas.components.length} components (${publicComponents.length} public) from petal_components v${schemas.version}`,
+  );
 });
