@@ -28,7 +28,7 @@ Open \`mix.exs\`. In the \`deps/0\` function, add this entry if it is not alread
 {:petal_components, "~> 4.0"}
 \`\`\`
 
-If the user wants the chat markdown components (\`<.markdown>\`, \`<.rich_text>\`), also add \`{:mdex, "~> 0.12"}\`. The rest of the library needs no extra deps.
+If the user wants the chat markdown components (\`<Chat.markdown>\`, \`<Chat.rich_text>\`, which need \`alias PetalComponents.Chat\`), also add \`{:mdex, "~> 0.12"}\`. The rest of the library needs no extra deps.
 
 ## 2. Fetch dependencies
 
@@ -124,7 +124,7 @@ The sync only rewrites the block between \`<!-- usage-rules-start -->\` and \`<!
 
 ## Notes
 
-- \`use PetalComponents\` imports every component so you can call them as \`<.button>\`, \`<.modal>\`, \`<.table>\`, etc. without explicit aliases.
+- \`use PetalComponents\` imports every component except the Chat family, so you can call them as \`<.button>\`, \`<.modal>\`, \`<.table>\`, etc. without explicit aliases. The Chat components (\`PetalComponents.Chat\`, including \`markdown\` and \`rich_text\`) are not imported: add \`alias PetalComponents.Chat\` and call them as \`<Chat.markdown>\`, \`<Chat.rich_text>\`.
 - After installing, call \`list_components\` to see the full inventory and \`get_component <name>\` for any component's attrs and slots.
 - Report which steps you actually applied and which were already in place. Do not silently overwrite existing config.
 `;
@@ -202,6 +202,8 @@ export function createServer() {
         `petal_components v${schemas.version} — ${components.length} components`,
         "",
         ...components.map((c) => `- \`${c.name}\` (${c.module}) — ${c.summary}`),
+        "",
+        "Components in PetalComponents.Chat are not imported by `use PetalComponents`: add `alias PetalComponents.Chat` and call them as `<Chat.name>`. Every other component is a plain tag such as `<.button>`.",
         "",
         "Call `get_component` with a name to get the full schema and usage example.",
       ].join("\n");

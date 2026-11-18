@@ -106,14 +106,22 @@ export function renderComponent(c: Component): string {
   const curated = c.examples ?? [];
   const showSkeleton = curated.length === 0 || !hasDedicatedExample(c);
 
-  if (showSkeleton) {
-    lines.push("## Usage", "", "```heex", exampleUsage(c), "```", "");
+  const skeleton = showSkeleton ? exampleUsage(c) : null;
+  const notes = scopeNotes([skeleton ?? "", ...curated.map((ex) => ex.code)].join("\n"));
+  if (notes.length) {
+    lines.push("## Before you paste", "", ...notes, "");
+  }
+
+  if (skeleton) {
+    lines.push("## Usage", "", "```heex", skeleton, "```", "");
   }
   if (curated.length) {
     lines.push("## Examples", "");
     for (const ex of curated) {
       lines.push(`### ${ex.title}`);
       if (ex.description) lines.push("", ex.description);
+      const note = demoDataNote(ex.code);
+      if (note) lines.push("", note);
       lines.push("", "```heex", ex.code.trim(), "```", "");
     }
   }
@@ -171,6 +179,61 @@ export function renderSlot(slot: ComponentSlot): string {
     line += "\n" + slot.attrs.map((a) => renderAttr(a, "  ")).join("\n");
   }
   return line;
+}
+
+// Notes about names the served HEEx uses that `use PetalComponents` does not
+// bring into scope. The schema data is left as extracted; the response says
+// what the caller has to add.
+function scopeNotes(code: string): string[] {
+  const notes: string[] = [];
+  if (/<\/?Chat\./.test(code)) {
+    notes.push(
+      "- The Chat family is not imported by `use PetalComponents`. Add `alias PetalComponents.Chat` to the module that renders this (or to the `html_helpers` block of your web module), then call the tags as `<Chat.name>`.",
+    );
+  }
+  const usesState = /(?<![\w.])(%State\{|State\.)/.test(code);
+  const usesEngine = /(?<![\w.])Engine\./.test(code);
+  if (usesState || usesEngine) {
+    const used = [usesState && "State", usesEngine && "Engine"].filter((n): n is string => Boolean(n));
+    const target =
+      used.length > 1 ? `PetalComponents.DataTable.{${used.join(", ")}}` : `PetalComponents.DataTable.${used[0]}`;
+    const full = used.map((n) => `\`PetalComponents.DataTable.${n}\``).join(" and ");
+    notes.push(
+      `- The examples use ${used.map((n) => `\`${n}\``).join(" and ")} without a module prefix, and \`use PetalComponents\` does not alias them. Add \`alias ${target}\` to the module, or write ${full} in full.`,
+    );
+  }
+  return notes;
+}
+
+// Calls into the library's showcase fixtures. These produce demo data for the
+// playground and petal.build pages. `PetalComponents.Showcase.*` functions are
+// public but are demo data; the bare helpers below are private to their
+// showcase modules and do not exist in a caller's module at all.
+const SHOWCASE_PRIVATE_HELPERS = ["scoping_spec", "framework_spec", "rag_sources", "shell_menu_items"];
+
+export function demoFixtureCalls(code: string): string[] {
+  const found = new Set<string>();
+  for (const m of code.matchAll(/PetalComponents\.Showcase\.[\w.]+?\.\w+[!?]?(?=\()/g)) {
+    found.add(`${m[0]}()`);
+  }
+  for (const helper of SHOWCASE_PRIVATE_HELPERS) {
+    if (new RegExp(`(?<![\\w.])${helper}\\(`).test(code)) found.add(`${helper}()`);
+  }
+  return [...found];
+}
+
+function demoDataNote(code: string): string | null {
+  const calls = demoFixtureCalls(code);
+  if (!calls.length) return null;
+  const list = calls.map((f) => `\`${f}\``).join(", ");
+  let note = `> **Demo data:** this example calls ${list}, fixture data that feeds the library's own demo pages. It is not part of the component API. Replace it with your own data before you use the example.`;
+  const bare = calls.filter((f) => !f.startsWith("PetalComponents."));
+  if (bare.length === 1) {
+    note += ` \`${bare[0]}\` is private to the showcase module, so it is undefined in your code.`;
+  } else if (bare.length > 1) {
+    note += ` ${bare.map((f) => `\`${f}\``).join(" and ")} are private to the showcase module, so they are undefined in your code.`;
+  }
+  return note;
 }
 
 // True when at least one curated example renders ONLY this component among
