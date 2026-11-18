@@ -1,0 +1,35 @@
+name: Schema sync check
+
+# The bundled schemas are synced by hand after each petal_components
+# release. This fails when the deployed server reports a different version
+# than the latest stable release on Hex, so a missed sync gets noticed.
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compare mcp.petal.build with hex.pm
+        run: |
+          set -euo pipefail
+          live_json=$(curl -fsS --retry 3 --max-time 20 https://mcp.petal.build/healthz)
+          hex_json=$(curl -fsS --retry 3 --max-time 20 https://hex.pm/api/packages/petal_components)
+          live=$(jq -r '.petal_components_version // empty' <<<"$live_json")
+          hex=$(jq -r '.latest_stable_version // empty' <<<"$hex_json")
+          echo "mcp.petal.build serves petal_components $live"
+          echo "hex.pm latest stable is $hex"
+          if [ -z "$live" ] || [ -z "$hex" ]; then
+            echo "::error::Could not read a version (live='$live', hex='$hex')"
+            exit 1
+          fi
+          if [ "$live" != "$hex" ]; then
+            echo "::error::mcp.petal.build serves $live but Hex has $hex. Run the sync in the README (deps.update, extract, commit, deploy)."
+            exit 1
+          fi
